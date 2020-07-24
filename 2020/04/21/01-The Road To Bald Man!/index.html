@@ -1,0 +1,525 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>The Road To Bald Man! | Joey</title><meta name="description" content="Java学习路线"><meta name="keywords" content="Life"><meta name="author" content="fangchenyong"><meta name="copyright" content="fangchenyong"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="canonical" href="http://fangchenyong.top/2020/04/21/01-The Road To Bald Man!/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="The Road To Bald Man!"><meta name="twitter:description" content="Java学习路线"><meta name="twitter:image" content="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/6C4819608FCCD2B5E6F8F1B1C583429F.png"><meta property="og:type" content="article"><meta property="og:title" content="The Road To Bald Man!"><meta property="og:url" content="http://fangchenyong.top/2020/04/21/01-The Road To Bald Man!/"><meta property="og:site_name" content="Joey"><meta property="og:description" content="Java学习路线"><meta property="og:image" content="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/6C4819608FCCD2B5E6F8F1B1C583429F.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="prev" title="The Road To Bald Man!" href="http://fangchenyong.top/2020/04/21/The Road To Bald Man!/"><link rel="next" title="MySQL高级" href="http://fangchenyong.top/2020/04/19/数据库-MySQL-MySQL高级/"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容:${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://github.com/fangchenyong","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: '添加书签',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天'
+
+  
+}</script></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#The-Road-To-Bald-Man"><span class="toc-number">1.</span> <span class="toc-text">The Road To Bald Man!</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、JavaSE"><span class="toc-number">1.1.</span> <span class="toc-text">一、JavaSE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1）、JavaSE基础"><span class="toc-number">1.1.1.</span> <span class="toc-text">1）、JavaSE基础</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2）、JavaSE高级"><span class="toc-number">1.1.2.</span> <span class="toc-text">2）、JavaSE高级</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、数据结构和算法"><span class="toc-number">1.2.</span> <span class="toc-text">二、数据结构和算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1）、数据结构"><span class="toc-number">1.2.1.</span> <span class="toc-text">1）、数据结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2）、算法"><span class="toc-number">1.2.2.</span> <span class="toc-text">2）、算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、计算机网络"><span class="toc-number">1.3.</span> <span class="toc-text">三、计算机网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、数据库"><span class="toc-number">1.4.</span> <span class="toc-text">四、数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、操作系统"><span class="toc-number">1.5.</span> <span class="toc-text">五、操作系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六、设计模式"><span class="toc-number">1.6.</span> <span class="toc-text">六、设计模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#七、开发工具"><span class="toc-number">1.7.</span> <span class="toc-text">七、开发工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#八、前端技术"><span class="toc-number">1.8.</span> <span class="toc-text">八、前端技术</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#九、JavaWeb"><span class="toc-number">1.9.</span> <span class="toc-text">九、JavaWeb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#十、管理工具"><span class="toc-number">1.10.</span> <span class="toc-text">十、管理工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#十一、热门技术框架"><span class="toc-number">1.11.</span> <span class="toc-text">十一、热门技术框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#十二、Web-应用服务器"><span class="toc-number">1.12.</span> <span class="toc-text">十二、Web/应用服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#十三、中间件"><span class="toc-number">1.13.</span> <span class="toc-text">十三、中间件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#十四、搜索引擎"><span class="toc-number">1.14.</span> <span class="toc-text">十四、搜索引擎</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#十五、分布式-微服务"><span class="toc-number">1.15.</span> <span class="toc-text">十五、分布式/微服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#十六、虚拟化-容器化"><span class="toc-number">1.16.</span> <span class="toc-text">十六、虚拟化/容器化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#十七、Linux"><span class="toc-number">1.17.</span> <span class="toc-text">十七、Linux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#十八、运维知识"><span class="toc-number">1.18.</span> <span class="toc-text">十八、运维知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#十九、业务解决方案"><span class="toc-number">1.19.</span> <span class="toc-text">十九、业务解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二十、Java项目"><span class="toc-number">1.20.</span> <span class="toc-text">二十、Java项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二十一、面试"><span class="toc-number">1.21.</span> <span class="toc-text">二十一、面试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二十二、手撕源码"><span class="toc-number">1.22.</span> <span class="toc-text">二十二、手撕源码</span></a></li></ol></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_5954.JPG)"><div id="page-header"><span class="pull-left"> <a class="blog_title" id="site-name" href="/">Joey</a></span><div class="open toggle-menu pull-right"><div class="menu-icon-first"></div><div class="menu-icon-second"></div><div class="menu-icon-third"></div></div><span class="pull-right menus"><div class="mobile_author_icon"><img class="lozad" data-src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/6C4819608FCCD2B5E6F8F1B1C583429F.png" onerror="onerror=null;src='/img/friend_404.gif'"><div class="mobile_author-info__description"></div></div><hr><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a><a class="site-page" href="/messageboard/"><i class="fa-fw fa fa-coffee"></i><span> 留言板</span></a><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友情链接</span></a><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a><script>document.body.addEventListener('touchstart', function(){ });</script></div></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search fa-fw"></i><span> 搜索</span></a></span></div><div id="post-info"><div id="post-title"><div class="posttitle">The Road To Bald Man!</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2020-04-21<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-07-21</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Life/">Life</a></span><div class="post-meta-wordcount"><span>字数总计: </span><span class="word-count">1.2k</span><span class="post-meta__separator">|</span><span>阅读时长: 4 分钟</span><span class="post-meta__separator">|</span><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>[TOC]</p>
+<h1 id="The-Road-To-Bald-Man"><a href="#The-Road-To-Bald-Man" class="headerlink" title="The Road To Bald Man!"></a>The Road To Bald Man!</h1><h2 id="一、JavaSE"><a href="#一、JavaSE" class="headerlink" title="一、JavaSE"></a>一、JavaSE</h2><h3 id="1）、JavaSE基础"><a href="#1）、JavaSE基础" class="headerlink" title="1）、JavaSE基础"></a>1）、<a href="https://fangchenyong.top/2019/07/20/Java基础笔记/#Java基础笔记">JavaSE基础</a></h3><ol>
+<li>基本语法</li>
+<li>面向对象</li>
+<li>异常</li>
+</ol>
+<h3 id="2）、JavaSE高级"><a href="#2）、JavaSE高级" class="headerlink" title="2）、JavaSE高级"></a>2）、JavaSE高级</h3><ol>
+<li><p>多线程和并发库</p>
+<ol>
+<li><p>并发编程基础</p>
+</li>
+<li><p>线程池</p>
+</li>
+<li><p>锁</p>
+</li>
+<li><p>并发容器</p>
+</li>
+<li><p>原子类</p>
+</li>
+<li><p>JUC并发工具类</p>
+<p> <strong><a href="https://www.bilibili.com/video/BV14W411u7gB" target="_blank" rel="noopener">JUC视频教程</a></strong></p>
+</li>
+</ol>
+</li>
+<li><p>常用API</p>
+</li>
+<li><p>枚举和注解</p>
+</li>
+<li><p>集合</p>
+</li>
+<li><p>泛型和File</p>
+</li>
+<li><p>IO流</p>
+</li>
+<li><p>网络编程</p>
+</li>
+<li><p>反射</p>
+</li>
+<li><p>动态代理</p>
+</li>
+<li><p>类加载器</p>
+</li>
+<li><p>JVM</p>
+<ol>
+<li><p>类加载机制</p>
+</li>
+<li><p>字节码执行机制</p>
+</li>
+<li><p>JVM内存模型</p>
+</li>
+<li><p>GC垃圾回收</p>
+</li>
+<li><p>JVM性能监控与故障定位</p>
+</li>
+<li><p>JVM调优</p>
+<p> <strong><a href="https://www.bilibili.com/video/BV1PJ411n7xZ" target="_blank" rel="noopener">JVM视频教程（持续更新中）</a></strong></p>
+</li>
+</ol>
+</li>
+<li><p>NIO</p>
+<ul>
+<li><a href="https://www.bilibili.com/video/BV14W411u7ro" target="_blank" rel="noopener"><strong>NIO视频教程</strong></a></li>
+</ul>
+</li>
+<li><p>网络编程</p>
+<ul>
+<li><a href="https://www.bilibili.com/video/BV1Jt411g7g4" target="_blank" rel="noopener">Java基础</a>（272/376）</li>
+<li><a href="https://www.bilibili.com/video/BV1Kb411W75N" target="_blank" rel="noopener">java基础新版视频教程717集</a>（542/717）</li>
+</ul>
+</li>
+<li><p>新特性</p>
+<ul>
+<li><a href="https://www.bilibili.com/video/BV14W411u7Ly" target="_blank" rel="noopener">Java8新特性视频教程</a></li>
+<li><a href="https://www.bilibili.com/video/BV17W411g7eK" target="_blank" rel="noopener">Java9新特性视频教程</a></li>
+<li><a href="https://www.bilibili.com/video/BV1Dt411472L" target="_blank" rel="noopener">Java11新特性视频教程</a></li>
+<li><a href="https://www.bilibili.com/video/BV1jJ411M7kQ" target="_blank" rel="noopener">Java12&amp;13新特性视频教程</a></li>
+</ul>
+</li>
+</ol>
+<h2 id="二、数据结构和算法"><a href="#二、数据结构和算法" class="headerlink" title="二、数据结构和算法"></a>二、数据结构和算法</h2><h3 id="1）、数据结构"><a href="#1）、数据结构" class="headerlink" title="1）、数据结构"></a>1）、数据结构</h3><ol>
+<li>队列</li>
+<li>数组</li>
+<li>链表</li>
+<li>二叉树</li>
+<li>堆、栈</li>
+<li>哈希</li>
+<li>……</li>
+</ol>
+<h3 id="2）、算法"><a href="#2）、算法" class="headerlink" title="2）、算法"></a>2）、算法</h3><ol>
+<li>查找</li>
+<li>排序</li>
+<li>贪心</li>
+<li>分治</li>
+<li>动态规划</li>
+<li>回溯</li>
+<li>……</li>
+</ol>
+<p><a href="https://www.bilibili.com/video/BV1E4411H73v" target="_blank" rel="noopener"><strong>韩顺平图解Java数据结构和算法</strong></a>（08/195）</p>
+<h2 id="三、计算机网络"><a href="#三、计算机网络" class="headerlink" title="三、计算机网络"></a>三、计算机网络</h2><ol>
+<li>ARP协议</li>
+<li>IP/ICMP协议</li>
+<li>TCP/UDP协议</li>
+<li>DNS/HTTP/HTTPS协议</li>
+<li>Session/Cookie</li>
+</ol>
+<h2 id="四、数据库"><a href="#四、数据库" class="headerlink" title="四、数据库"></a>四、数据库</h2><ol>
+<li>MySql<ul>
+<li><a href="https://www.bilibili.com/video/av21400736" target="_blank" rel="noopener">MySQL基础</a>（178/178）</li>
+<li><a href="https://www.bilibili.com/video/av21334868" target="_blank" rel="noopener"><strong>MySQL高级</strong></a>（06/63）</li>
+</ul>
+</li>
+<li>Oracle<ul>
+<li><a href="https://www.bilibili.com/video/BV14W411u7wT" target="_blank" rel="noopener">Oracle、SQL、PLSQL视频教程</a></li>
+</ul>
+</li>
+<li>MongoDB<ul>
+<li><a href="https://www.bilibili.com/video/BV1bJ411x7mq" target="_blank" rel="noopener">MongoDB基础入门到高级进阶</a></li>
+</ul>
+</li>
+<li>JDBC<ul>
+<li><a href="https://www.bilibili.com/video/BV1eJ411c7rf" target="_blank" rel="noopener">JDBC视频教程</a>（55/57）</li>
+</ul>
+</li>
+<li>Druid</li>
+<li>C3P0</li>
+<li>MyCat<ul>
+<li><a href="https://www.bilibili.com/video/BV1WJ411x7bD" target="_blank" rel="noopener"><strong>MyCat视频教程</strong></a></li>
+</ul>
+</li>
+<li>Sharding-JDBC</li>
+<li>Sharding-Sphere</li>
+</ol>
+<h2 id="五、操作系统"><a href="#五、操作系统" class="headerlink" title="五、操作系统"></a>五、操作系统</h2><ol>
+<li>进程/线程</li>
+<li>并发/锁</li>
+<li>内存管理和调度</li>
+<li>I/O原理</li>
+</ol>
+<h2 id="六、设计模式"><a href="#六、设计模式" class="headerlink" title="六、设计模式"></a>六、设计模式</h2><ol>
+<li>创建型模式：<ol>
+<li>单例模式</li>
+<li>抽象工厂模式</li>
+<li>原型模式</li>
+<li>建造者模式</li>
+<li>工厂模式</li>
+</ol>
+</li>
+<li>结构性模式：<ol>
+<li>适配器模式</li>
+<li>桥接模式</li>
+<li>装饰模式</li>
+<li>组合模式</li>
+<li>外观模式</li>
+<li>享元模式</li>
+<li>代理模式</li>
+</ol>
+</li>
+<li>行为型模式：<ol>
+<li>模板方法模式</li>
+<li>命令模式</li>
+<li>访问者模式</li>
+<li>迭代器模式</li>
+<li>观察者模式</li>
+<li>中介者模式</li>
+<li>备忘录模式</li>
+<li>解释器模式</li>
+<li>状态模式</li>
+<li>策略模式</li>
+<li>职责链模式</li>
+</ol>
+</li>
+</ol>
+<p><a href="https://www.bilibili.com/video/BV1G4411c7N4" target="_blank" rel="noopener"><strong>韩顺平图解Java设计模式</strong></a>（34/150）</p>
+<h2 id="七、开发工具"><a href="#七、开发工具" class="headerlink" title="七、开发工具"></a>七、开发工具</h2><ol>
+<li>IDEA<ul>
+<li><a href="https://www.bilibili.com/video/BV1PW411X75p" target="_blank" rel="noopener">IDEA视频教程</a>（0/19）</li>
+</ul>
+</li>
+<li>Eclipse（√）</li>
+</ol>
+<h2 id="八、前端技术"><a href="#八、前端技术" class="headerlink" title="八、前端技术"></a>八、前端技术</h2><ol>
+<li>HTML5+CSS3<ul>
+<li><a href="https://www.bilibili.com/video/BV1XJ411X7Ud" target="_blank" rel="noopener">Web前端HTML5+CSS3全套基础教程完整版</a>（43/148）</li>
+</ul>
+</li>
+<li>JavaScript<ul>
+<li><a href="https://www.bilibili.com/video/BV1pJ41157z8" target="_blank" rel="noopener">JavaScript基础入门教程全集</a>（45/172）</li>
+<li><a href="https://www.bilibili.com/video/bv18s411E7Nd" target="_blank" rel="noopener">ECMAScript教程(ecmascript详解含es5、es6)</a></li>
+</ul>
+</li>
+<li>Vue<ul>
+<li><a href="https://www.bilibili.com/video/BV1Wp411d7Ur" target="_blank" rel="noopener">超经典VUE实战教程全套完整版</a>（20/75）</li>
+<li><a href="https://www.bilibili.com/video/BV1SJ41157Y9" target="_blank" rel="noopener">2020Vue全套教程全开源</a></li>
+<li><a href="https://www.bilibili.com/video/BV11s411A7h6" target="_blank" rel="noopener">学 Vue.js 看这个就够了</a></li>
+</ul>
+</li>
+<li>React<ul>
+<li><a href="https://www.bilibili.com/video/BV184411x7F9" target="_blank" rel="noopener">React基础到实战</a></li>
+</ul>
+</li>
+<li>WebPack<ul>
+<li><a href="https://www.bilibili.com/video/BV1e7411j7T5" target="_blank" rel="noopener">尚硅谷2020最新版Webpack5实战教程(从入门到精通)</a></li>
+</ul>
+</li>
+<li>Node.js</li>
+<li>Thymeleaf</li>
+<li>FreeMarker</li>
+</ol>
+<h2 id="九、JavaWeb"><a href="#九、JavaWeb" class="headerlink" title="九、JavaWeb"></a>九、JavaWeb</h2><ol>
+<li><p>Servlet</p>
+</li>
+<li><p>Jsp</p>
+</li>
+<li><p>EL</p>
+</li>
+<li><p>JSTL</p>
+</li>
+<li><p>Cookie</p>
+</li>
+<li><p>Session</p>
+</li>
+<li><p>Filter</p>
+</li>
+<li><p>Listener</p>
+</li>
+</ol>
+<p>（1-8）<a href="https://www.bilibili.com/video/BV1Y7411K7zz" target="_blank" rel="noopener">2020最新版JavaWeb全套教程</a></p>
+<p>​            <a href="https://www.bilibili.com/video/BV12J411M7Sj?p=2" target="_blank" rel="noopener">【狂神说Java】JavaWeb入门到实战</a>（42/42）</p>
+<h2 id="十、管理工具"><a href="#十、管理工具" class="headerlink" title="十、管理工具"></a>十、管理工具</h2><ol>
+<li>SVN（√）<ul>
+<li><a href="https://www.bilibili.com/video/BV1mW411M7yR" target="_blank" rel="noopener">SVN视频教程</a></li>
+<li><a href="https://www.bilibili.com/video/BV1Us411E7HJ" target="_blank" rel="noopener">SVN高级视频教程</a></li>
+</ul>
+</li>
+<li>Git<ul>
+<li><a href="https://www.bilibili.com/video/BV1pW411A7a5" target="_blank" rel="noopener">Git&amp;GitHub视频教程</a></li>
+</ul>
+</li>
+</ol>
+<h2 id="十一、热门技术框架"><a href="#十一、热门技术框架" class="headerlink" title="十一、热门技术框架"></a>十一、热门技术框架</h2><ol>
+<li>Maven<ul>
+<li><a href="https://www.bilibili.com/video/BV1TW411g7hP" target="_blank" rel="noopener">Maven视频教程</a>（05/35）</li>
+</ul>
+</li>
+<li>Spring<ul>
+<li><a href="https://www.bilibili.com/video/BV1KW411u7An" target="_blank" rel="noopener">Spring4视频教程</a></li>
+<li><a href="https://www.bilibili.com/video/BV1gW411W7wy" target="_blank" rel="noopener">Spring注解驱动开发视频教程</a></li>
+<li><a href="https://www.bilibili.com/video/BV1WE411d7Dv" target="_blank" rel="noopener">【狂神说Java】Spring5最新完整教程IDEA版通俗易懂</a></li>
+</ul>
+</li>
+<li>SpringMVC<ul>
+<li><a href="https://www.bilibili.com/video/BV1mW411M7YA" target="_blank" rel="noopener">SpringMVC视频教程</a></li>
+<li><a href="https://www.bilibili.com/video/BV1aE41167Tu" target="_blank" rel="noopener">【狂神说Java】SpringMVC最新教程IDEA版通俗易懂</a></li>
+</ul>
+</li>
+<li>Mybatis<ul>
+<li><a href="https://www.bilibili.com/video/BV1yW411M7m1" target="_blank" rel="noopener">通用Mapper视频教程</a></li>
+<li><a href="https://www.bilibili.com/video/BV1mW411M737" target="_blank" rel="noopener">MyBatis视频教程（源码级讲授）</a></li>
+</ul>
+</li>
+<li>Mybatis Plus<ul>
+<li><a href="https://www.bilibili.com/video/BV1Ds411E76Y" target="_blank" rel="noopener">MyBatisPlus视频教程</a></li>
+</ul>
+</li>
+<li>JPA<ul>
+<li><a href="https://www.bilibili.com/video/BV1vW411M7zp" target="_blank" rel="noopener">JPA视频教程</a></li>
+</ul>
+</li>
+<li>Spring Data<ul>
+<li><a href="https://www.bilibili.com/video/BV1hW411g7jy" target="_blank" rel="noopener">Spring Data视频教程</a></li>
+</ul>
+</li>
+<li>SpringBoot<ul>
+<li><a href="https://www.bilibili.com/video/BV1gW411W76m" target="_blank" rel="noopener"><strong>好评如潮【Spring Boot】视频教程</strong></a></li>
+<li><a href="https://www.bilibili.com/video/BV1KW411F7oX" target="_blank" rel="noopener"><strong>Spring Boot整合篇</strong></a></li>
+</ul>
+</li>
+<li>Spring Cloud<ul>
+<li><a href="https://www.bilibili.com/video/BV18E411x7eT" target="_blank" rel="noopener"><strong>Spring Cloud视频教程（2020新版）</strong></a></li>
+</ul>
+</li>
+<li>整合<ul>
+<li><a href="https://www.bilibili.com/video/BV17W411g7zP" target="_blank" rel="noopener">SSM整合视频教程</a></li>
+<li><a href="https://www.bilibili.com/video/BV18W411g7on" target="_blank" rel="noopener">Spring、SpringMVC、JPA、SpringData整合案例视频教程</a></li>
+</ul>
+</li>
+</ol>
+<h2 id="十二、Web-应用服务器"><a href="#十二、Web-应用服务器" class="headerlink" title="十二、Web/应用服务器"></a>十二、Web/应用服务器</h2><ol>
+<li>Nginx<ul>
+<li><a href="https://www.bilibili.com/video/BV1zJ411w7SV" target="_blank" rel="noopener"><strong>Nginx视频教程</strong></a></li>
+</ul>
+</li>
+<li>Tomcat</li>
+<li>Jetty</li>
+<li>UnderTow</li>
+</ol>
+<h2 id="十三、中间件"><a href="#十三、中间件" class="headerlink" title="十三、中间件"></a>十三、中间件</h2><ol>
+<li>缓存<ol>
+<li>Redis<ul>
+<li><a href="https://www.bilibili.com/video/BV1CJ411m7Gc?from=search&seid=17587189821895008844" target="_blank" rel="noopener"><strong>Redis入门到精通</strong></a>（112/112）</li>
+<li><a href="https://www.bilibili.com/video/BV1oW411u75R" target="_blank" rel="noopener"><strong>Redis视频教程</strong></a></li>
+</ul>
+</li>
+<li>memcache</li>
+</ol>
+</li>
+<li>消息队列<ol>
+<li>RabbitMQ</li>
+<li>RocketMQ</li>
+<li>Kafka</li>
+<li>ActiveMQ<ul>
+<li><a href="https://www.bilibili.com/video/BV164411G7aB" target="_blank" rel="noopener"><strong>消息中间件之ActiveMQ</strong></a></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>RPC架构<ol>
+<li>Netty<ul>
+<li><a href="https://www.bilibili.com/video/BV1DJ411m7NR" target="_blank" rel="noopener"><strong>Netty视频教程</strong></a></li>
+</ul>
+</li>
+<li>Dubbo<ul>
+<li><a href="https://www.bilibili.com/video/BV1ns411c7jV" target="_blank" rel="noopener"><strong>Dubbo视频教程</strong></a></li>
+</ul>
+</li>
+<li>GRPC</li>
+<li>Thrift</li>
+</ol>
+</li>
+</ol>
+<h2 id="十四、搜索引擎"><a href="#十四、搜索引擎" class="headerlink" title="十四、搜索引擎"></a>十四、搜索引擎</h2><ol>
+<li>Lucene</li>
+<li>ElasticSearch</li>
+<li>Solr</li>
+</ol>
+<h2 id="十五、分布式-微服务"><a href="#十五、分布式-微服务" class="headerlink" title="十五、分布式/微服务"></a>十五、分布式/微服务</h2><ol>
+<li>服务发现/注册<ol>
+<li>Eureka</li>
+<li>Consul</li>
+<li>Zookeeper<ul>
+<li><a href="https://www.bilibili.com/video/BV1PW411r7iP" target="_blank" rel="noopener"><strong>Zookeeper教程(zookeeper框架精讲)</strong></a></li>
+</ul>
+</li>
+<li>Nacos</li>
+</ol>
+</li>
+<li>网关<ol>
+<li>Zuul</li>
+<li>GateWay</li>
+</ol>
+</li>
+<li>服务调用（负载均衡）<ol>
+<li>Ribbon</li>
+<li>Feign</li>
+</ol>
+</li>
+<li>熔断/降级<ol>
+<li>Hystrix</li>
+</ol>
+</li>
+<li>配置中心<ol>
+<li>Config</li>
+<li>Apollo</li>
+<li>Nacos</li>
+</ol>
+</li>
+<li>认证和鉴权<ol>
+<li>Shiro<ul>
+<li><a href="https://www.bilibili.com/video/BV1YW411M7S3" target="_blank" rel="noopener"><strong>Shiro视频教程</strong></a></li>
+</ul>
+</li>
+<li>Spring Security</li>
+<li>OAuth2.0</li>
+<li>SSO</li>
+</ol>
+</li>
+<li>分布式事务<ol>
+<li>JTA接口<ul>
+<li>Atomikos组件</li>
+</ul>
+</li>
+<li>2PC、3PC</li>
+<li>XA模式</li>
+<li>TCC模式<ul>
+<li>tcc-transaction</li>
+<li>ByteTCC</li>
+<li>EasyTransaction</li>
+<li>Seata</li>
+</ul>
+</li>
+<li>SAGA模式<ul>
+<li>ServiceComb</li>
+<li>Seata</li>
+</ul>
+</li>
+<li>LCN模式<ul>
+<li>tx-lcn</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>任务调度<ol>
+<li>Quartz</li>
+<li>Elastic-Job</li>
+</ol>
+</li>
+<li>链路追踪与监控<ol>
+<li>Zipkin</li>
+<li>Sleuth</li>
+<li>Skywalking</li>
+</ol>
+</li>
+<li>日志分析与监控<ol>
+<li>ElasticSearch</li>
+<li>Logstash</li>
+<li>Kibana</li>
+</ol>
+</li>
+</ol>
+<h2 id="十六、虚拟化-容器化"><a href="#十六、虚拟化-容器化" class="headerlink" title="十六、虚拟化/容器化"></a>十六、虚拟化/容器化</h2><ol>
+<li>Docker<ul>
+<li><a href="https://www.bilibili.com/video/BV1Ls411n7mx" target="_blank" rel="noopener"><strong>Docker视频教程</strong></a></li>
+</ul>
+</li>
+<li>Kubernetes<ul>
+<li><a href="https://www.bilibili.com/video/BV1w4411y7Go" target="_blank" rel="noopener"><strong>Kubernetes教程</strong></a></li>
+</ul>
+</li>
+<li>Swarm</li>
+</ol>
+<h2 id="十七、Linux"><a href="#十七、Linux" class="headerlink" title="十七、Linux"></a>十七、Linux</h2><ol>
+<li>常用命令</li>
+<li>Shell脚本</li>
+<li>Vmware</li>
+<li>Virtualbox</li>
+</ol>
+<p><a href="https://www.bilibili.com/video/BV11W411T7jR" target="_blank" rel="noopener"><strong>Linux视频教程</strong></a></p>
+<h2 id="十八、运维知识"><a href="#十八、运维知识" class="headerlink" title="十八、运维知识"></a>十八、运维知识</h2><ol>
+<li>Web服务器<ol>
+<li>Nginx</li>
+</ol>
+</li>
+<li>应用服务器<ol>
+<li>Tomcat</li>
+<li>Jetty</li>
+<li>Undertow</li>
+</ol>
+</li>
+<li>CDN加速</li>
+<li>持续集成/持续发布<ol>
+<li>Jenkins<ul>
+<li><a href="https://www.bilibili.com/video/BV1GW411w7pn" target="_blank" rel="noopener">Jenkins视频教程</a></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>代码质量检查<ol>
+<li>Sonar</li>
+</ol>
+</li>
+<li>日志收集/分析<ol>
+<li>ElasticSearch</li>
+<li>Logstash</li>
+<li>Kibana</li>
+</ol>
+</li>
+</ol>
+<h2 id="十九、业务解决方案"><a href="#十九、业务解决方案" class="headerlink" title="十九、业务解决方案"></a>十九、业务解决方案</h2><ol start="4">
+<li>Pinpoint</li>
+<li>JMS</li>
+<li>Neo4j</li>
+<li>Beats</li>
+<li>JCL</li>
+<li>Log4J</li>
+<li>Logback</li>
+<li>SLF4J</li>
+<li>D3</li>
+<li>Echarts（√）</li>
+<li>AntV</li>
+<li>JasperReport</li>
+<li>POI</li>
+<li>Activiti</li>
+<li>微信支付</li>
+<li>支付宝支付</li>
+<li>百度地图（√）</li>
+<li>高德地图（√）</li>
+</ol>
+<h2 id="二十、Java项目"><a href="#二十、Java项目" class="headerlink" title="二十、Java项目"></a>二十、Java项目</h2><ul>
+<li><input disabled type="checkbox"> </li>
+</ul>
+<h2 id="二十一、面试"><a href="#二十一、面试" class="headerlink" title="二十一、面试"></a>二十一、面试</h2><ul>
+<li><input disabled type="checkbox"> <a href="https://www.bilibili.com/video/BV1Eb411P7bP" target="_blank" rel="noopener">Java学科第一季面试题</a></li>
+<li><input disabled type="checkbox"> <a href="https://www.bilibili.com/video/BV18b411M7xz" target="_blank" rel="noopener">互联网大厂高频重点面试题第2季</a></li>
+<li><input disabled type="checkbox"> 8    尚筹网</li>
+<li><input disabled type="checkbox"> 9    尚筹网</li>
+<li><input disabled type="checkbox"> 10  JVM+MySQL高级</li>
+<li><input disabled type="checkbox"> 11  并发+Redis</li>
+<li><input disabled type="checkbox"> 12  Zookeeper + 设计模式</li>
+<li><input disabled type="checkbox"> 1    刷题-准备面试</li>
+<li><input disabled type="checkbox"> 2    刷题-准备面试</li>
+<li><input disabled type="checkbox"> 3    刷题-准备面试</li>
+</ul>
+<h2 id="二十二、手撕源码"><a href="#二十二、手撕源码" class="headerlink" title="二十二、手撕源码"></a>二十二、手撕源码</h2></div></article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Life/">Life    </a></div><div class="post_share"><div class="social-share" data-image="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/6C4819608FCCD2B5E6F8F1B1C583429F.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-buttom"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lozad post-qr-code__img" data-src="/img/wechat.jpg"><div class="post-qr-code__desc">微信</div></li><li class="reward-item"><img class="lozad post-qr-code__img" data-src="/img/alipay.jpg"><div class="post-qr-code__desc">支付宝</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull-left"><a href="/2020/04/21/The Road To Bald Man!/"><img class="prev_cover lozad" data-src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/B3402E0D-8544-4AFD-BB48-88F3D7F7466C.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_6261.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_6923.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/F07254A8-F2DA-4308-9464-88E9E471FD6C.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_5519.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/FC43A5A0-16A7-411A-877A-C3F4C3D8C890.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_7755.JPG" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>The Road To Bald Man!</span></div></a></div><div class="next-post pull-right"><a href="/2020/04/19/数据库-MySQL-MySQL高级/"><img class="next_cover lozad" data-src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/B3402E0D-8544-4AFD-BB48-88F3D7F7466C.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_6261.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_6923.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/F07254A8-F2DA-4308-9464-88E9E471FD6C.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_5519.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/FC43A5A0-16A7-411A-877A-C3F4C3D8C890.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_7755.JPG" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>MySQL高级</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/04/21/The Road To Bald Man!/" title="The Road To Bald Man!"><img class="relatedPosts_cover lozad" data-src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/FC43A5A0-16A7-411A-877A-C3F4C3D8C890.JPG"><div class="relatedPosts_title">The Road To Bald Man!</div></a></div></div><div class="clear_both"></div></div></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2019 - 2020 By fangchenyong</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly"><span>Butterfly</span></a></div><div class="footer_custom_text">仅供学习使用。</div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><section class="rightside" id="rightside"><i class="fa fa-book" id="readmode" title="阅读模式"> </i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换">簡</a><i class="fa fa-moon-o nightshift" id="nightshift" title="夜间模式"></i></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script async src="/js/search/local-search.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script src="/js/nightshift.js"></script><script id="ribbon" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/js/piao.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@1.2.2/instantpage.min.js" type="module"></script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>
