@@ -1,0 +1,1966 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>Mybatis | Joey</title><meta name="description" content="Mybatis笔记"><meta name="keywords" content="Mybatis"><meta name="author" content="fangchenyong"><meta name="copyright" content="fangchenyong"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="canonical" href="http://fangchenyong.top/2019/09/05/框架-Mybatis/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Mybatis"><meta name="twitter:description" content="Mybatis笔记"><meta name="twitter:image" content="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/6C4819608FCCD2B5E6F8F1B1C583429F.png"><meta property="og:type" content="article"><meta property="og:title" content="Mybatis"><meta property="og:url" content="http://fangchenyong.top/2019/09/05/框架-Mybatis/"><meta property="og:site_name" content="Joey"><meta property="og:description" content="Mybatis笔记"><meta property="og:image" content="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/6C4819608FCCD2B5E6F8F1B1C583429F.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="prev" title="JDK8 String源码" href="http://fangchenyong.top/2019/09/06/Java-源码-JDK8-String/"><link rel="next" title="Spring笔记" href="http://fangchenyong.top/2019/09/02/框架-Spring/"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容:${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://github.com/fangchenyong","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: '添加书签',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天'
+
+  
+}</script></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#什么是-MyBatis？"><span class="toc-number">1.</span> <span class="toc-text">什么是 MyBatis？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#入门"><span class="toc-number">1.1.</span> <span class="toc-text">入门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从-XML-中构建-SqlSessionFactory"><span class="toc-number">1.2.</span> <span class="toc-text">从 XML 中构建 SqlSessionFactory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#不使用-XML-构建-SqlSessionFactory"><span class="toc-number">1.3.</span> <span class="toc-text">不使用 XML 构建 SqlSessionFactory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从-SqlSessionFactory-中获取-SqlSession"><span class="toc-number">1.4.</span> <span class="toc-text">从 SqlSessionFactory 中获取 SqlSession</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#探究已映射的-SQL-语句"><span class="toc-number">1.5.</span> <span class="toc-text">探究已映射的 SQL 语句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#命名空间的一点注释"><span class="toc-number">1.6.</span> <span class="toc-text">命名空间的一点注释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#范围和生命周期"><span class="toc-number">1.7.</span> <span class="toc-text">范围和生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SqlSessionFactoryBuilder"><span class="toc-number">1.8.</span> <span class="toc-text">SqlSessionFactoryBuilder</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#映射器实例"><span class="toc-number">1.8.1.</span> <span class="toc-text">映射器实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#XML-映射配置文件"><span class="toc-number">1.9.</span> <span class="toc-text">XML 映射配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#properties"><span class="toc-number">1.10.</span> <span class="toc-text">properties</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Settings"><span class="toc-number">1.11.</span> <span class="toc-text">Settings</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#typeAliases"><span class="toc-number">1.12.</span> <span class="toc-text">typeAliases</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#typeHandlers"><span class="toc-number">1.13.</span> <span class="toc-text">typeHandlers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#objectFactory"><span class="toc-number">1.14.</span> <span class="toc-text">objectFactory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#plugins"><span class="toc-number">1.15.</span> <span class="toc-text">plugins</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#environments"><span class="toc-number">1.16.</span> <span class="toc-text">environments</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mappers"><span class="toc-number">1.17.</span> <span class="toc-text">mappers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#select"><span class="toc-number">1.18.</span> <span class="toc-text">select</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#insert，-update，-delete"><span class="toc-number">1.19.</span> <span class="toc-text">insert， update， delete</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql"><span class="toc-number">1.20.</span> <span class="toc-text">sql</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Parameters"><span class="toc-number">1.21.</span> <span class="toc-text">Parameters</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#resultMap"><span class="toc-number">1.22.</span> <span class="toc-text">resultMap</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#高级结果映射"><span class="toc-number">1.22.1.</span> <span class="toc-text">高级结果映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#构造方法"><span class="toc-number">1.22.2.</span> <span class="toc-text">构造方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关联"><span class="toc-number">1.22.3.</span> <span class="toc-text">关联</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#其他所有的属性将会被自动加载，假设它们的列和属性名相匹配。"><span class="toc-number">1.22.3.0.0.1.</span> <span class="toc-text">其他所有的属性将会被自动加载，假设它们的列和属性名相匹配。</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#集合"><span class="toc-number">1.22.4.</span> <span class="toc-text">集合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#鉴别器"><span class="toc-number">1.22.5.</span> <span class="toc-text">鉴别器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用自定义缓存"><span class="toc-number">1.22.6.</span> <span class="toc-text">使用自定义缓存</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#my-application"><span class="toc-number">1.22.6.0.0.1.</span> <span class="toc-text">/my_application</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#bin"><span class="toc-number">1.22.6.0.0.2.</span> <span class="toc-text">/bin</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#devlib"><span class="toc-number">1.22.6.0.0.3.</span> <span class="toc-text">/devlib</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#src"><span class="toc-number">1.22.6.0.0.4.</span> <span class="toc-text">/src</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#org-myapp"><span class="toc-number">1.22.6.0.0.5.</span> <span class="toc-text">/org/myapp/</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#action"><span class="toc-number">1.22.6.0.0.6.</span> <span class="toc-text">/action</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#BlogMapper-xml"><span class="toc-number">1.22.6.0.1.</span> <span class="toc-text">/BlogMapper.xml</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#model"><span class="toc-number">1.22.6.0.1.1.</span> <span class="toc-text">/model</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#service"><span class="toc-number">1.22.6.0.1.2.</span> <span class="toc-text">/service</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#view"><span class="toc-number">1.22.6.0.1.3.</span> <span class="toc-text">/view</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#org-myapp-1"><span class="toc-number">1.22.6.0.1.4.</span> <span class="toc-text">/org/myapp/</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#action-1"><span class="toc-number">1.22.6.0.1.5.</span> <span class="toc-text">/action</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#data"><span class="toc-number">1.22.6.0.1.6.</span> <span class="toc-text">/data</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#model-1"><span class="toc-number">1.22.6.0.1.7.</span> <span class="toc-text">/model</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#service-1"><span class="toc-number">1.22.6.0.1.8.</span> <span class="toc-text">/service</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#view-1"><span class="toc-number">1.22.6.0.1.9.</span> <span class="toc-text">/view</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#properties-1"><span class="toc-number">1.22.6.0.1.10.</span> <span class="toc-text">/properties</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#web-要记得这只是参照，而不是"><span class="toc-number">1.22.6.0.1.11.</span> <span class="toc-text">/web                                    要记得这只是参照，而不是</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#WEB-INF-要求，可能其他人会感谢你"><span class="toc-number">1.22.6.0.1.12.</span> <span class="toc-text">/WEB-INF                             要求，可能其他人会感谢你</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#web-xml-使用了通用的目录结构。"><span class="toc-number">1.22.6.0.1.13.</span> <span class="toc-text">/web.xml                          使用了通用的目录结构。</span></a></li></ol></li></ol><li class="toc-item toc-level-2"><a class="toc-link" href="#SqlSessions"><span class="toc-number">1.23.</span> <span class="toc-text">SqlSessions</span></a></li></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_5954.JPG)"><div id="page-header"><span class="pull-left"> <a class="blog_title" id="site-name" href="/">Joey</a></span><div class="open toggle-menu pull-right"><div class="menu-icon-first"></div><div class="menu-icon-second"></div><div class="menu-icon-third"></div></div><span class="pull-right menus"><div class="mobile_author_icon"><img class="lozad" data-src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/6C4819608FCCD2B5E6F8F1B1C583429F.png" onerror="onerror=null;src='/img/friend_404.gif'"><div class="mobile_author-info__description"></div></div><hr><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a><a class="site-page" href="/messageboard/"><i class="fa-fw fa fa-coffee"></i><span> 留言板</span></a><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友情链接</span></a><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a><script>document.body.addEventListener('touchstart', function(){ });</script></div></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search fa-fw"></i><span> 搜索</span></a></span></div><div id="post-info"><div id="post-title"><div class="posttitle">Mybatis</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-09-05<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2021-03-14</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Mybatis/">Mybatis</a></span><div class="post-meta-wordcount"><span>字数总计: </span><span class="word-count">25.7k</span><span class="post-meta__separator">|</span><span>阅读时长: 87 分钟</span><span class="post-meta__separator">|</span><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><h1 id="什么是-MyBatis？"><a href="#什么是-MyBatis？" class="headerlink" title="什么是 MyBatis？"></a>什么是 <strong>MyBatis</strong>？</h1><p>​        MyBatis 是支持普通 SQL 查询，存储过程和高级映射的优秀持久层框架。MyBatis 消除了几乎所有的 JDBC 代码和参数的手工设置以及对结果集的检索。MyBatis 可以使用简单的XML 或注解用于配置和原始映射，将接口和 Java 的 POJO（Plain Old Java Objects，普通的Java 对象）映射成数据库中的记录。</p>
+<h2 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h2><p>​        每一个 MyBatis 的应 用程序 都以一 个 SqlSessionFactory 对象的 实例为 核心。SqlSessionFactory 对 象 的 实 例 可 以 通 过 SqlSessionFactoryBuilder 对 象 来 获 得 。SqlSessionFactoryBuilder 对象可以通过 XML 配置文件，或从以往使用惯例中准备好的Configuration 类实例中来构建 SqlSessionFactory 对象。</p>
+<h2 id="从-XML-中构建-SqlSessionFactory"><a href="#从-XML-中构建-SqlSessionFactory" class="headerlink" title="从 XML 中构建 SqlSessionFactory"></a>从 <strong>XML</strong> 中构建 <strong>SqlSessionFactory</strong></h2><pre><code>从 XML 文件中构建 SqlSessionFactory 的实例非常简单。这里建议你使用类路径下的资源文件来配置，但是你可以使用任意的 Reader 实例，这个实例包括由文字形式的文件路径或 URL 形式的文件路径 file://来创建。MyBatis 包含了一些工具类，称作为资源，这些工具类包含一些方法，这些方法使得从类路径或其它位置加载资源文件更加简单。</code></pre><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String resource = <span class="string">"org/mybatis/example/Configuration.xml"</span>;</span><br><span class="line">Reader reader = Resources.getResourceAsReader(resource); </span><br><span class="line">sqlMapper = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(reader);</span><br></pre></td></tr></table></figure>
+
+<p>XML 配置文件包含对 MyBatis 系统的核心设置，包含获取数据库连接实例的数据源和决定事务范围和控制的事务管理器。关于 XML 配置文件的详细内容可以在文档后面找到， 这里给出一个简单的示例：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd"&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">environments</span> <span class="attr">default</span>=<span class="string">"development"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">environment</span> <span class="attr">id</span>=<span class="string">"development"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">transactionManager</span> <span class="attr">type</span>=<span class="string">"JDBC"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">"POOLED"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"driver"</span> <span class="attr">value</span>=<span class="string">"$&#123;driver&#125;"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"url"</span> <span class="attr">value</span>=<span class="string">"$&#123;url&#125;"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"$&#123;username&#125;"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"$&#123;password&#125;"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environments</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mappers</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mapper</span> <span class="attr">resource</span>=<span class="string">"org/mybatis/example/BlogMapper.xml"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mappers</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>​        当然，在XML 配置文件中还有很多可以配置的，上面的示例指出的则是最关键的部分。要注意 XML 头部的声明，需要用来验证 XML 文档正确性。environment 元素体中包含对事务管理和连接池的环境配置。mappers 元素是包含所有 mapper映射器）的列表，这些 mapper的 XML 文件包含 SQL 代码和映射定义信息。</p>
+<h2 id="不使用-XML-构建-SqlSessionFactory"><a href="#不使用-XML-构建-SqlSessionFactory" class="headerlink" title="不使用 XML 构建 SqlSessionFactory"></a>不使用 <strong>XML</strong> 构建 <strong>SqlSessionFactory</strong></h2><p>​        如果你喜欢从 Java 程序而不是 XML 文件中直接创建配置实例，或创建你自己的配置构建器，MyBatis 也提供完整的配置类，提供所有从 XML 文件中加载配置信息的选项。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">DataSource dataSource = BlogDataSourceFactory.getBlogDataSource();</span><br><span class="line">TransactionFactory transactionFactory = <span class="keyword">new</span> JdbcTransactionFactory(); </span><br><span class="line">Environment environment = <span class="keyword">new</span> Environment(<span class="string">"development"</span>, transactionFactory, dataSource);</span><br><span class="line">Configuration configuration = <span class="keyword">new</span> Configuration(environment); configuration.addMapper(BlogMapper.class);</span><br><span class="line">SqlSessionFactory sqlSessionFactory =<span class="keyword">new</span> SqlSessionFactoryBuilder().build(configuration);</span><br></pre></td></tr></table></figure>
+
+<p>​        注意这种情况下配置是添加映射器类。映射器类是 Java 类，这些类包含 SQL 映射语句的注解从而避免了 XML 文件的依赖，XML 映射仍然在大多数高级映射（比如：嵌套 Join 映射）时需要。出于这样的原因，如果存在 XML 配置文件的话，MyBatis 将会自动查找和加载一个对等的 XML 文件（这种情况下，基于类路径下的 BlogMapper.class 类的类名，那么 BlogMapper.xml 将会被加载）。后面我们会了解更多。</p>
+<h2 id="从-SqlSessionFactory-中获取-SqlSession"><a href="#从-SqlSessionFactory-中获取-SqlSession" class="headerlink" title="从 SqlSessionFactory 中获取 SqlSession"></a>从 SqlSessionFactory 中获取 SqlSession</h2><p>​        现在，我们已经知道如何获取 SqlSessionFactory 对象了，基于同样的启示，我们就可以获得 SqlSession 的实例了。SqlSession 对象完全包含以数据库为背景的所有执行 SQL 操作的方法。你可以用 SqlSession 实例来直接执行已映射的 SQL 语句。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">SqlSession session = sqlMapper.openSession();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">	Blog blog = (Blog) session.selectOne( <span class="string">"org.mybatis.example.BlogMapper.selectBlog"</span>, <span class="number">101</span>);</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">	session.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​        这种方法起到的作用，和我们使用之前的 MyBatis 版本是相似的，现在有一种更简洁的方法。使用合理描述参数和  SQL 语句返回值的接口（比如  BlogMapper.class），这样现在就可以执行更简单，更安全的代码，没有容易发生的字符串文字和转换的错误。</p>
+<p>例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">SqlSession session = sqlSessionFactory.openSession(); </span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    BlogMapper mapper = session.getMapper(BlogMapper.class);</span><br><span class="line">    Blog blog = mapper.selectBlog(<span class="number">101</span>);</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    session.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在我们来探究一下这里到底执行了什么。</p>
+<h2 id="探究已映射的-SQL-语句"><a href="#探究已映射的-SQL-语句" class="headerlink" title="探究已映射的 SQL 语句"></a>探究已映射的 <strong>SQL</strong> 语句</h2><p>​        这里你也许想知道通过 SqlSession 和 Mapper 对象到底执行了什么操作。已映射的 SQL 语句是一个很大的主题，而且这个主题会贯穿本文档的大部分内容。为了给出一个宏观的概念，这里有一些示例。</p>
+<p>​        上面提到的任何一个示例，语句是通过 XML 或注解定义的。我们先来看看 XML。使用基于 XML 的映射语言，在过去的几年中使得 MyBatis 非常流行，它为 MyBatis 提供所有的特性设置。如果你以前用过 MyBatis，这个概念就应该很熟悉了，但是 XML 映射文件也有很多的改进，后面我们会详细来说。这里给出一个基于 XML 映射语句的示例，这些语句应该可以满足上述示例中 SqlSession 对象的调用。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" &lt;http://mybatis.org/dtd/mybatis-3-mapper.dtd&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">"org.mybatis.example.BlogMapper"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"selectBlog"</span> <span class="attr">parameterType</span>=<span class="string">"int"</span> <span class="attr">resultType</span>=<span class="string">"Blog"</span>&gt;</span> </span><br><span class="line">		select * from Blog where id = #&#123;id&#125;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>​        这个简单的例子中看起来有很多额外的东西，但是也相当简洁了。如果你喜欢，你可以在一个单独的 XML 映射文件中定义很多的映射语句，除 XML 头部和文档类型声明之外， 你可以得 到很 多方便 之处。 在文件 的剩 余部分 是很好 的自我 解释 。在命 名空间“com.mybatis.example.BlogMapper”中，它定义了一个名为“selectBlog”的映射语句，这样它允许你使用完全限定名“org.mybatis.example.BlogMapper.selectBlog”来调用映射语句，我们下面示例中所有的写法也是这样的。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Blog blog = (Blog) session.selectOne( <span class="string">"org.mybatis.example.BlogMapper.selectBlog"</span>, <span class="number">101</span>);</span><br></pre></td></tr></table></figure>
+
+<p>​        要注意这个使用完全限定名调用 Java 对象的方法是相似的，这样做是有原因的。这个命名可以直接映射相同命名空间下的映射器类，使用一个名称，参数和返回值和已映射的查询语句都一样的方法即可。这就允许你非常容易地调用映射器接口中的方法，这和你前面看到的是一样的，下面这个示例中它又出现了。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">BlogMapper mapper = session.getMapper(BlogMapper.class); </span><br><span class="line">Blog blog = mapper.selectBlog(101);</span><br></pre></td></tr></table></figure>
+
+<p>​        第二种方式有很多的优点，首先它不是基于文字的，那就更安全了。第二，如果你的IDE 有代码补全功能，那么你可以利用它来操纵已映射的 SQL 语句。第三，不需要强制类型转换，同时 BlogMapper 接口可以保持简洁，返回值类型很安全（参数类型也很安全）。</p>
+<h2 id="命名空间的一点注释"><a href="#命名空间的一点注释" class="headerlink" title="命名空间的一点注释"></a>命名空间的一点注释</h2><blockquote>
+<p>​        命名空间在之前版本的 MyBatis 中是可选项，非常混乱在使用上也没有帮助。现在， 命名空间是必须的，而且有一个目的，它使用更长的完全限定名来隔离语句。 命名空间使得接口绑定成为可能，就像你看到的那样，如果之前不了解，那么现在你 就会使用它们了，你应该按照下面给出示例的来练习，以免改变自己的想法。使用命名空间，并将它放在合适的 Java 包空间之下，这将会使你的代码变得简洁，在很长的时间内提高 MyBatis 的作用。 命名解析：为了减少输入量，MyBatis 对所有的命名配置元素使用如下的命名解析规则，包括语句，结果映射，缓存等。 </p>
+<ul>
+<li>直接查找完全限定名（比如“com.mypackage.MyMapper.selectAllThings”），如果发现就使用。 l</li>
+<li>短名称（比如“selectAllThings”）可以用来引用任意含糊的对象。而如果有两个或两个以上的（比如“com.foo.selectAllThings ”和“com.bar.selectAllThings”）,那么就会得到错误报告，说短名称是含糊的，因此就必须使用完全限定名。</li>
+</ul>
+</blockquote>
+<p>​        对 BlogMapper 这样的映射器类来说，还有一个妙招。它们中间映射的语句可以不需要在 XML 中来写，而可以使用 Java 注解来替换。比如，上面的 XML 示例可以如下来替换：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> org.mybatis.example; <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BlogMapper</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Select</span>(<span class="string">"SELECT * FROM blog WHERE id = #&#123;id&#125;"</span>)</span><br><span class="line">    <span class="function">Blog <span class="title">selectBlog</span><span class="params">(<span class="keyword">int</span> id)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​        对于简单语句来说，使用注解代码会更加清晰，然而 Java 注解对于复杂语句来说就会混乱，应该限制使用。因此，如果你不得不做复杂的事情，那么最好使用 XML 来映射语句。当然这也取决于你和你的项目团队的决定，看哪种更适合你来使用，还有以长久方式来使用映射语句的重要性。也就是说，不要将自己局限在一种方式中。你可以轻松地将注解换成 XML 映射语句，反之亦然。</p>
+<h2 id="范围和生命周期"><a href="#范围和生命周期" class="headerlink" title="范围和生命周期"></a>范围和生命周期</h2><p>​        理解我们目前已经讨论过的不同范围和生命周期类是很重要的。不正确的使用它们会导致严重的并发问题。</p>
+<h2 id="SqlSessionFactoryBuilder"><a href="#SqlSessionFactoryBuilder" class="headerlink" title="SqlSessionFactoryBuilder"></a><strong>SqlSessionFactoryBuilder</strong></h2><pre><code>这个类可以被实例化，使用和丢弃。一旦你创建了 SqlSessionFactory 后，这个类就不需要存在了。因此 SqlSessionFactoryBuilder 实例的最佳范围是方法范围（也就是本地方法变量）。你可以重用 SqlSessionFactoryBuilder 来创建多个 SqlSessionFactory 实例，但是最好的方式是 不需要保持它一直存在来保证所有 XML 解析资源，因为还有更重要的事情要做。</code></pre><p><strong>SqlSessionFactory</strong></p>
+<pre><code>一旦被创建，SqlSessionFactory 实例应该在你的应用程序执行期间都存在。没有理由来处理或重新创建它。使用 SqlSessionFactory 的最佳实践是在应用程序运行期间不要重复创建多次。这样的操作将被视为是非常糟糕的。因此 SqlSessionFactory 的最佳范围是应用范围。有很多方法可以做到，最简单的就是使用单例模式或者静态单例模式。然而这两种方法都不认为是最佳实践。这样的话，你可以考虑依赖注入容器，比如 Google Guice 或 Spring。这样的框架允许你创建支持程序来管理单例 SqlSessionFactory 的生命周期。</code></pre><p><strong>SqlSession</strong></p>
+<p>​        每个线程都应该有它自己的 SqlSession 实例。SqlSession 的实例不能共享使用，它也是线程不安全的。因此最佳的范围是请求或方法范围。绝对不能将 SqlSession 实例的引用放在一个类的静态字段甚至是实例字段中。也绝不能将 SqlSession 实例的引用放在任何类型的管理范围中，比如 Serlvet 架构中的 HttpSession。如果你现在正用任意的 Web  框架，要考虑SqlSession 放在一个和 HTTP 请求对象相似的范围内。换句话说，基于收到的 HTTP 请求， 你可以打开了一个 SqlSession，然后返回响应，就可以关闭它了。关闭 Session 很重要，你应该确保使用 finally 块来关闭它。下面的示例就是一个确保 SqlSession 关闭的基本模式：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">SqlSession session = sqlSessionFactory.openSession(); <span class="keyword">try</span> &#123;</span><br><span class="line"><span class="comment">// do work</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">	session.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​        在你的代码中一贯地使用这种模式，将会保证所有数据库资源都正确地关闭（假设你没有通过你自己的连接关闭，这会给 MyBatis 造成一种迹象表明你要自己管理连接资源）。</p>
+<h3 id="映射器实例"><a href="#映射器实例" class="headerlink" title="映射器实例"></a>映射器实例</h3><p>映射器是你创建绑定映射语句的接口。映射器接口的实例可以从 SqlSession 中获得。那么从技术上来说，当被请求时，任意映射器实例的最宽范围和 SqlSession 是相同的。然而， 映射器实例的最佳范围是方法范围。也就是说，它们应该在使用它们的方法中被请求，然后就抛弃掉。它们不需要明确地关闭，那么在请求对象中保留它们也就不是什么问题了，这和</p>
+<p>SqlSession 相似。你也许会发现，在这个水平上管理太多的资源的话会失控。保持简单，将</p>
+<p>映射器放在方法范围内。下面的示例就展示了这个实例：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">SqlSession session = sqlSessionFactory.openSession(); </span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">	BlogMapper mapper = session.getMapper(BlogMapper.class);</span><br><span class="line"><span class="comment">// do work</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">	session.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="XML-映射配置文件"><a href="#XML-映射配置文件" class="headerlink" title="XML 映射配置文件"></a><strong>XML</strong> 映射配置文件</h2><p>MyBatis 的 XML 配置文件包含了影响 MyBatis 行为甚深的设置和属性信息。</p>
+<p>XML 文档的高层级结构如下：</p>
+<ul>
+<li>configuration 配置</li>
+<li>properties 属 性</li>
+<li>settings 设 置</li>
+<li>typeAliases 类型命名</li>
+<li>ltypeHandlers 类型处理器</li>
+<li>objectFactory 对象工厂</li>
+<li>plugins 插 件 </li>
+<li>environments 环 境<ul>
+<li>environment 环境变量<ul>
+<li>transactionManager事务管理器</li>
+<li>dataSource 数据源</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>映射器</li>
+</ul>
+<h2 id="properties"><a href="#properties" class="headerlink" title="properties"></a>properties</h2><pre><code>这些是外部化的，可替代的属性，这些属性也可以配置在典型的 Java 属性配置文件中， 或者通过 properties 元素的子元素来传递。例如：</code></pre><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">properties</span> <span class="attr">resource</span>=<span class="string">"org/mybatis/example/config.properties"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"dev_user"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"F2Fa3!33TYyg"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中的属性就可以在整个配置文件中使用，使用可替换的属性来实现动态配置。比如：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">"POOLED"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"driver"</span> <span class="attr">value</span>=<span class="string">"$&#123;driver&#125;"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"url"</span> <span class="attr">value</span>=<span class="string">"$&#123;url&#125;"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"$&#123;username&#125;"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"$&#123;password&#125;"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>​        这个例子中的 username 和 password 将会由 properties 元素中设置的值来替换。driver 和url 属性将会从包含进来的 config.properties 文件中的值来替换。这里提供很多配置的选项。属性也可以被传递到 SqlSessionBuilder.build()方法中。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">SqlSessionFactory factory = sqlSessionFactoryBuilder.build(reader, props);</span><br><span class="line"><span class="comment">// ... or ... </span></span><br><span class="line">SqlSessionFactory factory = sqlSessionFactoryBuilder.build(reader, </span><br><span class="line">                                                           environment, </span><br><span class="line">                                                           props);</span><br></pre></td></tr></table></figure>
+
+<p>如果在这些地方，属性多于一个的话，MyBatis 按照如下的顺序加载它们：</p>
+<ul>
+<li><p>在 properties 元素体内指定的属性首先被读取。</p>
+</li>
+<li><p>从类路径下资源或 properties 元素的 url 属性中加载的属性第二被读取，它会覆盖已经存在的完全一样的属性。</p>
+</li>
+<li><p>作为方法参数传递的属性最后被读取，它也会覆盖任一已经存在的完全一样的属性，这些属性可能是从 properties 元素体内和资源/url 属性中加载的。</p>
+</li>
+</ul>
+<p>因此，最高优先级的属性是那些作为方法参数的，然后是资源/url 属性，最后是 properties<br>元素中指定的属性。</p>
+<h2 id="Settings"><a href="#Settings" class="headerlink" title="Settings"></a>Settings</h2><pre><code>这些是极其重要的调整，它们会修改 MyBatis 在运行时的行为方式。下面这个表格描述了设置信息，它们的含义和默认值。</code></pre><table>
+<thead>
+<tr>
+<th>设置参数</th>
+<th>描述</th>
+<th>有效值</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>cacheEnabled</td>
+<td>这个配置使全局的映射器启用或禁用   缓存。</td>
+<td>true | false</td>
+<td>true</td>
+</tr>
+<tr>
+<td>lazyLoadingEnabled</td>
+<td>全局启用或禁用延迟加载。当禁用时，   所有关联对象都会即时加载。</td>
+<td>true | false</td>
+<td>true</td>
+</tr>
+<tr>
+<td>aggressiveLazyLoading</td>
+<td>当启用时，有延迟加载属性的对象在被   调用时将会完全加载任意属性。否则，   每种属性将会按需要加载。</td>
+<td>true | false</td>
+<td>true</td>
+</tr>
+<tr>
+<td>multipleResultSetsEnabled</td>
+<td>允许或不允许多种结果集从一个单独   的语句中返回（需要适合的驱动）。</td>
+<td>true | false</td>
+<td>true</td>
+</tr>
+<tr>
+<td>useColumnLabel</td>
+<td>使用列标签代替列名。不同的驱动在这方便表现不同。参考驱动文档或充分测   试两种方法来决定所使用的驱动。</td>
+<td>true | false</td>
+<td>true</td>
+</tr>
+<tr>
+<td>useGeneratedKeys</td>
+<td>允许 JDBC 支持生成的键。需要适合的驱动。如果设置为 true 则这个设置强制生成的键被使用，尽管一些驱动拒绝兼   容但仍然有效（比如   Derby）。</td>
+<td>true | false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>autoMappingBehavior</td>
+<td>指定 MyBatis 如何自动映射列到字段/   属性。PARTIAL 只会自动映射简单， 没有嵌套的结果。FULL   会自动映射任   意复杂的结果（嵌套的或其他情况）。</td>
+<td>NONE, PARTIAL, FULL</td>
+<td>PARTIAL</td>
+</tr>
+<tr>
+<td>defaultExecutorType</td>
+<td>配置默认的执行器。SIMPLE 执行器没   有什么特别之处。REUSE 执行器重用预处理语句。BATCH 执行器重用语句   和批量更新</td>
+<td>SIMPLE, REUSE, BAT CH</td>
+<td>SIMPLE</td>
+</tr>
+<tr>
+<td>defaultStatementTimeout</td>
+<td>设置超时时间，它决定驱动等待一个数   据库响应的时间。</td>
+<td>任 何 正 整    数</td>
+<td>Not   Set   (null)</td>
+</tr>
+</tbody></table>
+<p>一个设置信息元素的示例，完全的配置如下所示：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"cacheEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"lazyLoadingEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"multipleResultSetsEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"useColumnLabel"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"useGeneratedKeys"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"enhancementEnabled"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"defaultExecutorType"</span> <span class="attr">value</span>=<span class="string">"SIMPLE"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"defaultStatementTimeout"</span> <span class="attr">value</span>=<span class="string">"25000"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="typeAliases"><a href="#typeAliases" class="headerlink" title="typeAliases"></a>typeAliases</h2><p>​        类型别名是为 Java 类型命名一个短的名字。它只和 XML 配置有关，只用来减少类完全限定名的多余部分。例如：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">alias</span>=<span class="string">"Author"</span> <span class="attr">type</span>=<span class="string">"domain.blog.Author"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">alias</span>=<span class="string">"Blog"</span> <span class="attr">type</span>=<span class="string">"domain.blog.Blog"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">alias</span>=<span class="string">"Comment"</span> <span class="attr">type</span>=<span class="string">"domain.blog.Comment"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">alias</span>=<span class="string">"Post"</span> <span class="attr">type</span>=<span class="string">"domain.blog.Post"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">alias</span>=<span class="string">"Section"</span> <span class="attr">type</span>=<span class="string">"domain.blog.Section"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">alias</span>=<span class="string">"Tag"</span> <span class="attr">type</span>=<span class="string">"domain.blog.Tag"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>​        使用这个配置，“Blog”可以任意用来替代“domain.blog. Blog”所使用的地方。</p>
+<p>​        对于普通的 类型有许多内建的类型别名。它们都是大小写不敏感的，由于重载的名字，要注意原生类型的特殊处理。</p>
+<table>
+<thead>
+<tr>
+<th>别名</th>
+<th>映射的类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>_byte</td>
+<td>byte</td>
+</tr>
+<tr>
+<td>_long</td>
+<td>long</td>
+</tr>
+<tr>
+<td>_short</td>
+<td>short</td>
+</tr>
+<tr>
+<td>_int</td>
+<td>int</td>
+</tr>
+<tr>
+<td>_integer</td>
+<td>int</td>
+</tr>
+<tr>
+<td>_double</td>
+<td>double</td>
+</tr>
+<tr>
+<td>_float</td>
+<td>float</td>
+</tr>
+<tr>
+<td>_boolean</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td>string</td>
+<td>String</td>
+</tr>
+<tr>
+<td>byte</td>
+<td>Byte</td>
+</tr>
+<tr>
+<td>long</td>
+<td>Long</td>
+</tr>
+<tr>
+<td>short</td>
+<td>Short</td>
+</tr>
+<tr>
+<td>int</td>
+<td>Integer</td>
+</tr>
+<tr>
+<td>integer</td>
+<td>Integer</td>
+</tr>
+<tr>
+<td>double</td>
+<td>Double</td>
+</tr>
+<tr>
+<td>float</td>
+<td>Float</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>Boolean</td>
+</tr>
+<tr>
+<td>date</td>
+<td>Date</td>
+</tr>
+<tr>
+<td>decimal</td>
+<td>BigDecimal</td>
+</tr>
+<tr>
+<td>bigdecimal</td>
+<td>BigDecimal</td>
+</tr>
+<tr>
+<td>map</td>
+<td>Map</td>
+</tr>
+<tr>
+<td>hashmap</td>
+<td>HashMap</td>
+</tr>
+<tr>
+<td>list</td>
+<td>List</td>
+</tr>
+<tr>
+<td>arraylist</td>
+<td>ArrayList</td>
+</tr>
+<tr>
+<td>collection</td>
+<td>Collection</td>
+</tr>
+<tr>
+<td>iterator</td>
+<td>Iterator</td>
+</tr>
+</tbody></table>
+<h2 id="typeHandlers"><a href="#typeHandlers" class="headerlink" title="typeHandlers"></a>typeHandlers</h2><pre><code>无论是 MyBatis 在预处理语句中设置一个参数，还是从结果集中取出一个值时，类型处理器被用来将获取的值以合适的方式转换成 Java 类型。下面这个表格描述了默认的类型处理器。</code></pre><table>
+<thead>
+<tr>
+<th>类型处理器</th>
+<th><strong>Java</strong> 类型</th>
+<th><strong>JDBC</strong> 类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BooleanTypeHandler</td>
+<td>Boolean，boolean</td>
+<td>任何兼容的布尔值</td>
+</tr>
+<tr>
+<td>ByteTypeHandler</td>
+<td>Byte，byte</td>
+<td>任何兼容的数字或字节类型</td>
+</tr>
+<tr>
+<td>ShortTypeHandler</td>
+<td>Short，short</td>
+<td>任何兼容的数字或短整型</td>
+</tr>
+<tr>
+<td>IntegerTypeHandler</td>
+<td>Integer，int</td>
+<td>任何兼容的数字和整型</td>
+</tr>
+<tr>
+<td>LongTypeHandler</td>
+<td>Long，long</td>
+<td>任何兼容的数字或长整型</td>
+</tr>
+<tr>
+<td>FloatTypeHandler</td>
+<td>Float，float</td>
+<td>任何兼容的数字或单精度浮点型</td>
+</tr>
+<tr>
+<td>DoubleTypeHandler</td>
+<td>Double，double</td>
+<td>任何兼容的数字或双精度浮点型</td>
+</tr>
+<tr>
+<td>BigDecimalTypeHandler</td>
+<td>BigDecimal</td>
+<td>任何兼容的数字或十进制小数类型</td>
+</tr>
+<tr>
+<td>StringTypeHandler</td>
+<td>String</td>
+<td>CHAR   和 VARCHAR 类 型</td>
+</tr>
+<tr>
+<td>ClobTypeHandler</td>
+<td>String</td>
+<td>CLOB   和 LONGVARCHAR 类 型</td>
+</tr>
+<tr>
+<td>NStringTypeHandler</td>
+<td>String</td>
+<td>NVARCHAR   和 NCHAR 类 型</td>
+</tr>
+<tr>
+<td>NClobTypeHandler</td>
+<td>String</td>
+<td>NCLOB   类型</td>
+</tr>
+<tr>
+<td>ByteArrayTypeHandler</td>
+<td>byte[]</td>
+<td>任何兼容的字节流类型</td>
+</tr>
+<tr>
+<td>BlobTypeHandler</td>
+<td>byte[]</td>
+<td>BLOB   和 LONGVARBINARY 类型</td>
+</tr>
+<tr>
+<td>DateTypeHandler</td>
+<td>Date（java.util）</td>
+<td>TIMESTAMP   类型</td>
+</tr>
+<tr>
+<td>DateOnlyTypeHandler</td>
+<td>Date（java.util）</td>
+<td>DATE   类型</td>
+</tr>
+<tr>
+<td>TimeOnlyTypeHandler</td>
+<td>Date（java.util）</td>
+<td>TIME   类型</td>
+</tr>
+<tr>
+<td>SqlTimestampTypeHandler</td>
+<td>Timestamp（java.sql）</td>
+<td>TIMESTAMP   类型</td>
+</tr>
+<tr>
+<td>SqlDateTypeHandler</td>
+<td>Date（java.sql）</td>
+<td>DATE   类型</td>
+</tr>
+<tr>
+<td>SqlTimeTypeHandler</td>
+<td>Time（java.sql）</td>
+<td>TIME   类型</td>
+</tr>
+<tr>
+<td>ObjectTypeHandler</td>
+<td>任意</td>
+<td>其他或未指定类型</td>
+</tr>
+<tr>
+<td>EnumTypeHandler</td>
+<td>Enumeration   类型</td>
+<td>VARCHAR-任何兼容的字符串类型，   作为代码存储（而不是索引）。</td>
+</tr>
+</tbody></table>
+<p>​        你可以重写类型处理器或创建你自己的类型处理器来处理不支持的或非标准的类型。要这样做的话，简单实现 TypeHandler 接口（org.mybatis.type），然后映射新的类型处理器类到 Java 类型，还有可选的一个 JDBC 类型。例如：</p>
+<p><strong>// Example Type Handler.java</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExampleTypeHandler</span> <span class="keyword">implements</span> <span class="title">TypeHandler</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setParameter</span><span class="params">(PreparedStatement ps, </span></span></span><br><span class="line"><span class="function"><span class="params">                             <span class="keyword">int</span> i, </span></span></span><br><span class="line"><span class="function"><span class="params">                             Object parameter,</span></span></span><br><span class="line"><span class="function"><span class="params">                             JdbcType jdbcType)</span> </span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        ps.setString(i, (String) parame ter);</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">getResult</span><span class="params">(ResultSet rs, String columnName)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> rs.getString(col umnName );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">getResult</span><span class="params">(CallableStatement cs, </span></span></span><br><span class="line"><span class="function"><span class="params">                            <span class="keyword">int</span> columnIndex)</span> </span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> cs.getString(col umnInde x);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>// MapperConfig.xml</strong></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">typeHandlers</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeHandler</span> <span class="attr">javaType</span>=<span class="string">"String"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span></span></span><br><span class="line"><span class="tag">                 <span class="attr">handler</span>=<span class="string">"org.mybatis.example.ExampleTypeHandler"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">typeHandlers</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>​        使用这样的类型处理器将会覆盖已经存在的处理 Java 的 String 类型属性和 VARCHAR 参数及结果的类型处理器。要注意 MyBatis 不会审视数据库元信息来决定使用哪种类型，所以你必须在参数和结果映射中指定那是 VARCHAR 类型的字段，来绑定到正确的类型处理器上。这是因为 MyBatis 直到语句被执行都不知道数据类型的这个现实导致的。</p>
+<h2 id="objectFactory"><a href="#objectFactory" class="headerlink" title="objectFactory"></a>objectFactory</h2><pre><code>MyBatis 每次创建结果对象新的实例时，它使用一个 ObjectFactory 实例来完成。如果参数映射存在，默认的 ObjectFactory 不比使用默认构造方法或带参数的构造方法实例化目标类做的工作多。如果你想重写默认的 ObjectFactory，你可以创建你自己的。比如：</code></pre><p><strong>// Example Objec tFac tory.java</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExampleObjectFactory</span> <span class="keyword">extends</span> <span class="title">DefaultObjectFactory</span> </span>&#123; </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">create</span><span class="params">(Class type)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.create(type);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">create</span><span class="params">(Class type,</span></span></span><br><span class="line"><span class="function"><span class="params">                         List&lt;Class&gt; constructorArgTypes, </span></span></span><br><span class="line"><span class="function"><span class="params">                         List&lt;Object&gt; constructorArgs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.create(type, constructorArgTypes, constructorArgs);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setProperties</span><span class="params">(Properties properties)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.setProperties(properties);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>// MapperConfig.xml</strong></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">objectFactory</span> <span class="attr">type</span>=<span class="string">"org.mybatis.example.ExampleObjectFactory"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"someProperty"</span> <span class="attr">value</span>=<span class="string">"100"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">objectFactory</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>​        ObjectFactory 接口非常简单。它包含两个用于创建的方法，一个是默认构造方法，另外一个是处理带参数的构造方法。最终，setProperties 方法可以被用来配置 ObjectFactory。在初始化你的ObjectFactory 实例后，objectFactory 元素体中定义的属性会被传递给setProperties方法。</p>
+<h2 id="plugins"><a href="#plugins" class="headerlink" title="plugins"></a>plugins</h2><pre><code>MyBatis 允许你在某一点拦截已映射语句执行的调用。默认情况下，MyBatis 允许使用插件来拦截方法调用：</code></pre><ul>
+<li><p>Executor</p>
+<blockquote>
+<p>(update, query, flushStatements, commit, rollback, getTransaction, close, isClosed)</p>
+</blockquote>
+</li>
+<li><p>ParameterHandler</p>
+<blockquote>
+<p>(getParameterObject, setParameters)</p>
+</blockquote>
+</li>
+<li><p>ResultSetHandler</p>
+<blockquote>
+<p>(handleResultSets, handleOutputParameters)</p>
+</blockquote>
+</li>
+<li><p>StatementHandler</p>
+<blockquote>
+<p>(prepare, parameterize, batch, update, query)</p>
+</blockquote>
+</li>
+</ul>
+<p>​        这些类中方法的详情可以通过查看每个方法的签名来发现，而且它们的源代码存在于MyBatis 的发行包中。你应该理解你所覆盖方法的行为，假设你所做的要比监视调用要多。如果你尝试修改或覆盖一个给定的方法，你可能会打破 MyBatis 的核心。这是低层次的类和方法，要谨慎使用插件。</p>
+<p>​        使用插件是它们提供的非常简单的力量。简单实现拦截器接口，要确定你想拦截的指定签名。</p>
+<p><strong>// ExamplePlugin.java</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Intercepts</span>(&#123;<span class="meta">@Signature</span>(type= Executor.class,method = <span class="string">"update"</span>, </span><br><span class="line">    args = &#123;MappedStatement.class,Object.class&#125;)&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExamplePlugin</span> <span class="keyword">implements</span> <span class="title">Interceptor</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">intercept</span><span class="params">(Invocation invocation)</span> <span class="keyword">throws</span> Throwable</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> invocation.proceed();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">plugin</span><span class="params">(Object target)</span> </span>&#123; </span><br><span class="line">        <span class="keyword">return</span> Plugin.wrap(target, <span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setProperties</span><span class="params">(Properties properties)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>// MapperConfig.xml</strong></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugin</span> <span class="attr">interceptor</span>=<span class="string">"org.mybatis.example.Example Plugin"</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"someProperty"</span> <span class="attr">value</span>=<span class="string">"100"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>​        上面的插件将会拦截在 实例中所有的update方法调用它也是负责低层次映射语句执行的内部对象。</p>
+<blockquote>
+<p> 覆盖配置类</p>
+<p>​        除了用插件来修改 MyBatis 核心行为之外，你也可以完全覆盖配置类。简单扩展它， 然后覆盖其中的任意方法，之后传递它到 sqlSessionFactoryBuilder.build(myConfig)方法 的调用。这可能会严重影响 MyBatis 的行为，所以要小心。</p>
+</blockquote>
+<h2 id="environments"><a href="#environments" class="headerlink" title="environments"></a>environments</h2><p>​        MyBatis 可以配置多种环境。这会帮助你将 SQL 映射应用于多种数据库之中。例如， 你也许为开发要设置不同的配置，测试和生产环境。或者你可能有多种生产级数据库却共享相同的模式，所以你会想对不同数据库使用相同的 SQL 映射。这种用例是很多的。</p>
+<p>​        <strong>要记得一个很重要的问题：你可以配置多种环境，但你只能为每个 <em>SqlSessionFactory</em></strong></p>
+<p><strong>实例选择一个。</strong></p>
+<p>​        所以，如果你想连接两个数据库，你需要创建两个 SqlSessionFactory 实例，每个数据库对应一个。而如果是三个数据库，你就需要三个实例，以此类推。记忆起来很简单：</p>
+<p>Ø  每个数据库对应一个 <strong>SqlSessionFactory</strong></p>
+<p>为了明确创建哪种环境，你可以将它作为可选的参数传递给 SqlSessionFactoryBuilder。可以接受环境配置的两个方法签名是：</p>
+<p>SqlSessionFactory factory = sqlSessionFactoryBuilder.build(reader, environment); SqlSessionFactory          factory  =                                       sqlSessionFactoryBuilder.build(reader,</p>
+<p>environment,properties);</p>
+<p>如果环境被忽略，那么默认环境将会被加载，如下进行：</p>
+<p>SqlSessionFactory factory = sqlSessionFactoryBuilder.build(reader); SqlSessionFactory factory = sqlSessionFactoryBuilder.build(reader,properties);</p>
+<p>环境元素定义了如何配置环境。</p>
+<environments default="**development**">
+
+<environment id="**development**">
+
+<p>&lt;<strong>transactionManager</strong> type=”JDBC”&gt;</p>
+<property name="..." value="...">
+
+
+
+<p>&lt;<strong>dataSource</strong> type=”POOLED”&gt;</p>
+<property name="driver" value="${driver}">
+
+<property name="url" value="${url}">
+
+<property name="username" value="${username}">
+
+<property name="password" value="${password}">
+
+
+
+</property></property></property></property></property></environment>
+
+</environments>
+
+<p>注意这里的关键部分：</p>
+<p>l  默认的环境 ID（比如：default=”development”）。</p>
+<p>l  每个 environment 元素定义的环境 ID（比如：id=”development”）。</p>
+<p>l  事务管理器的配置（比如：type=”JDBC”）。</p>
+<p>l  数据源的配置（比如：type=”POOLED”）。</p>
+<p>默认的环境和环境 ID 是自我解释的。你可以使用你喜欢的名称来命名，只要确定默认的要匹配其中之一。</p>
+<p><strong>transactionManager</strong></p>
+<p>在 MyBatis 中有两种事务管理器类型（也就是 type=”[JDBC|MANAGED]”）：</p>
+<p>l  <strong>JDBC</strong> – 这个配置直接简单使用了 JDBC 的提交和回滚设置。它依赖于从数据源得到的连接来管理事务范围。</p>
+<p>l  <strong>MANAGED</strong> – 这个配置几乎没做什么。它从来不提交或回滚一个连接。而它会让容器来管理事务的整个生命周期（比如 Spring 或 JEE 应用服务器的上下文）。默认情况下它会关闭连接。然而一些容器并不希望这样，因此如果你需要从连接中停止它，将 closeConnection 属性设置为 false。例如：</p>
+<transactionmanager type="MANAGED">
+
+<property name="**closeConnection**" value="**false**">
+
+</property></transactionmanager>
+
+<p>这两种事务管理器都不需要任何属性。然而它们都是类型别名，要替换使用它们，你需要放置将你自己的类的完全限定名或类型别名，它们引用了你对 TransacFactory 接口的实现类。</p>
+<p>public interface TransactionFactory { void setProperties(Properties props);</p>
+<p>Transaction newTransaction(Connection conn, boolean autoCommit);</p>
+<p>}</p>
+<p>任何在 XML 中配置的属性在实例化之后将会被传递给 setProperties()方法。你的实现类需要创建一个事务接口的实现，这个接口也很简单：</p>
+<p>public interface Transaction { Connection getConnection();</p>
+<p>void commit() throws SQLException;</p>
+<p>void rollback() throws SQLException; void close() throws SQLException;</p>
+<p>}</p>
+<p>使用这两个接口，你可以完全自定义 MyBatis 对事务的处理。</p>
+<p><strong>dataSsource</strong></p>
+<p>dataSource 元素使用基本的 JDBC 数据源接口来配置 JDBC 连接对象的资源。</p>
+<p>Ø  许多 MyBatis 的应用程序将会按示例中的例子来配置数据源。然而它并不是必须的。要知道为了方便使用延迟加载，数据源才是必须的。</p>
+<p>有三种内建的数据源类型（也就是 type=”???”）：</p>
+<p><strong>UNPOOLED</strong> – 这个数据源的实现是每次被请求时简单打开和关闭连接。它有一点慢， 这是对简单应用程序的一个很好的选择，因为它不需要及时的可用连接。不同的数据库对这个的表现也是不一样的，所以对某些数据库来说配置数据源并不重要，这个配置也是闲置的。UNPOOLED 类型的数据源仅仅用来配置以下 5 种属性：</p>
+<p>l  <strong>driver</strong> – 这是 JDBC 驱动的 Java 类的完全限定名（如果你的驱动包含的有，它也不是数据源类）。</p>
+<p>l  <strong>url</strong> – 这是数据库的 JDBC URL 地址。</p>
+<p>l  <strong>username</strong> –  登录数据库的用户名。</p>
+<p>l  <strong>password</strong> – 登录数据库的密码。</p>
+<p>l  <strong>defaultTransactionIsolationLevel</strong> – 默认的连接事务隔离级别。</p>
+<p>作为可选项，你可以传递数据库驱动的属性。要这样做，属性的前缀是以“driver.”开 头的，例如：</p>
+<p>l  driver.encoding=UTF8</p>
+<p>这 样 就 会 传 递 以 值 “ UTF8 ” 来 传 递                      “ encoding ” 属 性 ， 它 是 通 过  </p>
+<p>DriverManager.getConnection(url,driverProperties)方法传递给数据库驱动。</p>
+<p><strong>POOLED</strong> – 这是 JDBC 连接对象的数据源连接池的实现，用来避免创建新的连接实例时必要的初始连接和认证时间。这是一种当前 Web 应用程序用来快速响应请求很流行的方法。</p>
+<p>除了上述（UNPOOLED）的属性之外，还有很多属性可以用来配置 POOLED 数据源：</p>
+<p>l  <strong>poolMaximumActiveConnections –</strong> 在任意时间存在的活动（也就是正在使用）连接的数量。默认值：10</p>
+<p>l  <strong>poolMaximumIdleConnections –</strong>  任意时间存在的空闲连接数。</p>
+<p>l  <strong>poolMaximumCheckoutTime –</strong> 在被强制返回之前，池中连接被检查的时间。默认值：20000 毫秒（也就是 20 秒）</p>
+<p>l  <strong>poolTimeToWait</strong> <strong>–</strong> 这是给连接池一个打印日志状态机会的低层次设置，还有重新尝试获得连接，这些情况下往往需要很长时间（为了避免连接池没有配置时静默失败）。默认值：20000 毫秒（也就是 20 秒）</p>
+<p>l  <strong>poolPingQuery –</strong> 发送到数据的侦测查询，用来验证连接是否正常工作，并且准备接受请求。默认是“NO  PING  QUERY SET”，这会引起许多数据库驱动连接由一个错误信息而导致失败。</p>
+<p>l  <strong>poolPingEnabled</strong> – 这是开启或禁用侦测查询。如果开启，你必须用一个合法的</p>
+<p>SQL 语句（最好是很快速的）设置 poolPingQuery 属性。默认值：false。</p>
+<p>l  <strong>poolPingConnectionsNotUsedFor</strong> – 这是用来配置 poolPingQuery 多次时间被用一次。这可以被设置匹配标准的数据库连接超时时间，来避免不必要的侦测。默认值： 0（也就是所有连接每一时刻都被侦测-但仅仅当 poolPingEnabled 为 true 时适用）。 <strong>JNDI</strong> –  这个数据源的实现是为了使用如 Spring 或应用服务器这类的容器，容器可以集</p>
+<p>中或在外部配置数据源，然后放置一个 JNDI 上下文的引用。这个数据源配置只需要两个属性：</p>
+<p>l  <strong>initial_context –</strong> 这 个 属 性 用 来 从 初 始 上 下 文 中 寻 找 环 境 （ 也 就 是</p>
+<p>initialContext.lookup（initial——context））。这是个可选属性，如果被忽略，那么</p>
+<p>data_source 属性将会直接以 initialContext 为背景再次寻找。</p>
+<p>l  <strong>data_source –</strong> 这是引用数据源实例位置的上下文的路径。它会以由 initial_context 查询返回的环境为背景来查找，如果 initial_context 没有返回结果时，直接以初始上下文为环境来查找。</p>
+<p>和其他数据源配置相似，它也可以通过名为“env.”的前缀直接向初始上下文发送属性。比如：</p>
+<p>l  env.encoding=UTF8</p>
+<p>在初始化之后，这就会以值“UTF8”向初始上下文的构造方法传递名为“encoding”</p>
+<p>的属性。</p>
+<h2 id="mappers"><a href="#mappers" class="headerlink" title="mappers"></a>mappers</h2><p>既然 MyBatis 的行为已经由上述元素配置完了，我们现在就要定义 SQL 映射语句了。但是，首先我们需要告诉 MyBatis 到哪里去找到这些语句。Java 在这方面没有提供一个很好的方法，所以最佳的方式是告诉 MyBatis 到哪里去找映射文件。你可以使用相对于类路径的资源引用，或者字符表示，或 url 引用的完全限定名（包括 file:///URLs）。例如：</p>
+<p>// 使用相对于类路径的资源</p>
+<mappers>
+
+<mapper resource="org/mybatis/builder/AuthorMapper.xml">
+
+<mapper resource="org/mybatis/builder/BlogMapper.xml">
+
+<mapper resource="org/mybatis/builder/PostMapper.xml">
+
+</mapper></mapper></mapper></mappers>
+
+<p>// 使用完全限定路径</p>
+<mappers>
+
+<mapper url="file:///var/sqlmaps/AuthorMapper.xml">
+
+<mapper url="file:///var/sqlmaps/BlogMapper.xml">
+
+<mapper url="file:///var/sqlmaps/PostMapper.xml">
+
+</mapper></mapper></mapper></mappers>
+
+<p>这些语句简单告诉了 MyBatis 去哪里找映射文件。其余的细节就是在每个 SQL 映射文件中了，下面的部分我们来讨论 SQL 映射文件。</p>
+<p><strong>SQL</strong> 映射的 <strong>XML</strong> 文件</p>
+<p>MyBatis 真正的力量是在映射语句中。这里是奇迹发生的地方。对于所有的力量，SQL 映射的 XML 文件是相当的简单。当然如果你将它们和对等功能的 JDBC 代码来比较，你会发现映射文件节省了大约 95%的代码量。MyBatis 的构建就是聚焦于 SQL 的，使其远离于普通的方式。</p>
+<p>SQL 映射文件有很少的几个顶级元素（按照它们应该被定义的顺序）：</p>
+<p>l  cache - 配置给定命名空间的缓存。</p>
+<p>l  cache-ref – 从其他命名空间引用缓存配置。</p>
+<p>l  resultMap – 最复杂，也是最有力量的元素，用来描述如何从数据库结果集中来加载你的对象。</p>
+<p> l    parameterMap – 已经被废弃了！老式风格的参数映射。内联参数是首选，这个元</p>
+<p>素可能在将来被移除。这里不会记录。</p>
+<p>l  sql – 可以重用的 SQL 块，也可以被其他语句引用。</p>
+<p>l  insert – 映射插入语句</p>
+<p>l  update – 映射更新语句</p>
+<p>l  delete –  映射删除语句</p>
+<p>l  select – 映射查询语句</p>
+<p>下一部分将从语句本身开始来描述每个元素的细节。</p>
+<h2 id="select"><a href="#select" class="headerlink" title="select"></a>select</h2><p>查询语句是使用 MyBatis 时最常用的元素之一。直到你从数据库取出数据时才会发现将数据存在数据库中是多么的有价值，所以许多应用程序的查询操作要比更改数据操作多的多。对于每次插入，更新或删除，那也会有很多的查询。这是 MyBatis 的一个基本原则，也是将 重心和努力放到查询和结果映射的原因。对简单类别的查询元素是非常简单的。比如：</p>
+<p><strong><select id="”selectPerson”" parameter type="”int”" resulttype="”hashmap”"></select></strong></p>
+<p>SELECT * FROM PERSON WHERE ID = #{id}</p>
+<p><strong></strong></p>
+<p>这个语句被称作 selectPerson，使用一个 in（t  或 Integer）类型的参数，并返回一个 HashMap</p>
+<p>类型的对象，其中的键是列名，值是列对应的值。</p>
+<p>注意参数注释：</p>
+<p>#{id}</p>
+<p>这就告诉 MyBatis 创建一个 PreparedStatement（预处理语句）参数。使用 JDBC，这样的一个参数在 SQL 中会由一个“?”来标识，并被传递到一个新的预处理语句中，就像这样：</p>
+<p>// 相似的JDBC代码，不是MyBatis 的</p>
+<p>String selectPerson = “SELECT * FROM PERSON WHERE ID=?”; PreparedStatement ps = conn.prepareStatement(selectPerson); ps.setInt(1,id);</p>
+<p>当然，这需要很多单独的 JDBC 的代码来提取结果并将它们映射到对象实例中，这就是</p>
+<p>MyBatis 节省你时间的地方。我们需要深入了解参数和结果映射。那些细节部分我们下面来了解。</p>
+<p>select 元素有很多属性允许你配置，来决定每条语句的作用细节。</p>
+<p>&lt;select</p>
+<p>id=”selectPerson” parameterType=”int” parameterMap=”deprecated” resultType=”hashmap” resultMap=”personResultMap” flushCache=”false” useCache=”true” timeout=”10000” fetchSize=”256” statementType=”PREPARED” resultSetType=”FORWARD_ONLY”</p>
+<p>&gt; </p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>在命名空间中唯一的标识符，可以被用来引用这条语句。</td>
+</tr>
+<tr>
+<td>parameterType</td>
+<td>将会传入这条语句的参数类的完全限定名或别名。</td>
+</tr>
+<tr>
+<td>parameterMap</td>
+<td>这是引用外部 parameterMap 的已经被废弃的方法。使用内联参数   映射和 parameterType 属性。</td>
+</tr>
+<tr>
+<td>resultType</td>
+<td>从这条语句中返回的期望类型的类的完全限定名或别名。注意集   合情形，那应该是集合可以包含的类型，而不能是集合本身。使</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>用 resultType 或 resultMap，但不能同时使用。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>resultMap</td>
+<td>命名引用外部的 resultMap。返回 map 是 MyBatis 最具力量的特性， 对其有一个很好的理解的话，许多复杂映射的情形就能被解决了。   使用 resultMap 或 resultType，但不能同时使用。</td>
+</tr>
+<tr>
+<td>flushCache</td>
+<td>将其设置为 true，无论语句什么时候被调用，都会导致缓存被清   空。默认值：false。</td>
+</tr>
+<tr>
+<td>useCache</td>
+<td>将其设置为 true，将会导致本条语句的结果被缓存。默认值：true。</td>
+</tr>
+<tr>
+<td>timeout</td>
+<td>这个设置驱动程序等待数据库返回请求结果，并抛出异常时间的   最大等待值。默认不设置（驱动自行处理）。</td>
+</tr>
+<tr>
+<td>fetchSize</td>
+<td>这是暗示驱动程序每次批量返回的结果行数。默认不设置（驱动   自行处理）。</td>
+</tr>
+<tr>
+<td>statementType</td>
+<td>STATEMENT,PREPARED 或 CALLABLE   的一种。这会让 MyBatis   使用选择使用 Statement，PreparedStatement 或 CallableStatement。   默认值：PREPARED。</td>
+</tr>
+<tr>
+<td>resultSetType</td>
+<td>FORWARD_ONLY|SCROLL_SENSITIVE|SCROLL_INSENSITIVE   中的一种。默认是不设置（驱动自行处理）。</td>
+</tr>
+</tbody></table>
+<h2 id="insert，-update，-delete"><a href="#insert，-update，-delete" class="headerlink" title="insert， update， delete"></a>insert， update， delete</h2><p>数据修改语句 insert，update 和 delete 在它们的实现中非常相似：</p>
+<p>&lt;insert</p>
+<p>id=”insertAuthor” parameterType=”domain.blog.Author” flushCache=”true” statementType=”PREPARED” keyProperty=””</p>
+<p>useGeneratedKeys=”” timeout=”20000”&gt;</p>
+<p>&lt;update</p>
+<p>id=”insertAuthor” parameterType=”domain.blog.Author” flushCache=”true” statementType=”PREPARED” timeout=”20000”&gt;</p>
+<p>&lt;delete</p>
+<p>id=”insertAuthor” parameterType=”domain.blog.Author” flushCache=”true” statementType=”PREPARED” timeout=”20000”&gt;</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>在命名空间中唯一的标识符，可以被用来引用这条语句。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>parameterType</td>
+<td>将会传入这条语句的参数类的完全限定名或别名。</td>
+</tr>
+<tr>
+<td>parameterMap</td>
+<td>这是引用外部 parameterMap 的已经被废弃的方法。使用内联参数   映射和 parameterType 属性。</td>
+</tr>
+<tr>
+<td>flushCache</td>
+<td>将其设置为 true，不论语句什么时候被带哦用，都会导致缓存被清   空。默认值：false。</td>
+</tr>
+<tr>
+<td>timeout</td>
+<td>这个设置驱动程序等待数据库返回请求结果，并抛出异常时间的最   大等待值。默认不设置（驱动自行处理）。</td>
+</tr>
+<tr>
+<td>statementType</td>
+<td>STATEMENT,PREPARED 或 CALLABLE 的一种。这会让 MyBatis   使用选择使用 Statement，PreparedStatement 或 CallableStatement。   默认值：PREPARED。</td>
+</tr>
+<tr>
+<td>useGeneratedKeys</td>
+<td>（ 仅 对    insert   有 用  ） 这 会  告 诉      MyBatis   使 用    JDBC 的   getGeneratedKeys  方法来取出由数据（比如：像  MySQL 和  SQL   Server 这样的数据库管理系统的自动递增字段）内部生成的主键。   默认值：false。</td>
+</tr>
+<tr>
+<td>keyProperty</td>
+<td>（仅对insert 有用）标记一个属性，MyBatis 会通过getGeneratedKeys   或者通过 insert 语句的 selectKey 子元素设置它的值。默认：不设置。</td>
+</tr>
+</tbody></table>
+<p>下面就是 insert，update 和 delete 语句的示例：</p>
+<p><strong><insert i d="insertAuthor" parame tertype="domain.bl og.Author"></insert></strong></p>
+<p>insert into Author (id,username,password,email,bio) values (#{id},#{username},#{password},#{email},#{bio})</p>
+<p><strong></strong></p>
+<p><strong><update i d="updateAuthor " par ameter type="domain.bl og.Author"></update></strong></p>
+<p>update Author set username = #{username}, password = #{password}, email = #{email},</p>
+<p>bio = #{bio} where id = #{id}</p>
+<p><strong></strong></p>
+<p><strong>&lt;delete i d=”deleteAuthor” par ameter Type =”int”&gt;</strong></p>
+<p>delete from Author where id = #{id}</p>
+<p><strong>&lt;/ delete&gt;</strong></p>
+<p>如前所述，插入语句有一点多，它有一些属性和子元素用来处理主键的生成。</p>
+<p>首先，如果你的数据库支持自动生成主键的字段（比如 MySQL 和 SQL Server 数据库）， 那么你可以设置 useGeneratedKeys=”true”，而且设置 keyProperty 到你已经做好的目标属性上。例如，如果上面的 Author 表已经对 id 使用了自动生成的列类型，那么语句可以修改为：</p>
+<p><strong>&lt;insert i d=”insertAuthor” parame terType =”domain.bl og.Author” useGener ate dKe ys=”true” keyProperty=”i d”&gt;</strong></p>
+<p>insert into Author (username,password,email,bio) values (#{username},#{password},#{email},#{bio})</p>
+<p><strong></strong></p>
+<p>MyBatis 有另外一种方法来处理数据库不支持自动生成类型，或者可能 JDBC 驱动不支持自动生成主键时的主键生成问题。</p>
+<p>这里有一个简单（甚至很傻）的示例，它可以生成一个随机 ID（可能你不会这么做， 但是这展示了 MyBatis 处理问题的灵活性，因为它并不真的关心 ID 的生成）：</p>
+<p><strong><insert i d="insertAuthor" parame tertype="domain.bl og.Auth or"></insert></strong></p>
+<p><strong><selectke y keypr operty="i d" resulttype="int" or der="B EFORE"></selectke></strong></p>
+<p>select CAST(RANDOM()*1000000 as INTEGER) a from SYSIBM.SYSDUMMY1</p>
+<p><strong></strong></p>
+<p>insert into Author</p>
+<p>(id, username, password, email,bio, favourite_section) values</p>
+<p>(#{id}, #{username}, #{password}, #{email}, #{bio}, #{favouriteSection,jdbcType=VARCHAR}</p>
+<p>)</p>
+<p><strong></strong></p>
+<p>在上面的示例中，selectKey 元素将会首先运行，Author 的 id 会被设置，然后插入语句会被调用。这给你了一个简单的行为在你的数据库中来处理自动生成的主键，而不需要使你的 Java 代码变得复杂。</p>
+<p>selectKey 元素描述如下：</p>
+<p>&lt;selectKey</p>
+<p>keyProperty=”id” resultType=”int” order=”BEFORE” statementType=”PREPARED”&gt;</p>
+<h2 id="sql"><a href="#sql" class="headerlink" title="sql"></a>sql</h2><p>这个元素可以被用来定义可重用的 SQL 代码段，可以包含在其他语句中。比如：</p>
+<p><sql id="”userColumns”"> id,username,password </sql></p>
+<p>这个 SQL 片段可以被包含在其他语句中，例如：</p>
+<p><select id="”selectUsers”" parametertype="”int”" resulttype="”hashmap”"> select <include refid="”userColumns”/"></include></select></p>
+<p>from some_table where id = #{id}</p>
+
+
+
+
+
+<h2 id="Parameters"><a href="#Parameters" class="headerlink" title="Parameters"></a>Parameters</h2><p>在之前的语句中，你已经看到了一些简单参数的示例。在 MyBatis 中参数是非常强大的元素。对于简单的做法，大概 90%的情况，是不用太多的，比如：</p>
+<p><select id="”selectUsers”" parametertype="”int”" resulttype="”User”"> select id, username, password</select></p>
+<p>from users</p>
+<p>where id = #{id}</p>
+
+
+<p>上面的这个示例说明了一个非常简单的命名参数映射。参数类型被设置为“int”，因此这个参数可以被设置成任何内容。原生的类型或简单数据类型，比如整型和没有相关属性的字符串，因此它会完全用参数来替代。然而，如果你传递了一个复杂的对象，那么 MyBatis 的处理方式就会有一点不同。比如：</p>
+<p><insert id="”insertUser”" parametertype="”User”"> insert into users (id, username, password) values (#{id}, #{username}, #{password})</insert></p>
+
+
+<p>如果 User 类型的参数对象传递到了语句中，id、username 和 password 属性将会被查找，然后它们的值就被传递到预处理语句的参数中。</p>
+<p>这点对于传递参数到语句中非常好。但是对于参数映射也有一些其他的特性。首先，像 MyBatis 的其他部分，参数可以指定一个确定的数据类型。</p>
+<p>#{property,javaType=int,jdbcType=NUMERIC}</p>
+<p>像 MyBatis 的剩余部分，javaType 通常可以从参数对象中来确定，除非对象是一个</p>
+<p>HashMap。那么 javaType 应该被确定来保证使用正确类型处理器。</p>
+<p>注意：如果 null 被当作值来传递，对于所有可能为空的列，JDBC Type 是需要的。也可以通过阅读 PreparedStatement. setNull()方法的 JavaDocs 文档来研究它。</p>
+<p>为了以后自定义类型处理器，你可以指定一个确定的类型处理器类（或别名），比如：</p>
+<p>#{age,javaType=int,jdbcType=NUMERIC,typeHandler=MyTypeHandler}</p>
+<p>尽管它看起来繁琐，但是实际上是你很少设置它们其中之一。</p>
+<p>对于数值类型，对于决定有多少数字是相关的，有一个数值范围。</p>
+<p>#{height,javaType=double,jdbcType=NUMERIC,numericScale=2}</p>
+<p>最后，mode 属性允许你指定 IN，OUT 或 INOUT 参数。如果参数为 OUT 或 INOUT， 参数对象属性的真实值将会被改变，就像你期望你需要你个输出参数。如果 mode 为 OUT</p>
+<p>（或 INOUT），而且 jdbcType 为  CURSOR（也就是 Oracle 的  REFCURSOR），你必须指定一个 resultMap 来映射结果集到参数类型。要注意这里的 javaType 属性是可选的，如果左边的空白是 jdbcType 的 CURSOR 类型，它会自动地被设置为结果集。</p>
+<p>#{department,</p>
+<p>mode=OUT, jdbcType=CURSOR, javaType=ResultSet,</p>
+<p>resultMap=departmentResultMap}</p>
+<p>MyBatis 也支持很多高级的数据类型，比如结构体，但是当注册 out 参数时你必须告诉语句类型名称。比如（再次提示，在实际中不要像这样换行）：</p>
+<p>#{middleInitial,</p>
+<p>mode=OUT, jdbcType=STRUCT, jdbcTypeName=MY_TYPE,</p>
+<p>resultMap=departmentResultMap}</p>
+<p>尽管所有这些强大的选项很多时候你只简单指定属性名，MyBatis 会自己计算剩余的。最多的情况是你为 jdbcType 指定可能为空的列名。</p>
+<p>#{firstName} #{middleInitial,jdbcType=VARCHAR} #{lastName}</p>
+<p>字符串替换</p>
+<p>默认情况下，使用#{}格式的语法会导致 MyBatis 创建预处理语句属性并以它为背景设置安全的值（比如?）。这样做很安全，很迅速，也是首选的做法，有时你只是想直接在 SQL语句中插入一个不改变的字符串。比如，像 ORDER BY，你可以这样来使用：</p>
+<p>ORDER BY ${columnName}</p>
+<p>这里 MyBatis 不会修改或转义字符串。</p>
+<p>重要：接受从用户输出的内容并提供给语句中不变的字符串，这样做是不安全的。这会导致潜在的 SQL 注入攻击，因此你不应该允许用户输入这些字段，或者通常自行转义并检查。</p>
+<h2 id="resultMap"><a href="#resultMap" class="headerlink" title="resultMap"></a>resultMap</h2><p>resultMap 元素是 MyBatis 中最重要最强大的元素。它就是让你远离 90%的需要从结果集中取出数据的 JDBC 代码的那个东西，而且在一些情形下允许你做一些 JDBC 不支持的事情。事实上，编写相似于对复杂语句联合映射这些等同的代码，也许可以跨过上千行的代码。</p>
+<p>ResultMap 的设计就是简单语句不需要明确的结果映射，而很多复杂语句确实需要描述它们的关系。</p>
+<p>你已经看到简单映射语句的示例了，但没有明确的 resultMap。比如：</p>
+<p><select id="”selectUsers”" parametertype="”int”" resulttype="”hashmap”"> select id, username, hashedPassword</select></p>
+<p>from some_table where id = #{id}</p>
+
+
+<p>这样一个语句简单作用于所有列被自动映射到 HashMap 的键上，这由 resultType 属性指定。这在很多情况下是有用的，但是 HashMap 不能很好描述一个领域模型。那样你的应用程序将会使用 JavaBeans 或 POJOs（Plain Old Java Objects，普通 Java 对象）来作为领域模型。MyBatis 对两者都支持。看看下面这个 JavaBean：</p>
+<p>package com.someapp.model; public class User {</p>
+<p>private int id;</p>
+<p>private String username; private String hashedPassword; public int getId() {</p>
+<p>return id;</p>
+<p>}</p>
+<p>public void setId(int id) { this.id = id;</p>
+<p>}</p>
+<p>public String getUsername() { return username;</p>
+<p>}</p>
+<p>public void setUsername(String username) { this.username = username;</p>
+<p>}</p>
+<p>public String getHashedPassword() { return hashedPassword;</p>
+<p>}</p>
+<p>public void setHashedPassword(String hashedPassword) { this.hashedPassword = hashedPassword;</p>
+<p>}</p>
+<p>}</p>
+<p>基于 JavaBean 的规范，上面这个类有 3 个属性：id，username 和 hashedPassword。这些在 select 语句中会精确匹配到列名。</p>
+<p>这样的一个 JavaBean 可以被映射到结果集，就像映射到 HashMap 一样简单。</p>
+<p>&lt;select id=”selectUsers” parameterType=”int” resultType=”<strong>com.some app.model.User</strong>”&gt;</p>
+<p>select id, username, hashedPassword</p>
+<p>from some_table where id = #{id}</p>
+
+
+<p>要记住类型别名是你的伙伴。使用它们你可以不用输入类的全路径。比如：</p>
+<!-- 在XML配置文件中-->
+
+<p>&lt;typeAlias type=”<strong>com.some app.model.User</strong>” alias=” <strong>User</strong>”/&gt;</p>
+<!-- 在SQL映射的XML文件中-->
+
+<p>&lt;select id=”selectUsers” parameterType=”int” resultType=” <strong>User</strong>”&gt;</p>
+<p>select id, username, hashedPassword from some_table</p>
+<p>where id = #{id}</p>
+
+
+<p>这些情况下，MyBatis 会在幕后自动创建一个 ResultMap，基于属性名来映射列到</p>
+<p>JavaBean 的属性上。如果列名没有精确匹配，你可以在列名上使用 select 字句的别名（一个标准的 SQL 特性）来匹配标签。比如：</p>
+<p>&lt;select id=”selectUsers” parameterType=”int” resultType=” <strong>User</strong>”&gt; select</p>
+<p>user_id <strong>as “id”</strong>, user_name <strong>as “userName”</strong>,</p>
+<p>hashed_password <strong>as</strong> <strong>“hashe dPasswor d”</strong></p>
+<p>from some_table</p>
+<p>where id = #{id}</p>
+
+
+<p>ResultMap 最优秀的地方你已经了解了很多了，但是你还没有真正的看到一个。这些简单的示例不需要比你看到的更多东西。只是出于示例的原因，让我们来看看最后一个示例中外部的 resultMap 是什么样子的，这也是解决列名不匹配的另外一种方式。</p>
+<resultmap id="**userResultMap**" type="User">
+
+<id property="id" column="user_id">
+
+<result property="username" column="user_name">
+
+<result property="password" column="hashed_password">
+
+</result></result></id></resultmap>
+
+<p>引用它的语句使用 resultMap 属性就行了（注意我们去掉了 resultType 属性）。比如：</p>
+<select id="”selectUsers”" parametertype="”int”" resultmap="”**userResultMap**”">
+
+<p>select user_id, user_name, hashed_password</p>
+<p>from some_table where id = #{id}</p>
+</select>
+
+<p>如果世界总是这么简单就好了。</p>
+<h3 id="高级结果映射"><a href="#高级结果映射" class="headerlink" title="高级结果映射"></a>高级结果映射</h3><p>MyBatis 创建的一个想法：数据库不用永远是你想要的或需要它们是什么样的。而我们最喜欢的数据库最好是第三范式或 BCNF 范式，但它们有时不是。如果可能有一个单独的数据库映射，所有应用程序都可以使用它，这是非常好的，但有时也不是。结果映射就是MyBatis 提供处理这个问题的答案。</p>
+<p>比如，我们如何映射下面这个语句？</p>
+<!-- 非常复杂的语句 -->
+
+<select id="selectBlogDetails" parametertype="int" resultmap="detailedBlogResultMap">
+
+<p>select</p>
+<p>B.id as blog_id, B.title as blog_title,</p>
+<p>B.author_id as blog_author_id,</p>
+<p>A.id as author_id,</p>
+<p>A.username as author_username, A.password as author_password, A.email as author_email,</p>
+<p>A.bio as author_bio,</p>
+<p>A.favourite_section as author_favourite_section, P.id as post_id,</p>
+<p>P.blog_id as post_blog_id, P.author_id as post_author_id, P.created_on as post_created_on, P.section as post_section,</p>
+<p>P.subject as post_subject, P.draft as draft,</p>
+<p>P.body as post_body, C.id as comment_id,</p>
+<p>C.post_id as comment_post_id, C.name as comment_name, C.comment as comment_text, T.id as tag_id,</p>
+<p>T.name as tag_name</p>
+<p>from Blog B</p>
+<p>left outer join Author A on B.author_id = A.id left outer join Post P on B.id = P.blog_id left outer join Comment C on P.id = C.post_id</p>
+<p>left outer join Post_Tag PT on PT.post_id = P.id</p>
+<p>left outer join Tag T on PT.tag_id = T.id where B.id = #{id}</p>
+</select>
+
+<p>你可能想把它映射到一个智能的对象模型，包含一个作者写的博客，有很多的博文，每篇博文有零条或多条的评论和标签。下面是一个完整的复杂结果映射例子（假设作者，博客， 博文，评论和标签都是类型的别名）。我们来看看，但是不用紧张，我们会一步一步来说明。当天最初它看起来令人生畏，但实际上非常简单。</p>
+<!-- 非常复杂的结果映射 -->
+
+<resultmap id="detailedBlogResultMap" type="Blog">
+
+<constructor>
+
+<idarg column="blog_id" javatype="int">
+
+</idarg></constructor>
+
+<result property="title" column="blog_title">
+
+<association property="author" column="blog_author_id" javatype=" Author">
+
+<id property="id" column="author_id">
+
+<result property="username" column="author_username">
+
+<result property="password" column="author_password">
+
+<result property="email" column="author_email">
+
+<result property="bio" column="author_bio">
+
+<result property="favouriteSection" column="author_favourite_section">
+
+</result></result></result></result></result></id></association>
+
+<collection property="posts" oftype="Post">
+
+<id property="id" column="post_id">
+
+<result property="subject" column="post_subject">
+
+<association property="author" column="post_author_id" javatype="Author">
+
+<collection property="comments" column="post_id" oftype=" Comment">
+
+<id property="id" column="comment_id">
+
+
+
+
+</id></collection>
+
+<collection property="tags" column="post_id" oftype=" Tag">
+
+<id property="id" column="tag_id">
+
+</id></collection>
+
+<discriminator javatype="int" column="draft">
+
+<case value="1" resulttype="DraftPost">
+
+</case></discriminator>
+
+</association></result></id></collection>
+
+</result></resultmap>
+
+<p>resultMap 元素有很多子元素和一个值得讨论的结构。下面是 resultMap 元素的概念视图</p>
+<p>resultMap</p>
+<p>l  <strong>constructor</strong> – 类在实例化时，用来注入结果到构造方法中</p>
+<p>l  <strong>idArg</strong> – ID 参数；标记结果作为 ID 可以帮助提高整体效能</p>
+<p>l  <strong>arg</strong> – 注入到构造方法的一个普通结果</p>
+<p>l  <strong>id</strong> – 一个 ID 结果；标记结果作为 ID 可以帮助提高整体效能</p>
+<p>l  <strong>result</strong> –  注入到字段或 JavaBean 属性的普通结果</p>
+<p>l  <strong>association</strong> – 一个复杂的类型关联；许多结果将包成这种类型</p>
+<p>l  嵌入结果映射 –  结果映射自身的关联，或者参考一个</p>
+<p>l  <strong>collection</strong> – 复杂类型的集</p>
+<p>l  嵌入结果映射 – 结果映射自身的集，或者参考一个</p>
+<p>l  <strong>discriminator</strong> – 使用结果值来决定使用哪个结果映射</p>
+<p>l  <strong>case</strong> – 基于某些值的结果映射</p>
+<p>l  嵌入结果映射 – 这种情形结果也映射它本身，因此可以包含很多相同的元素，或者它可以参照一个外部的结果映射。</p>
+<p>最佳实践：通常逐步建立结果映射。单元测试的真正帮助在这里。如果你尝试创建一次创建一个向上面示例那样的巨大的结果映射，那么可能会有错误而且很难去控制它来工作。开始简单一些，一步一步的发展。而且要进行单元测试！使用该框架的缺点是它们有时是黑盒（是否可见源代码）。你确定你实现想要的行为的最好选择是编写单元测试。它也可以你帮助得到提交时的错误。</p>
+<p>下面一部分将详细说明每个元素。</p>
+<p><strong>id</strong>，<strong>result</strong></p>
+<id property="id" column="post_id">
+
+<result property="subject" column="post_subject">
+
+<p>这些是结果映射最基本内容。id 和 result 都映射一个单独列的值到简单数据类型（字符串，整型，双精度浮点数，日期等）的单独属性或字段。</p>
+<p>这两者之间的唯一不同是 id 表示的结果将是当比较对象实例时用到的标识属性。这帮</p>
+<p>助来改进整体表现，特别是缓存和嵌入结果映射（也就是联合映射）。每个都有一些属性：</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>property</td>
+<td>映射到列结果的字段或属性。如果匹配的是存在的，和给定名称相同   的 JavaBeans 的属性，那么就会使用。否则   MyBatis 将会寻找给定名称</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>的字段。这两种情形你可以使用通常点式的复杂属性导航。比如，你可以这样映射一些东西：“username”，或者映射到一些复杂的东西：   “address.street.number”。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>column</td>
+<td>从数据库中得到的列名，或者是列名的重命名标签。这也是通常和会   传递给 resultSet.getString(columnName)方法参数中相同的字符串。</td>
+</tr>
+<tr>
+<td>javaType</td>
+<td>一个 Java   类的完全限定名，或一个类型别名（参加上面内建类型别名的列表）。如果你映射到一个 JavaBean，MyBatis   通常可以断定类型。然而，如果你映射到的是 HashMap，那么你应该明确地指定 javaType   来保证所需的行为。</td>
+</tr>
+<tr>
+<td>jdbcType</td>
+<td>在这个表格之后的所支持的 JDBC 类型列表中的类型。<strong>JDBC</strong> 类型是仅仅需要对插入，更新和删除操作可能为空的列进行处理。这是 JDBC 的需要，而不是 MyBatis   的。如果你直接使用 JDBC 编程，你需要指定   这个类型-但仅仅对可能为空的值。</td>
+</tr>
+<tr>
+<td>typeHandler</td>
+<td>我们在前面讨论过默认的类型处理器。使用这个属性，你可以覆盖默认的类型处理器。这个属性值是类的完全限定名或者是一个类型处理   器的实现，或者是类型别名。</td>
+</tr>
+</tbody></table>
+<p>支持的 <strong>JDBC</strong> 类型</p>
+<p>为了未来的参考，MyBatis jdbcType JDBC </p>
+<h3 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h3><constructor>
+
+<idarg column="id" javatype="int">
+
+<arg column="”username”" javatype="”String”/">
+
+</arg></idarg></constructor>
+
+<p>对于大多数数据传输对象(Data Transfer Object，DTO)类型，属性可以起作用，而且像绝大多数的领域模型，指令也许是你想使用一成不变的类的地方。通常包含引用或查询数据的表很少或基本不变的话对一成不变的类来说是合适的。构造方法注入允许你在初始化时为类设置属性的值，而不用暴露出公有方法。MyBatis 也支持私有属性和私有 JavaBeans 属性来达到这个目的，但是一些人更青睐构造方法注入。<em>Constructor</em>（构造方法）元素支持这个。</p>
+<p>看看下面这个构造方法：</p>
+<p>public class User {</p>
+<p>//…</p>
+<p><strong>public User(int id, S tring username) {</strong></p>
+<p><strong>//…</strong></p>
+<p><strong>}</strong></p>
+<p>//…</p>
+<p>}</p>
+<p>为了向这个构造方法中注入结果，MyBatis 需要通过它的参数的类型来标识构造方法。</p>
+<p>Java 没有自查（或反射）参数名的方法。所以当创建一个构造方法元素时，保证参数是按顺序排列的，而且数据类型也是确定的。</p>
+<constructor>
+
+<idarg column="id" javatype="int">
+
+<arg column="”username”" javatype="”String”/">
+
+</arg></idarg></constructor>
+
+
+
+
+
+<p>剩余的属性和规则和固定的 和result </p>
+<h3 id="关联"><a href="#关联" class="headerlink" title="关联"></a>关联</h3><association property="author" column="blog_author_id" javatype=" Author">
+
+<id property="id" column="author_id">
+
+<result property="username" column="author_username">
+
+</result></id></association>
+
+<p>关联元素处理“有一个”类型的关系。比如，在我们的示例中，一个博客有一个用户。 关联映射就工作于这种结果之上。你指定了目标属性，来获取值的列，属性的 java 类型（很多情况下 MyBatis 可以自己算出来），如果需要的话还有 jdbc 类型，如果你想覆盖或获取的结果值还需要类型控制器。</p>
+<p>关联中不同的是你需要告诉 MyBatis 如何加载关联。MyBatis 在这方面会有两种不同的方式：</p>
+<p>l  嵌套查询：通过执行另外一个 SQL 映射语句来返回预期的复杂类型。</p>
+<p>l  嵌套结果：使用嵌套结果映射来处理重复的联合结果的子集。</p>
+<p>首先，然让我们来查看这个元素的属性。所有的你都会看到，它和普通的只由 select 和</p>
+<p>resultMap 属性的结果映射不同。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>JavaBeans 的属性，那么就会使用。否则 MyBatis 将会寻找给定名称的字段。这两种情形你可以使用通常点式的复杂属性导航。比如，你可以这样映射一  些  东  西  ：“  username  ”，  或  者  映  射  到  一  些  复  杂  的  东  西  ：   “address.street.number”。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>column</td>
+<td>来 自 数 据 库 的 列 名 ， 或 重 命 名 的   列 标 签 。 这 和 通 常 传 递 给   resultSet.getString(columnName)方法的字符串是相同的。   注意： 要处理复合主键，你可以指定多个列名通过 <strong>column=</strong> ”   <strong>{prop1=col1,prop2=col2}</strong> ” 这种语法来传递给嵌套查询语句。这会引起   <strong>prop1</strong>   和 <strong>prop2</strong>   以参数对象形式来设置给目标嵌套查询语句。</td>
+</tr>
+<tr>
+<td>javaType</td>
+<td>一个 Java 类的完全限定名，或一个类型别名（参加上面内建类型别名的列   表）。如果你映射到一个   JavaBean，MyBatis 通常可以断定类型。然而，如果你映射到的是   HashMap，那么你应该明确地指定 javaType 来保证所需的   行为。</td>
+</tr>
+<tr>
+<td>jdbcType</td>
+<td>在这个表格之前的所支持的 JDBC   类型列表中的类型。<strong>JDBC</strong>   类型是仅仅需要对插入，更新和删除操作可能为空的列进行处理。这是   JDBC 的需要， 而不是 MyBatis 的。如果你直接使用 JDBC 编程，你需要指定这个类型-但   仅仅对可能为空的值。</td>
+</tr>
+<tr>
+<td>typeHandler</td>
+<td>我们在前面讨论过默认的类型处理器。使用这个属性，你可以覆盖默认的类型处理器。这个属性值是类的完全限定名或者是一个类型处理器的实现，   或者是类型别名。</td>
+</tr>
+</tbody></table>
+<p>关联的嵌套查询</p>
+<p>示例：</p>
+<resultmap id="”blogResult”" type="”Blog”">
+
+<p>&lt;association property=”author” column=”blog_author_id” javaType=”Author” <strong>select=”selectAuthor”</strong>/&gt;</p>
+</resultmap>
+
+<p><select id="”selectBlog”" parametertype="”int”" resultmap="”blogResult”"> SELECT * FROM BLOG WHERE ID = #{id}</select></p>
+
+
+<p><select id="”selectAuthor”" parametertype="”int”" resulttype="Author"> SELECT * FROM AUTHOR WHERE ID = #{id}</select></p>
+
+
+<p>我们有两个查询语句：一个来加载博客，另外一个来加载作者，而且博客的结果映射描述了“selectAuthor”语句应该被用来加载它的 author 属性。</p>
+<h6 id="其他所有的属性将会被自动加载，假设它们的列和属性名相匹配。"><a href="#其他所有的属性将会被自动加载，假设它们的列和属性名相匹配。" class="headerlink" title="其他所有的属性将会被自动加载，假设它们的列和属性名相匹配。"></a>其他所有的属性将会被自动加载，假设它们的列和属性名相匹配。</h6><p>这种方式很简单，但是对于大型数据集合和列表将不会表现很好。问题就是我们熟知的</p>
+<p>“N+1 查询问题”。概括地讲，N+1 查询问题可以是这样引起的：</p>
+<p>l  你执行了一个单独的 SQL 语句来获取结果列表（就是“+1”）。</p>
+<p>l  对返回的每条记录，你执行了一个查询语句来为每个加载细节（就是“N”）。这个问题会导致成百上千的 SQL 语句被执行。这通常不是期望的。</p>
+<p>MyBatis 能延迟加载这样的查询就是一个好处，因此你可以分散这些语句同时运行的消耗。然而，如果你加载一个列表，之后迅速迭代来访问嵌套的数据，你会调用所有的延迟加载，这样的行为可能是很糟糕的。</p>
+<p>所以还有另外一种方法。关联的嵌套结果</p>
+<table>
+<thead>
+<tr>
+<th>resultMap</th>
+<th>这是结果映射的   ID，可以映射关联的嵌套结果到一个合适的对象图中。这   是一种替代方法来调用另外一个查询语句。这允许你联合多个表来合成到一个单独的结果集。这样的结果集可能包含重复，数据的重复组需要被分解，合理映射到一个嵌套的对象图。为了使它变得容易，MyBatis 让你“链接”结果映射，来处理嵌套结果。例子会很容易来仿照，这个表格后面也   有一个示例。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>在上面你已经看到了一个非常复杂的嵌套关联的示例。下面这个是一个非常简单的示例来说明它如何工作。代替了执行一个分离的语句，我们联合博客表和作者表在一起，就像：</p>
+<p><select id="selectBlog" parametertype="int" resultmap="blogResult"> select</select></p>
+<p>B.id as blog_id, B.title as blog_title,</p>
+<p>B.author_id as blog_author_id, A.id as author_id,</p>
+<p>A.username as author_username, A.password as author_password, A.email as author_email,</p>
+<p>A. bio as author_bio</p>
+<p>From Blog B <strong>left outer join Author A on B.author_id = A.id</strong></p>
+<p>where B.id = #{id}</p>
+
+
+<p>注意这个联合查询，以及采取保护来确保所有结果被唯一而且清晰的名字来重命名。这使得映射非常简单。现在我们可以映射这个结果：</p>
+<p><strong><resultmap id="blogResult" type="Blog"></resultmap></strong></p>
+<p><strong><id property="”blog_id”" column="id"></id></strong></p>
+<result property="title" column="blog_title">
+
+<p>&lt;association property=”author” column=”blog_author_id” javaType=”Author” <strong>resultMap=”authorResult”/&gt;</strong></p>
+<p><strong></strong></p>
+<p><strong><resultmap id="authorResult" type="Author"></resultmap></strong></p>
+<p><strong><id property="id" column="author_id"></id></strong></p>
+<result property="username" column="author_username">
+
+<result property="password" column="author_password">
+
+<result property="email" column="author_email">
+
+<result property="bio" column="author_bio">
+
+<p><strong></strong></p>
+<p>在上面的示例中你可以看到博客的作者关联代表着“authorResult”结果映射来加载作</p>
+<p>者实例。</p>
+<p>非常重要：在嵌套结果映射中 <em>id</em> 元素扮演了非常重要的角色。应该通常指定一个或多个属性，它们可以用来唯一标识结果。实际上就是如果你不使用它（id 元素），但是会产生一个严重的性能问题，不过 MyBatis 仍然可以正常工作。选择的属性越少越好，它们可以唯一地标识结果。主键就是一个显而易见的选择（即便是联合主键）。</p>
+<p>现在，上面的示例用了外部的结果映射元素来映射关联。这使得 Author 结果映射可以重用。然而，如果你不需要重用它的话，或者你仅仅引用你所有的结果映射合到一个单独描述的结果映射中。你可以嵌套结果映射。这里给出使用这种方式的相同示例：</p>
+<p><strong><resultmap id="blogResult" type="Blog"></resultmap></strong></p>
+<p><strong><id property="”blog_id”" column="id"></id></strong></p>
+<result property="title" column="blog_title">
+
+<association property="author" column="blog_author_id" javatype="Author">
+
+<p><strong><id property="id" column="author_id"></id></strong></p>
+<result property="username" column="author_username">
+
+<result property="password" column="author_password">
+
+<result property="email" column="author_email">
+
+<result property="bio" column="author_bio">
+
+</result></result></result></result></association>
+
+<p><strong></strong></p>
+<p>上面你已经看到了如何处理“有一个”类型关联。但是“有很多个”是怎样的？下面这个部分就是来讨论这个主题的。</p>
+<h3 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h3><collection property="posts" oftype="domain.blog.Post">
+
+<id property="id" column="post_id">
+
+<result property="subject" column="post_subject">
+
+<result property="body" column="post_body">
+
+</result></result></id></collection>
+
+<p>集合元素的作用几乎和关联是相同的。实际上，它们也很相似，文档的异同是多余的。     所以我们更多关注于它们的不同。</p>
+<p>我们来继续上面的示例，一个博客只有一个作者。但是博客有很多文章。在博客类中，</p>
+<p>这可以由下面这样的写法来表示：</p>
+<p>private List<post> posts;</post></p>
+<p>要映射嵌套结果集合到 List 中，我们使用集合元素。就像关联元素一样，我们可以从连接中使用嵌套查询，或者嵌套结果。</p>
+<p>集合的嵌套查询</p>
+<p>首先，让我们看看使用嵌套查询来为博客加载文章。</p>
+<resultmap id="”blogResult”" type="”Blog”">
+
+<p><strong><collection property="posts" javatype="”ArrayList”" column="blog_id" oftype="Post" select="”selectPostsForBlog”/"></collection></strong></p>
+</resultmap>
+
+<select id="”selectBlog”" parametertype="”int”" resultmap="”blogResult”">
+
+
+
+
+<p>SELECT * FROM BLOG WHERE ID = #{id}</p>
+</select>
+
+<p><select id="”selectPostsForBlog”" parametertype="”int”" resulttype="Author"> SELECT * FROM POST WHERE <strong>BLOG_ID = #{id}</strong></select></p>
+
+
+<p>这里你应该注意很多东西，但大部分代码和上面的关联元素是非常相似的。首先，你应该注意我们使用的是集合元素。然后要注意那个新的“<strong>of Type</strong>”属性。这个属性用来区分</p>
+<p>JavaBean（或字段）属性类型和集合包含的类型来说是很重要的。所以你可以读出下面这个映射：</p>
+<p><strong><collection property="posts" javatype="”ArrayList”" column="blog_id" oftype="Post" select="”selectPostsForBlog”/"></collection></strong></p>
+<p>读作：“在 Post 类型的 ArrayList 中的 posts 的集合。”</p>
+<p>javaType 属性是不需要的，因为 MyBatis 在很多情况下会为你算出来。所以你可以缩短写法：</p>
+<p><strong><collection property="posts" column="blog_id" oftype="Post" select="”selectPostsForBlog”/"></collection></strong></p>
+<p>集合的嵌套结果</p>
+<p>至此，你可以猜测集合的嵌套结果是如何来工作的，因为它和关联完全相同，除了它应用了一个“<strong>ofType</strong>”属性</p>
+<p><select id="selectBlog" parametertype="int" resultmap="blogResult"> select</select></p>
+<p>B. id as blog_id, B.title as blog_title,</p>
+<p>B.author_id as blog_author_id, P.id as post_id,</p>
+<p>P.subject as post_subject, P.body as post_body,</p>
+<p>from Blog B</p>
+<p>left outer join Post P on B.id = P.blog_id where B.id = #{id}</p>
+
+
+<p>我们又一次联合了博客表和文章表，而且关注于保证特性，结果列标签的简单映射。现在用文章映射集合映射博客，可以简单写为：</p>
+<p><strong><resultmap id="blogResult" type="Blog"></resultmap></strong></p>
+<p><strong><id property="”id”" column="blog_id"></id></strong></p>
+<result property="title" column="blog_title">
+
+<p><strong><collection property="posts" oftype="Post"></collection></strong></p>
+<p><strong><id property="id" column="post_id"></id></strong></p>
+<result property="subject" column="post_subject">
+
+<result property="body" column="post_body">
+
+<p><strong></strong></p>
+<p><strong></strong></p>
+<p>同样，要记得 <em>id</em> 元素的重要性，如果你不记得了，请阅读上面的关联部分。</p>
+<p>同样，如果你引用更长的形式允许你的结果映射的更多重用，你可以使用下面这个替代的映射：</p>
+<p><strong><resultmap id="blogResult" type="Blog"></resultmap></strong></p>
+<p><strong><id property="”id”" column="blog_id"></id></strong></p>
+<result property="title" column="blog_title">
+
+<p><strong><collection property="posts" oftype="Post" resultmap="”blogPostResult”/"></collection></strong></p>
+<p><strong></strong></p>
+<p><strong><resultmap id="blogPostResult" type="Post"></resultmap></strong></p>
+<p><strong><id property="id" column="post_id"></id></strong></p>
+<result property="subject" column="post_subject">
+
+<result property="body" column="post_body">
+
+<p><strong></strong></p>
+<p>注意：这个对你所映射的内容没有深度，广度或关联和集合相联合的限制。当映射它们时你应该在大脑中保留它们的表现。你的应用在找到最佳方法前要一直进行的单元测试和性能测试。好在 myBatis 让你后来可以改变想法，而不对你的代码造成很小（或任何）影响。高级关联和集合映射是一个深度的主题。文档只能给你介绍到这了。加上一点联系，你</p>
+<p>会很快清楚它们的用法。</p>
+<h3 id="鉴别器"><a href="#鉴别器" class="headerlink" title="鉴别器"></a>鉴别器</h3><discriminator javatype="int" column="draft">
+
+<case value="1" resulttype="DraftPost">
+
+</case></discriminator>
+
+<p>有时一个单独的数据库查询也许返回很多不同（但是希望有些关联）数据类型的结果集。鉴别器元素就是被设计来处理这个情况的，还有包括类的继承层次结构。鉴别器非常容易理解，因为它的表现很像 Java 语言中的 switch 语句。</p>
+<p>定义鉴别器指定了 <em>column</em> 和 <em>javaType</em> 属性。列是 MyBatis 查找比较值的地方。JavaType 是需要被用来保证等价测试的合适类型（尽管字符串在很多情形下都会有用）。比如：</p>
+<resultmap id="vehicleResult" type="Vehicle">
+
+<id property="”id”" column="id">
+
+<result property="vin" column="vin">
+
+<result property="year" column="year">
+
+<result property="make" column="make">
+
+<result property="model" column="model">
+
+<result property="color" column="color">
+
+<discriminator javatype="int" column="vehicle_type">
+
+<case value="1" resultmap="carResult">
+
+<case value="2" resultmap="truckResult">
+
+<case value="3" resultmap="vanResult">
+
+<case value="4" resultmap="suvResult">
+
+</case></case></case></case></discriminator>
+
+</result></result></result></result></result></id></resultmap>
+
+<p>在这个示例中，MyBatis 会从结果集中得到每条记录，然后比较它的 vehicle 类型的值。如果它匹配任何一个鉴别器的实例，那么就使用这个实例指定的结果映射。换句话说，这样做完全是剩余的结果映射被忽略（除非它被扩展，这在第二个示例中讨论）。如果没有任何一个实例相匹配，那么 MyBatis 仅仅使用鉴别器块外定义的结果映射。所以，如果 carResult</p>
+<p>按如下声明：</p>
+<resultmap id="carResult" type="Car">
+
+<result property="”doorCount”" column="door_count">
+
+</result></resultmap>
+
+<p>那么只有 doorCount 属性会被加载。这步完成后完整地允许鉴别器实例的独立组，尽管和父结果映射可能没有什么关系。这种情况下，我们当然知道 cars 和 vehicles 之间有关系， 如 Car 是一个 Vehicle 实例。因此，我们想要剩余的属性也被加载。我们设置的结果映射的简单改变如下。</p>
+<resultmap id="carResult" type="Car" extends="”vehicleResult”">
+
+<result property="”doorCount”" column="door_count">
+
+</result></resultmap>
+
+<p>现在 vehicleResult 和 carResult 的属性都会被加载了。</p>
+<p>尽管曾经有些人会发现这个外部映射定义会多少有一些令人厌烦之处。因此还有另外一种语法来做简洁的映射风格。比如：</p>
+<resultmap id="vehicleResult" type="Vehicle">
+
+<id property="”id”" column="id">
+
+<result property="vin" column="vin">
+
+<result property="year" column="year">
+
+<result property="make" column="make">
+
+<result property="model" column="model">
+
+<result property="color" column="color">
+
+<discriminator javatype="int" column="vehicle_type">
+
+<case value="1" resulttype="carResult">
+
+<result property="”doorCount”" column="door_count">
+
+</result></case>
+
+<case value="2" resulttype="truckResult">
+
+<result property="”boxSize”" column="box_size">
+
+<result property="”extendedCab”" column="extended_cab">
+
+</result></result></case>
+
+<case value="3" resulttype="vanResult">
+
+<result property="”powerSlidingDoor”" column="power_sliding_door">
+
+</result></case>
+
+<case value="4" resulttype="suvResult">
+
+<result property="”allWheelDrive”" column="all_wheel_drive">
+
+</result></case>
+
+</discriminator>
+
+</result></result></result></result></result></id></resultmap>
+
+<p>要记得这些都是结果映射，如果你不指定任何结果，那么 MyBatis 将会为你自动匹配列和属性。所以这些例子中的大部分是很冗长的，而其实是不需要的。也就是说，很多数据库是很复杂的，我们不太可能对所有示例都能依靠它。</p>
+<p>缓存</p>
+<p>MyBatis 包含一个非常强大的查询缓存特性，它可以非常方便地配置和定制。MyBatis 3</p>
+<p>中的缓存实现的很多改进都已经实现了，使得它更加强大而且易于配置。</p>
+<p>默认情况下是没有开启缓存的，除了局部的 session 缓存，可以增强变现而且处理循环依赖也是必须的。要开启二级缓存，你需要在你的 SQL 映射文件中添加一行：</p>
+<cache>
+
+<p>字面上看就是这样。这个简单语句的效果如下：</p>
+<p>l  映射语句文件中的所有 <strong>select</strong> 语句将会被缓存。</p>
+<p>l  映射语句文件中的所有 <strong>insert</strong>，<strong>update</strong> 和 <strong>delete</strong> 语句会刷新缓存。</p>
+<p>l  缓存会使用 <strong>Least Recently Used</strong>（<strong>LRU</strong>，最近最少使用的）算法来收回。</p>
+<p>l  根据时间表（比如 <strong>n**</strong>o  Flush  Interval**，没有刷新间隔），缓存不会以任何时间顺序来刷新。</p>
+<p>l  缓存会存储列表集合或对象（无论查询方法返回什么）的 <strong>1024</strong> 个引用。</p>
+<p>l  缓存会被视为是 <strong>read/write</strong>（可读/可写）的缓存，意味着对象检索不是共享的，而且可以安全地被调用者修改，而不干扰其他调用者或线程所做的潜在修改。</p>
+<p>所有的这些属性都可以通过缓存元素的属性来修改。比如：</p>
+<p>&lt;cache</p>
+<p>eviction=”FIFO” flushInterval=”60000” size=”512” readOnly=”true”/&gt;</p>
+<p>这个更高级的配置创建了一个 FIFO 缓存，并每隔 60 秒刷新，存数结果对象或列表的</p>
+<p>512 个引用，而且返回的对象被认为是只读的，因此在不同线程中的调用者之间修改它们会导致冲突。</p>
+<p>可用的收回策略有：</p>
+<p>l  <strong>LRU</strong> – 最近最少使用的：移除最长时间不被使用的对象。</p>
+<p>l  <strong>FIFO</strong> – 先进先出：按对象进入缓存的顺序来移除它们。</p>
+<p>l  <strong>SOFT</strong> – 软引用：移除基于垃圾回收器状态和软引用规则的对象。</p>
+<p>l  <strong>WEAK</strong> – 弱引用：更积极地移除基于垃圾收集器状态和弱引用规则的对象。默认的是 LRU。</p>
+<p><strong>flushInterval</strong>（刷新间隔）可以被设置为任意的正整数，而且它们代表一个合理的毫秒形式的时间段。默认情况是不设置，也就是没有刷新间隔，缓存仅仅调用语句时刷新。</p>
+<p><strong>size</strong>（引用数目）可以被设置为任意正整数，要记住你缓存的对象数目和你运行环境的可用内存资源数目。默认值是 1024。</p>
+<p><strong>readOnly</strong>（只读）属性可以被设置为 <em>true</em> 或 <em>false</em>。只读的缓存会给所有调用者返回缓存对象的相同实例。因此这些对象不能被修改。这提供了很重要的性能优势。可读写的缓存会返回缓存对象的拷贝（通过序列化）。这会慢一些，但是安全，因此默认是 <em>false</em>。</p>
+<h3 id="使用自定义缓存"><a href="#使用自定义缓存" class="headerlink" title="使用自定义缓存"></a>使用自定义缓存</h3><p>除了这些自定义缓存的方式，你也可以通过实现你自己的缓存或为其他第三方缓存方案创建适配器来完全覆盖缓存行为。</p>
+<cache type="”com.domain.something.MyCustomCache”/">
+
+<p>这个示例展示了如何使用一个自定义的缓存实现。type 属性指定的类必须实现</p>
+<p>org.mybatis.cache.Cache 接口。这个接口是 MyBatis 框架中很多复杂的接口之一，但是简单给定它做什么就行。</p>
+<p>public interface Cache { String getId();</p>
+<p>int getSize();</p>
+<p>void putObject(Object key, Object value); Object getObject(Object key);</p>
+<p>boolean hasKey(Object key); Object removeObject(Object key); void clear();</p>
+<p>ReadWriteLock getReadWriteLock();</p>
+<p>}</p>
+<p>要配置你的缓存，简单和公有的 JavaBeans 属性来配置你的缓存实现，而且是通过 cache 元素来传递属性，比如，下面代码会在你的缓存实现中调用一个称为“setCacheFile(String file)”的方法：</p>
+<cache type="”com.domain.something.MyCustomCache”">
+
+<property name="”cacheFile”" value="”/tmp/my-custom-cache.tmp”/">
+
+</property></cache>
+
+<p>你可以使用所有简单类型作为 JavaBeans 的属性，MyBatis 会进行转换。</p>
+<p>记得缓存配置和缓存实例是绑定在 SQL 映射文件的命名空间是很重要的。因此，所有在相同命名空间的语句正如绑定的缓存一样。语句可以修改和缓存交互的方式，或在语句的语句的基础上使用两种简单的属性来完全排除它们。默认情况下，语句可以这样来配置：</p>
+<p>&lt;select … flushCache=”false” useCache=”true”/&gt;</p>
+<p>&lt;insert … flushCache=”true”/&gt;</p>
+<p>&lt;update … flushCache=”true”/&gt;</p>
+<p>&lt;delete … flushCache=”true”/&gt;</p>
+<p>因为那些是默认的，你明显不能明确地以这种方式来配置一条语句。相反，如果你想改变默认的行为，只能设置 flushCache 和 useCache 属性。比如，在一些情况下你也许想排除从缓存中查询特定语句结果，或者你也许想要一个查询语句来刷新缓存。相似地，你也许有一些更新语句依靠执行而不需要刷新缓存。</p>
+<p>参照缓存</p>
+<p>回想一下上一节内容，这个特殊命名空间的唯一缓存会被使用或者刷新相同命名空间内的语句。也许将来的某个时候，你会想在命名空间中共享相同的缓存配置和实例。在这样的情况下你可以使用 cache-ref 元素来引用另外一个缓存。</p>
+<cache-ref namespace="”com.someone.application.data.SomeMapper”/">
+
+
+
+<p>动态 <strong>SQL</strong></p>
+<p>MyBatis 的一个强大的特性之一通常是它的动态 SQL 能力。如果你有使用 JDBC 或其他</p>
+<p>相似框架的经验，你就明白条件地串联 SQL 字符串在一起是多么的痛苦，确保不能忘了空格或在列表的最后省略逗号。动态 SQL 可以彻底处理这种痛苦。</p>
+<p>通常使用动态 SQL 不可能是独立的一部分，MyBatis 当然使用一种强大的动态 SQL 语言来改进这种情形，这种语言可以被用在任意映射的 SQL 语句中。</p>
+<p>动态 SQL 元素和使用 JSTL 或其它相似的基于 XML 的文本处理器相似。在 MyBatis 之前的版本中，有很多的元素需要来了解。MyBatis 3 大大提升了它们，现在用不到原先一半的元素就能工作了。MyBatis 采用功能强大的基于 OGNL 的表达式来消除其他元素。</p>
+<p>l  if</p>
+<p>l  choose(when,otherwise)</p>
+<p>l  trim(where,set)</p>
+<p>l  foreach</p>
+<p><strong>if</strong></p>
+<p>在动态 SQL 中所做的最通用的事情是包含部分 where 字句的条件。比如：</p>
+<p><select id="”findActiveBlogWithTitleLike”" parametertype="”Blog”" resulttype="”Blog”"> SELECT * FROM BLOG</select></p>
+<p>WHERE state = „ACTIVE‟</p>
+<p>&lt;if test=”title != null”&gt; AND title like #{title}</p>
+
+
+
+
+<p>这条语句会提供一个可选的文本查找功能。如果你没有传递 title，那么所有激活的博客都会被返回。但是如果你传递了 title，那么就会查找相近的 title（对于敏锐的检索，这中情况下你的参数值需要包含任意的遮掩或通配符）的博客。</p>
+<p>假若我们想可选地搜索 title 和 author 呢？首先，要改变语句的名称让它有意义。然后简单加入另外的一个条件。</p>
+<select id="”findActiveBlogLike”" parametertype="”Blog”" resulttype="”Blog”">
+
+<p>SELECT * FROM BLOG WHERE state = „ACTIVE‟</p>
+<p>&lt;if test=”title != null”&gt; AND title like #{title}</p>
+
+
+<p>&lt;if test=”author != null and author.name != null”&gt; AND title like #{author.name}</p>
+
+
+</select>
+
+
+
+
+
+<p><strong>choose, when, otherwise</strong></p>
+<p>有时我们不想应用所有的条件，相反我们想选择很多情况下的一种。和 Java 中的 switch</p>
+<p>语句相似，MyBatis 提供 choose 元素。</p>
+<p>我们使用上面的示例，但是现在我们来搜索当 title 提供时仅有 title 条件，当 author 提供时仅有 author 条件。如果二者都没提供，只返回 featured blogs（也许是由管理员策略地选择的结果列表，而不是返回大量没有意义的，随机的博客结果列表）。</p>
+<select id="”findActiveBlogLike”" parametertype="”Blog”" resulttype="”Blog”">
+
+<p>SELECT * FROM BLOG WHERE state = „ACTIVE‟</p>
+<choose>
+
+<p>&lt;when test=”title != null”&gt; AND title like #{title}</p>
+
+
+<p>&lt;when test=”author != null and author.name != null”&gt; AND title like #{author.name}</p>
+
+
+<otherwise>
+
+<p>AND featured = 1</p>
+</otherwise>
+
+</choose>
+
+</select>
+
+
+
+<p><strong>trim, where, set</strong></p>
+<p>前面的例子已经方便地处理了一个臭名昭著的动态 SQL 问题。要考虑我们回到“<em>i*</em>f*”示例后会发生什么，但是这次我们将“ACTIVE = 1”也设置成动态的条件。</p>
+<select id="”findActiveBlogLike”" parametertype="”Blog”" resulttype="”Blog”">
+
+<p>SELECT * FROM BLOG WHERE</p>
+<p>&lt;if test=”state != null”&gt;</p>
+<p>state = #{state}</p>
+
+
+<p>&lt;if test=”title != null”&gt; AND title like #{title}</p>
+
+
+<p>&lt;if test=”author != null and author.name != null”&gt; AND title like #{author.name}</p>
+
+
+</select>
+
+<p>如果这些条件都没有匹配上将会发生什么？这条 SQL 结束时就会成这样：</p>
+<p>SELECT * FROM BLOG WHERE</p>
+<p>这会导致查询失败。如果仅仅第二个条件匹配是什么样的？这条 SQL 结束时就会是这</p>
+<p>样：</p>
+<p>SELECT * FROM BLOG WHERE</p>
+<p><strong>AND</strong> title like „someTitle‟</p>
+<p>这个查询也会失败。这个问题不能简单的用条件来解决，如果你从来没有这样写过，那么你以后也不会这样来写。</p>
+<p>MyBatis 有一个简单的处理，这在 90%的情况下都会有用。而在不能使用的地方，你可</p>
+<p>以自定义处理方式。加上一个简单的改变，所有事情都会顺利进行：</p>
+<select id="”findActiveBlogLike”" parametertype="”Blog”" resulttype="”Blog”">
+
+<p>SELECT * FROM BLOG</p>
+<p><strong><where></where></strong></p>
+<p>&lt;if test=”state != null”&gt; state = #{state}</p>
+
+
+<p>&lt;if test=”title != null”&gt; AND title like #{title}</p>
+
+
+<p>&lt;if test=”author != null and author.name != null”&gt; AND title like #{author.name}</p>
+
+
+<p><strong>&lt;/ where &gt;</strong></p>
+</select>
+
+<p><em>w**here</em> 元素知道如果由被包含的标记返回任意内容，就仅仅插入“WHERE”。而且，如果以“AND”或“OR”开头的内容，那么就会跳过 WHERE 不插入。</p>
+<p>如果 <em>where</em> 元素没有做出你想要的，你可以使用 <em>trim</em> 元素来自定义。比如，和 <em>where</em></p>
+<p>元素相等的 <em>trim</em> 元素是：</p>
+<trim prefix="WHERE" prefixoverrides="AND |OR ">
+
+<p>…</p>
+</trim>
+
+<p>overrides 属性采用管道文本分隔符来覆盖，这里的空白也是重要的。它的结果就是移除在 <em>overrides</em> 属性中指定的内容，插入在 <em>with</em> 属性中的内容。</p>
+<p>和动态更新语句相似的解决方案是 <em>set<em>。</em>set</em> 元素可以被用于动态包含更新的列，而不包含不需更新的。比如：</p>
+<update id="updateAuthorIfNecessary" parametertype="domain.blog.Author">
+
+<p>update Author</p>
+<set>
+
+<p><if test="username != null">username=#{username},</if></p>
+<p><if test="password != null">password=#{password},</if></p>
+<p><if test="email != null">email=#{email},</if></p>
+<p><if test="bio != null">bio=#{bio}</if></p>
+</set>
+
+<p>where id=#{id}</p>
+</update>
+
+<p>这里，<em>set</em> 元素会动态前置 SET 关键字，而且也会消除任意无关的逗号，那也许在应用条件之后来跟踪定义的值。</p>
+<p>如果你对和这相等的 <em>trim</em> 元素好奇，它看起来就是这样的：</p>
+<trim prefix="SET" suffixoverrides=",">
+
+<p>…</p>
+</trim>
+
+<p>注意这种情况下我们覆盖一个后缀，而同时也附加前缀。</p>
+<p><strong>foreach</strong></p>
+<p>另外一个动态SQL 通用的必要操作是迭代一个集合，通常是构建在IN 条件中的。比如：</p>
+<p><select id="selectPostIn" resulttype="domain.blog.Post"> SELECT *</select></p>
+<p>FROM POST P WHERE ID in</p>
+<p><strong><foreac h ite m="ite m" inde x="index" c ollection="list" open="(" separator="," close=")"></foreac></strong></p>
+<p><strong>#{item}</strong></p>
+<p><strong>&lt;/fore ach&gt;</strong></p>
+
+
+<p><em>foreach</em> 元素是非常强大的，它允许你指定一个集合，声明集合项和索引变量，它们可以用在元素体内。它也允许你指定开放和关闭的字符串，在迭代之间放置分隔符。这个元素是很智能的，它不会偶然地附加多余的分隔符。</p>
+<p>注意：你可以传递一个 List 实例或者数组作为参数对象传给 MyBatis。当你这么做的时候，MyBatis  会自动将它包装在一个  Map 中，用名称作为键。List 实例将会以“list”作为键，而数组实例将会以“array”作为键。</p>
+<p>这个部分是对关于 XML 配置文件和 XML 映射文件的而讨论的。下一部分将详细讨论</p>
+<p>Java API，所以你可以得到你已经创建的最有效的映射。</p>
+<p><strong>Java API</strong></p>
+<p>既然你已经知道如何配置 MyBatis 和创建映射文件，你就已经准备好来提升技能了。MyBatis 的 Java API 就是你收获你所做的努力的地方。正如你即将看到的，和 JDBC 相比， MyBatis 很大程度简化了你的代码而且保持简洁，很容易理解和维护。MyBatis 3 已经引入了很多重要的改进来使得 SQL 映射更加优秀。</p>
+<p>应用目录结构</p>
+<p>在我们深入 Java API 之前，理解关于目录结构的最佳实践是很重要的。MyBatis 非常灵活，你可以用你自己的文件来做几乎所有的事情。但是对于任一框架，都有一些最佳的方式。</p>
+<p>让我们看一下典型应用的目录结构：</p>
+<h6 id="my-application"><a href="#my-application" class="headerlink" title="/my_application"></a>/my_application</h6><h6 id="bin"><a href="#bin" class="headerlink" title="/bin"></a>/bin</h6><h6 id="devlib"><a href="#devlib" class="headerlink" title="/devlib"></a>/devlib</h6><p><strong>/lib</strong>                                                                                    ←MyBatis *.jar文件在这里。</p>
+<h6 id="src"><a href="#src" class="headerlink" title="/src"></a>/src</h6><h6 id="org-myapp"><a href="#org-myapp" class="headerlink" title="/org/myapp/"></a>/org/myapp/</h6><h6 id="action"><a href="#action" class="headerlink" title="/action"></a>/action</h6><p><strong>/data</strong>                                                                  ←MyBatis配置文件在这里，</p>
+<p>/SqlMapConfig.xml             包括映射器类，XML配置，</p>
+<p>/BlogMapper.java              XML映射文件。</p>
+<h5 id="BlogMapper-xml"><a href="#BlogMapper-xml" class="headerlink" title="/BlogMapper.xml"></a>/BlogMapper.xml</h5><h6 id="model"><a href="#model" class="headerlink" title="/model"></a>/model</h6><h6 id="service"><a href="#service" class="headerlink" title="/service"></a>/service</h6><h6 id="view"><a href="#view" class="headerlink" title="/view"></a>/view</h6><p><strong>/prope</strong> <strong>rties</strong>                                                                ←在你XML中配置的属性</p>
+<p>/test                                      文件在这里。</p>
+<h6 id="org-myapp-1"><a href="#org-myapp-1" class="headerlink" title="/org/myapp/"></a>/org/myapp/</h6><h6 id="action-1"><a href="#action-1" class="headerlink" title="/action"></a>/action</h6><h6 id="data"><a href="#data" class="headerlink" title="/data"></a>/data</h6><h6 id="model-1"><a href="#model-1" class="headerlink" title="/model"></a>/model</h6><h6 id="service-1"><a href="#service-1" class="headerlink" title="/service"></a>/service</h6><h6 id="view-1"><a href="#view-1" class="headerlink" title="/view"></a>/view</h6><h6 id="properties-1"><a href="#properties-1" class="headerlink" title="/properties"></a>/properties</h6><h6 id="web-要记得这只是参照，而不是"><a href="#web-要记得这只是参照，而不是" class="headerlink" title="/web                                    要记得这只是参照，而不是"></a>/web                                    要记得这只是参照，而不是</h6><h6 id="WEB-INF-要求，可能其他人会感谢你"><a href="#WEB-INF-要求，可能其他人会感谢你" class="headerlink" title="/WEB-INF                             要求，可能其他人会感谢你"></a>/WEB-INF                             要求，可能其他人会感谢你</h6><h6 id="web-xml-使用了通用的目录结构。"><a href="#web-xml-使用了通用的目录结构。" class="headerlink" title="/web.xml                          使用了通用的目录结构。"></a>/web.xml                          使用了通用的目录结构。</h6><p>这部分内容剩余的示例将假设你使用了这种目录结构。</p>
+<h2 id="SqlSessions"><a href="#SqlSessions" class="headerlink" title="SqlSessions"></a>SqlSessions</h2><p>使用 MyBatis 的主要 Java 接口就是 SqlSession。尽管你可以使用这个接口执行命令，获取映射器和管理事务。我们会讨论 SqlSession 本身更多，但是首先我们还是要了解如果获取一个 SqlSession 实例。SqlSessions 是由 SqlSessionFactory 实例创建的。SqlSessionFactory 对象 包 含 创 建 SqlSession 实 例 的 所 有 方 法 。 而 SqlSessionFactory 本 身 是 由SqlSessionFactoryBuilder 创建的，它可以从 XML 配置，注解或手动配置 Java 来创建SqlSessionFactory。</p>
+<p><strong>SqlSessionFactoryBuilder</strong></p>
+<p>SqlSessionFactoryBuilder 有五个 build()方法，每一种都允许你从不同的资源中创建一个</p>
+<p>SqlSession 实例。</p>
+<p>SqlSessionFactory build(Reader reader)</p>
+<p>SqlSessionFactory build(Reader reader, String environment) SqlSessionFactory build(Reader reader, Properties properties) SqlSessionFactory build(Reader reader, String env, Properties props) SqlSessionFactory build(Configuration config)</p>
+<p>第一种方法是最常用的，它使用了一个参照了 XML 文档或上面讨论过的更特定的</p>
+<p>SqlMapConfig.xml 文件的 Reader 实例。可选的参数是 <em>environment</em> 和 <em>properties</em>。Environment</p>
+<p>决定加载哪种环境，包括数据源和事务管理器。比如：</p>
+<environments default=" **de** **velopment**">
+
+<environment id=" **de** **velopment**">
+
+<transactionmanager type="JDBC">
+
+<p>…</p>
+<datasource type="POOLED">
+
+<p>…</p>
+</datasource></transactionmanager></environment>
+
+<environment id=" **producti** **on**">
+
+<transactionmanager type="EXTERNAL">
+
+<p>…</p>
+<datasource type="JNDI">
+
+<p>…</p>
+</datasource></transactionmanager></environment>
+
+</environments>
+
+<p>如果你调用了一个使用 <em>environment</em> 参数的 build 方法， 那么 MyBatis 将会使用</p>
+<p>configuration 对象来配置这个 environment。当然，如果你指定了一个不合法的 environment， 你会得到错误提示。如果你调用了其中之一没有 <em>environment</em> 参数的 build 方法，那么就使用默认的 environment（在上面的示例中就会指定为 default=”development”）。</p>
+<p>如果你调用了使用 properties 实例的方法，那么 MyBatis 就会加载那些 properties（属性</p>
+<p>配置文件），并你在你配置中可使用它们。那些属性可以用${propName}语法形式多次用在配置文件中。</p>
+<p>回想一下，属性可以从 SqlMapConf ig.xml 中被引用，或者直接指定它。因此理解优先</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td><img src="file:///C:/Users/10136/AppData/Local/Temp/msohtmlclip1/01/clip_image002.gif" alt="img"></td>
+</tr>
+</tbody></table>
+<p> 级是很重要的。我们在文档前面已经提及它了，但是这里要再次重申：</p>
+<p>如果一个属性存在于这些位置，那么 MyBatis 将会按找下面的顺序来加载它们：</p>
+<p>l  在 properties 元素体中指定的属性首先被读取，</p>
+<p>l  从 properties 元素的类路径 resource 或 url 指定的属性第二个被读取，可以覆盖已经指定的重复属性，</p>
+<p>l  作为方法参数传递的属性最后被读取，可以覆盖已经从 properties 元素体和</p>
+<p>resource/url 属性中加载的任意重复属性。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td><img src="file:///C:/Users/10136/AppData/Local/Temp/msohtmlclip1/01/clip_image002.gif" alt="img"></td>
+</tr>
+</tbody></table>
+<p> 因此，最高优先级的属性是通过方法参数传递的，之后是 属性指定的，最后是在 元素体中指定的属性。</p>
+<p>总结一下，前四个方法很大程度上是相同的，但是由于可以覆盖，就允许你可选地指定environment 和/或 properties。这里给出一个从 SqlMapConfig.xml 文件创建 SqlSessionFactory 的示例：</p>
+<p>String <strong>resource</strong> = “org/mybatis/builder/MapperConfig.xml”; Reader <strong>reader</strong> = Resources.getResourceAsReader(<strong>resource</strong>);</p>
+<p>SqlSessionFactoryBuilder <strong>buil der</strong> = new SqlSessionFactoryBuilder(); SqlSessionFactory <strong>fac tor y</strong> = builder.build(<strong>re ader</strong>);</p>
+<p>注意这里我们使用了 <em>Resources</em> 工具类，这个类在 org.mybatis.io 包中。<em>Resources</em> 类正</p>
+<p>如其名，会帮助你从类路径下，文件系统或一个 web URL 加载资源文件。看一下这个类的源代码或者通过你的 IDE 来查看，就会看到一整套有用的方法。这里给出一个简表：</p>
+<p>URL getResourceURL(String resource)</p>
+<p>URL getResourceURL(ClassLoader loader, String resource) InputStream getResourceAsStream(String resource)</p>
+<p>InputStream getResourceAsStream(ClassLoader loader, String resource) Properties getResourceAsProperties(String resource)</p>
+<p>Properties getResourceAsProperties(ClassLoader loader, String resource)</p>
+<p>Reader getResourceAsReader(String resource)</p>
+<p>Reader getResourceAsReader(ClassLoader loader, String resource) File getResourceAsFile(String resource)</p>
+<p>File getResourceAsFile(ClassLoader loader, String resource) InputStream getUrlAsStream(String urlString)</p>
+<p>Reader getUrlAsReader(String urlString)</p>
+<p>Properties getUrlAsProperties(String urlString) Class classForName(String className)</p>
+<p>最后一个 build 方法使用了一个 Configuration 实例。configuration 类包含你可能需要了</p>
+<p>解 SqlSessionFactory 实例的所有内容。Configuration 类对于配置的自查很有用，包含查找和操作 SQL 映射（不推荐使用，因为应用正接收请求）。configuration 类有所有配置的开关， 这些你已经了解了，只在  Java  API  中露出来。这里有一个简单的示例，如何手动配置</p>
+<p>configuration 实例，然后将它传递给 build()方法来创建 SqlSessionFactory。</p>
+<p>DataSource <strong>dataSource</strong> = BaseDataTest.createBlogDataSource(); TransactionFactory <strong>transactionFac tor y</strong> = new JdbcTransactionFactory( ); Environment <strong>environment</strong> =</p>
+<p>new Environment(“development”, <strong>transactionFac tor y</strong>, <strong>dataSource</strong>); Configuration <strong>configurati on</strong> = n ew Configuration(<strong>envir onme nt</strong>); configuration.setLazyLoadingEnabled(true); configuration.setEnhancementEnabled(true); configuration.getTypeAliasRegistry().registerAlias(Blog.class); configuration.getTypeAliasRegistry().registerAlias(Post.class); configuration.getTypeAliasRegistry().registerAlias(Author.class); configuration.addMapper(BoundBlogMapper.class); configuration.addMapper(BoundAuthorMapper.class); SqlSessionFactoryBuilder <strong>buil der</strong> = new SqlSessionFactoryBuilder(); SqlSessionFactory factory = builder.build(<strong>configurati on</strong>);</p>
+<p>现在你有一个 SqlSessionFactory，可以用来创建 SqlSession 实例。</p>
+<p><strong>SqlSessionFactory</strong></p>
+<p>SqlSessionFactory 有六个方法可以用来创建 SqlSession 实例。通常来说，如何决定是你选择下面这些方法时：</p>
+<p>l  <strong>Transaction</strong>（事务）：你想为 session 使用事务或者使用自动提交（通常意味着很多数据库和/或 JDBC 驱动没有事务）？</p>
+<p>l  <strong>C**</strong>onnection**（连接）：你想  MyBatis  获得来自配置的数据源的连接还是提供你自己定义的连接？</p>
+<p>l  <strong>Execution</strong>（执行）：你想 MyBatis 复用预处理语句和/或批量更新语句（包括插入和删除）？</p>
+<p>重载的 openSession()方法签名设置允许你选择这些可选中的任何一个组合。</p>
+<p>SqlSession openSession()</p>
+<p>SqlSession openSession(boolean autoCommit) SqlSession openSession(Connection connection)</p>
+<p>SqlSession openSession(TransactionIsolationLevel level)</p>
+<p>SqlSession openSession(ExecutorType execType,</p>
+<p>TransactionIsolationLevel level) SqlSession openSession(ExecutorType execType)</p>
+<p>SqlSession openSession(ExecutorType execType, boolean autoCommit) SqlSession openSession(ExecutorType execType, Connec tion connection) Configuration getConfiguration();</p>
+<p>默认的 openSession()方法没有参数，它会创建有如下特性的 SqlSession：</p>
+<p>l  将会开启一个事务（也就是不自动提交）范围</p>
+<p>l  连接对象会从由活动环境配置的数据源实例中得到。</p>
+<p>l  事务隔离级别将会使用驱动或数据源的默认设置。</p>
+<p>l  预处理语句不会被复用，也不会批量处理更新。</p>
+<p>这些方法大都可以自我解释的。开启自动提交，传递“true”给可选的 <em>autoCommit</em> 参数。提供自定义的连接，传递一个 Connection 实例给 <em>connection</em> 参数。注意没有覆盖同时设置Connection 和 autoCommit 两者的方法，因为 MyBatis 会使用当前 connection 对象提供的设置。MyBatis 为事务隔离级别调用使用一个 Java 枚举包装器，称为 TransactionIsolationLevel， 否 则 它 们 按 预 期 的 方 式 来 工 作 ， 并 有 JDBC 支 持 的 5 级</p>
+<p>（ NONE,READ_UNCOMMITTED,READ_COMMITTED,REPEATABLE_READ,SERI ALIZA BLE）</p>
+<p>还有一个可能对你来说是新见到的参数，就是 ExecutorType。这个枚举类型定义了 3 个值：</p>
+<p>ExecutorType.SIMPLE</p>
+<p>这个执行器类型不做特殊的事情。它为每个语句的执行创建一个新的预处理语句。</p>
+<p>ExecutorType.REUSE</p>
+<p>这个执行器类型会复用预处理语句。</p>
+<p>ExecutorType.BATCH</p>
+<p>这个执行器会批量执行所有更新语句，如果 SELECT  在它们中间执行还会标定它们是必须的，来保证一个简单并易于理解的行为。</p>
+<p>注意：在 SqlSessionFactory 中还有一个方法我们没有提及，就是 <em>getConfiguration()</em>。这个方法会返回一个 Configuration 实例，在运行时你可以使用它来自检 MyBatis 的配置。</p>
+<p>注意：如果你已经使用之前版本 MyBatis，你要回忆那些 session，transaction 和 batch</p>
+<p>都是分离的。现在和以往不同了，这些都包含在 session 的范围内了。你需要处理分开处理事务或批量操作来得到它们的效果。</p>
+<p><strong>SqlSession</strong></p>
+<p>如上面所提到的，SqlSession 实例在 MyBatis 中是非常强大的一个类。在这里你会发现所有执行语句的方法，提交或回滚事务，还有获取映射器实例。</p>
+<p>在 SqlSession 类中有超过 20 个方法，所以将它们分开成易于理解的组合。语句执行方法</p>
+<p>这些方法被用来执行定义在 SQL 映射的 XML 文件中的 SELECT，INSERT，UPDAT E 和 DELETE 语句。它们都会自行解释，每一句都使用语句的 ID 属性和参数对象，参数可以是原生类型（自动装箱或包装类），JavaBean，POJO 或 Map。</p>
+<p>Object selectOne(String statement, Object parameter) List selectList(String statement, Object parameter) int insert(String statement, Object parameter)</p>
+<p>int update(String statement, Object parameter) int delete(String statement, Object parameter)</p>
+<p>selectOne 和 selectList 的不同仅仅是 selectOne 必须返回一个对象。如果多余一个，或者</p>
+<p>没有返回（或返回了 null），那么就会抛出异常。如果你不知道需要多少对象，使用 selectList。如果你想检查一个对象是否存在，那么最好返回统计数（0 或 1）。因为并不是所有语句都需要参数，这些方法都是有不同重载版本的，它们可以不需要参数对象。</p>
+<p>Object selectOne(String statement) List selectList(String statement) int insert(String statement)</p>
+<p>int update(String statement) int delete(String statement)</p>
+<p>最后，还有查询方法的三个高级版本，它们允许你限制返回行数的范围，或者提供自定</p>
+<p>义结果控制逻辑，这通常用于大量的数据集合。</p>
+<p>List selectList</p>
+<p>(String statement, Object parameter, RowBounds rowBounds)</p>
+<p>void select</p>
+<p>(String statement, Object parameter, ResultHandler handler) void select</p>
+<p>(String statement, Object parameter, RowBounds rowBounds,</p>
+<p>ResultHandler handler)</p>
+<p>RowBounds 参数会告诉 MyBatis 略过指定数量的记录，还有限制返回结果的数量。</p>
+<p>RowBounds 类有一个构造方法来接收 offset 和 limit，否则是不可改变的。</p>
+<p>int offset = 100; int limit = 25;</p>
+<p>RowBounds rowBounds = new RowBounds(offset, limit);</p>
+<p>不同的驱动会实现这方面的不同级别的效率。对于最佳的表现，使用结果集类型的</p>
+<p>SCROLL_SENSITIVE 或 SCROLL_INSENSITIVE（或句话说：不是 FORWARD_ONLY）。</p>
+<p>ResultHandler 参数允许你按你喜欢的方式处理每一行。你可以将它添加到 List 中，创建Map，Set 或抛出每个结果而不是只保留总计。你可以使用ResultHandler 做很多漂亮的事，那就是 MyBatis 内部创建结果集列表。</p>
+<p>它的接口很简单。</p>
+<p>package org.mybatis.executor.result; public interface ResultHandler {</p>
+<p>void handleResult(ResultContext context);</p>
+<p>}</p>
+<p>ResultContext 参数给你访问结果对象本身的方法，大量结果对象被创建，你可以使用布尔返回值的 stop()方法来停止 MyBatis 加载更多的结果。</p>
+<p>事务控制方法</p>
+<p>控制事务范围有四个方法。当然，如果你已经选择了自动提交或你正在使用外部事务管理器，这就没有任何效果了。然而，如果你正在使用 JDBC 事务管理员，由 Connection 实例来控制，那么这四个方法就会派上用场：</p>
+<p>void commit()</p>
+<p>void commit(boolean force) void rollback()</p>
+<p>void rollback(boolean force)</p>
+<p>默认情况下 MyBatis 不会自动提交事务，除非它侦测到有插入，更新或删除操作改变了数据库。如果你已经做出了一些改变而没有使用这些方法，那么你可以传递 true 到 commit 和 rollback 方法来保证它会被提交（注意，你不能在自动提交模式下强制 session，或者使用了外部事务管理器时）。很多时候你不用调用 rollback()，因为如果你没有调用 commit 时MyBatis 会替你完成。然而，如果你需要更多对多提交和回滚都可能的 session 的细粒度控制，你可以使用回滚选择来使它成为可能。</p>
+<p>清理 <strong>Session</strong> 级的缓存</p>
+<p>void clearCache()</p>
+<p>SqlSession 实例有一个本地缓存在执行 update，commit，rollback 和 close 时被清理。要明确地关闭它（获取打算做更多的工作），你可以调用 clearCache()。</p>
+<p>确保 <strong>SqlSession</strong> 被关闭</p>
+<p>void close()</p>
+<p>你必须保证的最重要的事情是你要关闭所打开的任何 session。保证做到这点的最佳方式是下面的工作模式：</p>
+<p>SqlSession session = sqlSessionFactory.openSession(); try {</p>
+<p>// 下面3行pseudocod来做一些工作</p>
+<p>session.insert(…); session.update(…); session.delete(…); session.commit();</p>
+<p>} finally {</p>
+<p>session.close();</p>
+<p>}</p>
+<p>注意：就像 SqlSessionFactory，你可以通过调用 getConfiguration()方法获得 SqlSession</p>
+<p>使用的 Configuration 实例</p>
+<p>Configuration getConfiguration()</p>
+<p>使用映射器</p>
+<p><t> T getMapper(Class<t> type)</t></t></p>
+<p>上述的各个 insert，update，delete 和 select 方法都很强大，但也有些繁琐，没有类型安全，对于你的 IDE 也没有帮助，还有可能的单元测试。在上面的入门章节中我们已经看到了一个使用映射器的示例。</p>
+<p>因此，一个更通用的方式来执行映射语句是使用映射器类。一个映射器类就是一个简单</p>
+<p>的接口，其中的方法定义匹配于 SqlSession 方法。下面的示例展示了一些方法签名和它们是如何映射到 SqlSession 的。</p>
+<p><strong>public inter face Author Mapper {</strong></p>
+<p>// (Author) selectOne(“selectAuthor”,5);</p>
+<p><strong>Author selectAuthor(int i d);</strong></p>
+<p>// (List<author>) selectList(“selectAuthors”)</author></p>
+<p><strong>List<author> selectAuthors();</author></strong></p>
+<p>// insert(“insertAuthor”, author)</p>
+<p><strong>voi d insertAuthor(Author author);</strong></p>
+<p>// updateAuthor(“updateAuhor”, author)</p>
+<p><strong>voi d update Author(Author author );</strong></p>
+<p>// delete(“deleteAuthor”,5)</p>
+<p><strong>voi d delete Author(int i d);</strong></p>
+<p><strong>}</strong></p>
+<p>总之，每个映射器方法签名应该匹配相关联的 SqlSession 方法，而没有字符串参数 ID。相反，方法名必须匹配映射语句的 ID。</p>
+<p>此外，返回类型必须匹配期望的结果类型。所有常用的类型都是支持的，包括：原生类型，Map，POJO 和 JavaBean。</p>
+<p>映射器接口不需要去实现任何接口或扩展任何类。只要方法前面可以被用来唯一标识对应的映射语句就可以了。</p>
+<p>映射器接口可以扩展其他接口。当使用 XML 来构建映射器接口时要保证在合适的命名空间中有语句。而且，唯一的限制就是你不能在两个继承关系的接口中有相同的方法签名（这也是不好的想法）。</p>
+<p>你可以传递多个参数给一个映射器方法。如果你这样做了，默认情况下它们将会以它们在参数列表中的位置来命名，比如：#{1},#{2}等。如果你想改变参数的名称（只在多参数</p>
+<p>情况下），那么你可以在参数上使用@Param(“paramName”)注解。你也可以给方法传递一个 RowBounds 实例来限制查询结果。</p>
+<p>映射器注解</p>
+<p>因为最初设计时，MyBatis 是一个 XML 驱动的框架。配置信息是基于 XML 的，而且映射语句也是定义在 XML 中的。而到了 MyBatis 3，有新的可用的选择了。MyBatis 3 构建在基于全面而且强大的 Java 配置 API 之上。这个配置 API 是基于 XML 的 MyBatis 配置的基础，也是新的基于注解配置的基础。注解提供了一种简单的方式来实现简单映射语句，而不会引入大量的开销。</p>
+<p>注意：不幸的是，Java 注解限制了它们的表现和灵活。尽管很多时间都花调查，设计和</p>
+<p>实验上，最强大的 MyBatis 映射不能用注解来构建，那并不可笑。C#属性（做示例）就没有这些限制，因此 MyBatis.NET 将会比 XML 有更丰富的选择。也就是说，基于 Java 注解的配置离不开它的特性。</p>
+<p>注解有下面这些：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th>示了应该被用于比较（和在 XML 映射中的<id>相似）的属性。one 属性是单独的联系， 和<association> 相似，而   many   属 性 是 对 集 合 而 言 的 ， 和    <collection>相似。它们这样命名是为了   避免名称冲突。</collection></association></id></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>@One</strong></td>
+<td>方法</td>
+<td><association></association></td>
+<td>复杂类型的单独属性值映射。属性：   <strong>select</strong>，已映射语句（也就是映射器方法）的完全限定名，它可以加载合适类型的实例。注意：联合映射在注解 API 中是不支持的。这是因为  Java 注解的   限制，不允许循环引用。</td>
+</tr>
+<tr>
+<td><strong>@Many</strong></td>
+<td>方法</td>
+<td><collection></collection></td>
+<td>复杂类型的集合属性映射。属性：   <strong>select</strong>，是映射语句（也就是映射器方法）的完全限定名，它可以加载合适类型的一组实例。注意：联合映射在 Java   注解中是不支持的。这是因为  Java 注   解的限制，不允许循环引用。</td>
+</tr>
+<tr>
+<td><strong>@Options</strong></td>
+<td>方法</td>
+<td>映射语句的属性</td>
+<td>这个注解提供访问交换和配置选项的宽广范围，它们通常在映射语句上作为属性出现。而不是将每条语句注解变复杂，Options 注解提供连贯清晰的方式来访问它们。属性：<strong>useCache=true</strong> ， <strong>flushCache=false</strong> ，   <strong>resultSetType=FORWARD_ONLY</strong>   ， <strong>statementType=PREPARED</strong>            ， <strong>fetchSize=-1</strong> ， <strong>timeout=-1</strong> ， <strong>useGeneratedKeys=false</strong>                  ，   <strong>keyProperty=”id”</strong>。理解 Java 注解是很重要的，因为没有办法来指定“null”作为值。因此，一旦你使用了 Options 注解，语句就受所有默认值的支配。要注意什么样的默认值来避免不期望的   行为。</td>
+</tr>
+<tr>
+<td><strong>@Insert   @Update @Delete</strong></td>
+<td>方法</td>
+<td><insert>   <update>   <delete></delete></update></insert></td>
+<td>这些注解中的每一个代表了执行的真实 SQL。它们每一个都使用字符串数组   （或单独的字符串）。如果传递的是字符串数组，它们由每个分隔它们的单独空间串联起来。这就当用 Java 代码构建 SQL 时避免了“丢失空间”的问题。然而，如果你喜欢，也欢迎你串联单独的字符串。属性：<strong>value</strong>，这是字符串   数组用来组成单独的 SQL 语句。</td>
+</tr>
+<tr>
+<td><strong>@InsertProvider</strong></td>
+<td>方法</td>
+<td><insert></insert></td>
+<td>这些可选的 SQL 注解允许你指定一个</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><strong>@UpdateProvider   @DeleteProvider @SelectProvider</strong></th>
+<th></th>
+<th><update>   <delete>   <select>   允许创建动态    SQL。</select></delete></update></th>
+<th>类名和一个方法在执行时来返回运行的 SQL。基于执行的映射语句，MyBatis会实例化这个类，然后执行由 provider 指定的方法. 这个方法可以选择性的接受参数对象作为它的唯一参数，但是必须只指定该参数或者没有参数。属性：   <strong>type</strong>，<strong>method</strong>。type   属性是类的完全限定名。method 是该类中的那个方法名。注意：这节之后是对   SelectBuilder   类的讨论，它可以帮助你以干净，容于阅读   的方式来构建动态 SQL。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>@Param</strong></td>
+<td>参数</td>
+<td>N/A</td>
+<td>如果你的映射器的方法需要多个参数， 这个注解可以被应用于映射器的方法参数来给每个参数一个名字。否则，多参数将会以它们的顺序位置来被命名   （不包括任何 RowBounds 参数）。比如   #{1} ， #{2} 等，这是默认的。使用   @Param(“person”)，参数应该被命名为   #{person}。</td>
+</tr>
+</tbody></table>
+<p><strong>SelectBuilder</strong></p>
+<p>一个 Java 程序员面对的最痛苦的事情之一就是在 Java 代码中嵌入 SQL 语句。通常这么做是因为 SQL 要动态的生成-否则你可以将它们放到外部的文件或存储过程中。正如你已经看到的，MyBatis 在它的 XML 映射特性中有处理生成动态 SQL 的很强大的方案。然而，有时必须在 Java 代码中创建 SQL 语句的字符串。这种情况下，MyBatis 有另外一种特性来帮助你，在减少典型的加号，引号，新行，格式化问题和嵌入条件来处理多余的逗号或 AND 连接词之前，事实上，在 Java 代码中动态生成 SQL 就是一个噩梦。</p>
+<p>MyBatis 3 引入了一些不同的理念来处理这个问题，我们可以创建一个类的实例来调用其中的方法来一次构建 SQL 语句。但是我们的 SQL 结尾时看起来很像 Java 代码而不是 SQL 语句。相反，我们尝试了一些不同的做法。最终的结果是关于特定领域语言的结束，Java 也 不 断 实 现 它 目 前 的 形 式 …                                                                               <strong>SelectBuilder</strong> 的秘密</p>
+<p>SelectBuilder 类并不神奇，如果你不了解它的工作机制也不会有什么好的作用。别犹豫，</p>
+<p>让我们来看看它是怎么工作的。SelectBuilder 使用了静态引入和 TreadLocal 变量的组合来开启简洁的语法可以很容易地用条件进行隔行扫描，而且为你保护所有 SQL 的格式。它允许你创建这样的方法：</p>
+<p>public String selectBlogsSql() {</p>
+<p><strong>B EGIN</strong>(); // Clears ThreadLocal variable</p>
+<p><strong>SELECT</strong>(“*”);</p>
+<p><strong>FROM</strong>(“BLOG”);</p>
+<p>return <strong>SQL</strong>();</p>
+<p>}</p>
+<p>这是一个非常简单的示例，你也许会选择静态地来构建。所以这里给出一个复杂一点的</p>
+<p>示例：</p>
+<p>private String selectPersonSql() {</p>
+<p><strong>B EGIN</strong>(); // Clears ThreadLocal variable <strong>SELECT</strong>(“P.ID, P.USERNAME, P.PASSWORD, P.FULL_NAME”); <strong>SELECT</strong>(“P.LAST_NAME, P.CREATED_ON, P.UPDATED_ON”); <strong>FROM</strong>(“PERSON P”);</p>
+<p><strong>FROM</strong>(“ACCOUNT A”);</p>
+<p><strong>INNER_JOIN</strong>(“DEPARTMENT D on D.ID = P.DEPARTMENT_ID”);</p>
+<p><strong>INNER_JOIN</strong>(“COMPANY C on D.COMPANY_ID = C.ID”);</p>
+<p><strong>WHERE</strong>(“P.ID = A.ID”);</p>
+<p><strong>WHERE</strong>(“P.FIRST_NAME like ?”);</p>
+<p><strong>OR</strong>();</p>
+<p><strong>WHERE</strong>(“P.LAST_NAME like ?”); <strong>GROUP_B Y</strong>(“P.ID”); <strong>HAVING</strong>(“P.LAST_NAME like ?”); <strong>OR</strong>();</p>
+<p><strong>HAVING</strong>(“P.FIRST_NAME like ?”);</p>
+<p><strong>ORDER_B Y</strong>(“P.ID”); <strong>ORDER_B Y</strong>(“P.FULL_NAME”);</p>
+<p>return <strong>SQL</strong>();</p>
+<p>}</p>
+<p>用字符串连接的方式来构建上面的 SQL 就会有一些繁琐了。比如：</p>
+<p>“SELECT P.ID, P.USERNAME, P.PASSWORD, P.FULL_NAME, “ “P.LAST_NAME,P.CREATED_ON, P.UPDATED_ON “ +</p>
+<p>“FROM PERSON P, ACCOUNT A “ +</p>
+<p>“INNER JOIN DEPARTMENT D on D.ID = P.DEPARTMENT_ID “ + “INNER JOIN COMPANY C on D.COMPANY_ID = C.ID “ + “WHERE (P.ID = A.ID AND P.FIRST_NAME like ?) “ +</p>
+<p>“OR (P.LAST_NAME like ?) “ +</p>
+<p>“GROUP BY P.ID “ +</p>
+<p>“HAVING (P.LAST_NAME like ?) “ + “OR (P.FIRST_NAME like ?) “ + “ORDER BY P.ID, P.FULL_NAME”;</p>
+<p>如果你喜欢那样的语法，那么你就可以使用它。它很容易出错，要小心那些每行结尾增</p>
+<p>加的空间。现在，即使你喜欢这样的语法，下面的示例比 Java 中的字符串连接要简单也是没有疑问的：</p>
+<p>private String selectPersonLike(Person p){</p>
+<p><strong>B EGIN</strong>(); // Clears ThreadLocal variable</p>
+<p><strong>SELECT</strong>(“P.ID, P.USERNAME, P.PASSWORD, P.FIRST_NAME, P.LAST_NAME”);</p>
+<p><strong>FROM</strong>(“PERSON P”);</p>
+<p>if (p.id != null) {</p>
+<p><strong>WHERE</strong>(“P.ID like #{id}”);</p>
+<p>}</p>
+<p>if (p.firstName != null) {</p>
+<p><strong>WHERE</strong>(“P.FIRST_NAME like #{firstName}”);</p>
+<p>}</p>
+<p>if (p.lastName != null) {</p>
+<p><strong>WHERE</strong>(“P.LAST_NAME like #{lastName}”);</p>
+<p>}</p>
+<p><strong>ORDER_B Y</strong>(“P.LAST_NAME”);</p>
+<p>return <strong>SQL</strong>();</p>
+<p>}</p>
+<p>这个例子有什么特殊之处？如果你看得仔细，那就不同担心偶然会重复的“AND”关键字，或在“WHERE”和“AND”或两者都没有中选择！上面的语句将会由例子对所有</p>
+<p>PERSON 记录生成一个查询，有像参数一样的 ID 或 firstName 或 lastName-或这三者的任意组合。SelectBuilder 对理解哪里放置“WHERE”，哪里应该使用“AND”还有所有的字符串连接都是很小心的。最好的情况，无论你以何种顺序调用这些方法（只有一种例外使用 OR() 方法）。</p>
+<p>有两个方法会吸引你的眼球：BEGIN()和 SQL()。总之，每个 SelectBuilder 方法应该以调用 BEGIN（）开始，以调用 SQL()结束。当然你可以在中途提取方法来打断你执行的逻辑，但是 SQL 生成的范围应该以 BEGIN()方法开始而且以 SQL()方法结束。BEGIN()方法清理 ThreadLocal 变量，来确保你不会不小心执行了前面的状态，而且 SQL()方法会基于这些调用，从最后一次调用 BEGIN()开始组装你的 SQL 语句。注意 BEGIN()有一个称为 RESET() 的代替方法，它们所做的工作相同，只是 RESET()会在特定上下文中读取的更好。</p>
+<p>要按照上面示例的方式使用 SelectBuilder，你应该静态引入如下内容：</p>
+<p>import <strong>static</strong> org.mybatis.jdbc.<strong>SelectBuilder.* ;</strong></p>
+<p>只要这个被引入了，那么你使用的类就会拥有 SelectBuilder 的所有可用的方法。下表就是可用方法的完整列表：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BEGIN()/RESET()</td>
+<td>这些方法清理 SelectBuilder 类的 ThreadLocal   的状态，而且准备构建新的语句。当开始一条新的语句时，BEGIN()读取得最好。当在执行中间因为某些原因（在某些条件下，也许处理逻辑需要一个完整的而且不同的语句）要清理一条语句   时 RESET()读取的做好。</td>
+</tr>
+<tr>
+<td>SELECT(String)</td>
+<td>开始或附加一个 SELECT   子句。可以被多次调用，而且参数会被追加在 SELECT 子句后面。参数通常是逗号分隔的列名   列表和别名，但要是驱动程序可以接受的东西。</td>
+</tr>
+<tr>
+<td>SELECT_DISTINCT(String)</td>
+<td>开始或附加一个   SELECT 子句，也在生成的查询语句中添加   “DISTINCT”关键字。可以被多次调用，而且参数会被追加在 SELECT 子句后面。参数通常是逗号分隔的列名列表和   别名，但要是驱动程序可以接受的东西。</td>
+</tr>
+<tr>
+<td>FROM(String)</td>
+<td>开始或附加一个 FROM 子句。可以被多次调用，而且参数会被追加在 FROM   子句后面。参数通常是表明或别名，或是驱   动程序可以接受的任意内容。</td>
+</tr>
+<tr>
+<td>JOIN(String)   INNER_JOIN(String)   LEFT_OUTER_JOIN(String)</td>
+<td>基于调用的方法，添加一个合适类型的新的   JOIN   子句。参数可以包含列之间基本的 join 连接还有条件连接。</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>RIGHT_OUTER_JOIN(String)</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>WHERE(String)</td>
+<td>添加一个新的 WHERE 条件子句，由 AND 串联起来。可以被多次调用，由 AND 告诉它来串联一个新的条件。使用 OR()   方法来分隔 OR 条件。</td>
+</tr>
+<tr>
+<td>OR()</td>
+<td>使用 OR 来分隔当前 WHERE 子句的条件。可以被多次调用，   但是在一行上多次调用会生成不稳定的 SQL。</td>
+</tr>
+<tr>
+<td>AND()</td>
+<td>使用 AND 来分隔当前 WHERE 字句的条件。可以被多次调   用，但是在一行上多次调用会生成不稳定的 SQL。因为   WHERE 和 HAVING 两者都自动串联 AND，这样使用是非   常罕见的，包含它也仅仅是为了完整性。</td>
+</tr>
+<tr>
+<td>GROUP_BY(String)</td>
+<td>附加一个新的 GROUP BY 子句，由逗号串联起来。可以被   多次调用，每次使用逗号来告诉它串联一个新的条件。</td>
+</tr>
+<tr>
+<td>HAVING(String)</td>
+<td>附加一个新的 HAVING   条件子句，由 AND 串联起来。可以被多次调用，每次使用   AND   来告诉它要串联新的条件。使   用 OR()方法来分隔 OR 条件。</td>
+</tr>
+<tr>
+<td>ORDER_BY(String)</td>
+<td>附加一个新的 ORDER BY 子句，由逗号串联起来。可以被   多次调用，每次使用逗号来告诉它串联新的条件。</td>
+</tr>
+<tr>
+<td>SQL()</td>
+<td>这会返回生成  SQL 而且重置  SelectBuilder  的状态（正如   BEGIN()或 RESET()方法被调用）。因此，这个方法只能被调   用一次！</td>
+</tr>
+</tbody></table>
+<p><strong>SqlBuilder</strong></p>
+<p>和 SelectBuilder 相似，MyBatis 也包含一个一般性的 SqlBuilder。它包含 SelectBuilder 的所有方法，还有构建 insert，update 和 delete 的方法。在 DeleteProvider，InsertProvider 或UpdateProvider 中（还有 SelectProvider）构建 SQL 字符串时这个类就很有用。</p>
+<p>在上述示例中要使用 SqlBuilder，你只需简单静态引入如下内容：</p>
+<p>import <strong>static</strong> org.mybatis.jdbc.<strong>S</strong> <strong>qlBuil der.*;</strong></p>
+<p>SqlBuilder 包含 中的所有方法，还有下面这些额外的方法：</p>
+<p>这里是一些示例：</p>
+<p>public String deletePersonSql() {</p>
+<p><strong>B EGIN</strong>(); // Clears ThreadLocal variable</p>
+<p><strong>DELET E_ FROM(</strong>“PERSON”);</p>
+<p><strong>WHERE(</strong>“ID = ${id}”);</p>
+<p>return <strong>SQL</strong>();</p>
+<p>}</p>
+<p>public String insertPersonSql() {</p>
+<p><strong>B EGIN</strong>(); // Clears ThreadLocal variable</p>
+<p><strong>INS ERT_ INTO(</strong>“PERSON”);</p>
+<p><strong>VALUES (</strong>“ID, FIRST_NAME”, “${id}, ${firstName}”);</p>
+<p><strong>VALUES (</strong>“LAST_NAME”, “${lastName}”);</p>
+<p>return <strong>SQL</strong>();</p>
+<p>}</p>
+<p>public String updatePersonSql() {</p>
+<p><strong>B EGIN</strong>(); // Clears ThreadLocal variable</p>
+<p><strong>UPDATE(</strong>“PERSON”);</p>
+<p><strong>SET(</strong>“FIRST_NAME = ${firstName}”);</p>
+<p><strong>WHERE(</strong>“ID = ${id}”);</p>
+<p>return <strong>SQL</strong>();</p>
+<p>}</p>
+</cache-ref></cache></cache></result></result></result></result></result></result></result></result></result></result></result></result></result></id></div></article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Mybatis/">Mybatis    </a></div><div class="post_share"><div class="social-share" data-image="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/6C4819608FCCD2B5E6F8F1B1C583429F.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-buttom"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lozad post-qr-code__img" data-src="/img/wechat.jpg"><div class="post-qr-code__desc">微信</div></li><li class="reward-item"><img class="lozad post-qr-code__img" data-src="/img/alipay.jpg"><div class="post-qr-code__desc">支付宝</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull-left"><a href="/2019/09/06/Java-源码-JDK8-String/"><img class="prev_cover lozad" data-src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/B3402E0D-8544-4AFD-BB48-88F3D7F7466C.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_6261.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_6923.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/F07254A8-F2DA-4308-9464-88E9E471FD6C.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_5519.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/FC43A5A0-16A7-411A-877A-C3F4C3D8C890.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_7755.JPG" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>JDK8 String源码</span></div></a></div><div class="next-post pull-right"><a href="/2019/09/02/框架-Spring/"><img class="next_cover lozad" data-src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/B3402E0D-8544-4AFD-BB48-88F3D7F7466C.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_6261.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_6923.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/F07254A8-F2DA-4308-9464-88E9E471FD6C.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_5519.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/FC43A5A0-16A7-411A-877A-C3F4C3D8C890.JPG,https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/IMG_7755.JPG" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>Spring笔记</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"></div><div class="clear_both"></div></div></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2019 - 2021 By fangchenyong</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly"><span>Butterfly</span></a></div><div class="footer_custom_text">仅供学习使用。</div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><section class="rightside" id="rightside"><i class="fa fa-book" id="readmode" title="阅读模式"> </i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换">簡</a><i class="fa fa-moon-o nightshift" id="nightshift" title="夜间模式"></i></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script async src="/js/search/local-search.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script src="/js/nightshift.js"></script><script id="ribbon" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/js/piao.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@1.2.2/instantpage.min.js" type="module"></script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>
