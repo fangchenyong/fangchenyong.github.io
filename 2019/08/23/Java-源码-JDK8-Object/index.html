@@ -1,0 +1,311 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JDK8 Object源码 | Joey</title><meta name="keywords" content="Java,源码,Object"><meta name="author" content="fangchenyong"><meta name="copyright" content="fangchenyong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="[TOC] JDK8 Object1.简述Java对象被设计成单继承，所有的对象都直接或者间接的继承Object类，拥有Object的一些属性和方法。所以Object也可以理解为所有类的父类。 2.方法汇总   Modifier and Type Method Description    protected Object clone() Creates and returns a copy of">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JDK8 Object源码">
+<meta property="og:url" content="http://fangchenyong.top/2019/08/23/Java-%E6%BA%90%E7%A0%81-JDK8-Object/index.html">
+<meta property="og:site_name" content="Joey">
+<meta property="og:description" content="[TOC] JDK8 Object1.简述Java对象被设计成单继承，所有的对象都直接或者间接的继承Object类，拥有Object的一些属性和方法。所以Object也可以理解为所有类的父类。 2.方法汇总   Modifier and Type Method Description    protected Object clone() Creates and returns a copy of">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG">
+<meta property="article:published_time" content="2019-08-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-09T08:17:09.943Z">
+<meta property="article:author" content="fangchenyong">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="源码">
+<meta property="article:tag" content="Object">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://fangchenyong.top/2019/08/23/Java-%E6%BA%90%E7%A0%81-JDK8-Object/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-06-09 16:17:09'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/3FD9B055-6361-49B7-B8CE-5BA9144BD27F.JPG" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">38</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">45</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Joey</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">JDK8 Object源码</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2019-08-22T16:00:00.000Z" title="发表于 2019-08-23 00:00:00">2019-08-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-06-09T08:17:09.943Z" title="更新于 2020-06-09 16:17:09">2020-06-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java/">Java</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java/%E6%BA%90%E7%A0%81/">源码</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java/%E6%BA%90%E7%A0%81/Object/">Object</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="JDK8 Object源码"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>[TOC]</p>
+<h1 id="JDK8-Object"><a href="#JDK8-Object" class="headerlink" title="JDK8 Object"></a>JDK8 Object</h1><h2 id="1-简述"><a href="#1-简述" class="headerlink" title="1.简述"></a>1.简述</h2><p>Java对象被设计成单继承，所有的对象都直接或者间接的继承Object类，拥有Object的一些属性和方法。所以Object也可以理解为所有类的父类。</p>
+<h2 id="2-方法汇总"><a href="#2-方法汇总" class="headerlink" title="2.方法汇总"></a>2.方法汇总</h2><table>
+<thead>
+<tr>
+<th>Modifier and Type</th>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>protected Object</td>
+<td>clone()</td>
+<td>Creates and returns a copy of this object.</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>equals(Object obj)</td>
+<td>Indicates whether some other object is “equal to” this one.</td>
+</tr>
+<tr>
+<td>protected void</td>
+<td>finalize()</td>
+<td>Called by the garbage collector on an object when garbage collection determines that there are no more references to the object.</td>
+</tr>
+<tr>
+<td>Class&lt;?&gt;</td>
+<td>getClass()</td>
+<td>Returns the runtime class of this Object.</td>
+</tr>
+<tr>
+<td>int</td>
+<td>hashCode()</td>
+<td>Returns a hash code value for the object.</td>
+</tr>
+<tr>
+<td>String</td>
+<td>toString()</td>
+<td>Returns a string representation of the object.</td>
+</tr>
+<tr>
+<td>void</td>
+<td>notify()</td>
+<td>Wakes up a single thread that is waiting on this object’s monitor.</td>
+</tr>
+<tr>
+<td>void</td>
+<td>notifyAll()</td>
+<td>Wakes up all threads that are waiting on this object’s monitor.</td>
+</tr>
+<tr>
+<td>void</td>
+<td>wait()</td>
+<td>Causes the current thread to wait until another thread invokes the notify() method or the notifyAll() method for this object.</td>
+</tr>
+<tr>
+<td>void</td>
+<td>wait(long timeout)</td>
+<td>Causes the current thread to wait until either another thread invokes the notify() method or the notifyAll() method for this object, or a specified amount of time has elapsed.</td>
+</tr>
+<tr>
+<td>void</td>
+<td>wait(long timeout, int nanos)</td>
+<td>Causes the current thread to wait until another thread invokes the notify() method or the notifyAll() method for this object, or some other thread interrupts the current thread, or a certain amount of real time has elapsed.</td>
+</tr>
+</tbody></table>
+<h2 id="3-方法详细信息"><a href="#3-方法详细信息" class="headerlink" title="3.方法详细信息"></a>3.方法详细信息</h2><ol>
+<li><p>Clone()</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//创建并返回此对象的副本。</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException</span></span><br></pre></td></tr></table></figure>
+
+<p> 如何实现拷贝，到底是浅拷贝？还是深拷贝？</p>
+<ol>
+<li>要想重写clone方法，需要实现Cloneable接口</li>
+<li>通过super.clone()获取Objec.clone()方法返回的拷贝对象</li>
+<li>如果你想要实现深拷贝，你需要在对象返回前进行修改</li>
+</ol>
+<blockquote>
+<p>情况一：创建一个Person类，实现Cloneable接口，重写clone方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.joey.object;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> <span class="keyword">implements</span> <span class="title">Cloneable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line">    String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Person</span><span class="params">(<span class="keyword">int</span> age, String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.clone();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//不重写toString()方法，为了看哈希值是否一致</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;年龄：&quot;</span> + <span class="keyword">this</span>.age + <span class="string">&quot;,姓名：&quot;</span> + <span class="keyword">this</span>.name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ObjectTest</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">        Person person = <span class="keyword">new</span> Person(<span class="number">18</span>,<span class="string">&quot;joey&quot;</span>);</span><br><span class="line">        <span class="comment">//深拷贝一个对象</span></span><br><span class="line">        Person person1 = (Person)person.clone();</span><br><span class="line">        <span class="comment">//输出对象的哈希地址值</span></span><br><span class="line">        System.out.println(person);</span><br><span class="line">        System.out.println(person1);</span><br><span class="line">        <span class="comment">//输出对象的内容</span></span><br><span class="line">        System.out.println(person.show());</span><br><span class="line">        System.out.println(person1.show());</span><br><span class="line">        <span class="comment">//修改复制的对象</span></span><br><span class="line">        person1.setAge(<span class="number">24</span>);</span><br><span class="line">        person1.setName(<span class="string">&quot;方陈勇&quot;</span>);</span><br><span class="line">        <span class="comment">//输出判断是否会修改person的值，其实地址值不一样就已经很清楚了</span></span><br><span class="line">        System.out.println(person.show());</span><br><span class="line">        System.out.println(person1.show());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*输出结果：</span></span><br><span class="line"><span class="comment">com.joey.object.Person@1b6d3586</span></span><br><span class="line"><span class="comment">com.joey.object.Person@4554617c</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey</span></span><br><span class="line"><span class="comment">年龄：24,姓名：方陈勇</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>结论一：单纯看地址值能够判断两个是不同的对象，属于深拷贝，并且修改person1的值不会影响person的值。</strong></p>
+<p>情况二：创建一个Address类，重写toString()方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.joey.object;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Address</span></span>&#123;</span><br><span class="line">    String location;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Address</span><span class="params">(String location)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.location = location;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getLocation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> location;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLocation</span><span class="params">(String location)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.location = location;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Address&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;location=&#x27;&quot;</span> + location + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Person类做一下修改</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.joey.object;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> <span class="keyword">implements</span> <span class="title">Cloneable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Address address;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Person</span><span class="params">(<span class="keyword">int</span> age, String name,Address address)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.address= address;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.clone();</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Address <span class="title">getAddress</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> address;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAddress</span><span class="params">(Address address)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.address = address;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//不重写toString()方法，为了看地址值是否一致</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;年龄：&quot;</span> + <span class="keyword">this</span>.age + <span class="string">&quot;,姓名：&quot;</span> + <span class="keyword">this</span>.name +<span class="string">&quot;,地址：&quot;</span> +<span class="keyword">this</span>.address;</span><br><span class="line"> &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="class"><span class="keyword">class</span> <span class="title">ObjectTest</span></span>&#123;</span><br><span class="line">   </span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">     Person person = <span class="keyword">new</span> Person(<span class="number">18</span>,<span class="string">&quot;joey&quot;</span>,<span class="keyword">new</span> Address(<span class="string">&quot;杭州西湖&quot;</span>));</span><br><span class="line">     <span class="comment">//拷贝一个对象</span></span><br><span class="line">     Person person1 = (Person)person.clone();</span><br><span class="line">        <span class="comment">//输出对象的哈希地址值</span></span><br><span class="line">        System.out.println(person);</span><br><span class="line">        System.out.println(person1);</span><br><span class="line">        <span class="comment">//输出对象的内容</span></span><br><span class="line">        System.out.println(<span class="string">&quot;**********************复制后************************&quot;</span>);</span><br><span class="line">        System.out.println(person.show());</span><br><span class="line">        System.out.println(person1.show());</span><br><span class="line">   </span><br><span class="line">        <span class="comment">//修改复制的对象</span></span><br><span class="line">        System.out.println(<span class="string">&quot;*****************修改person1中的age和name*************&quot;</span>);</span><br><span class="line">        person1.setAge(<span class="number">24</span>);</span><br><span class="line">     person1.setName(<span class="string">&quot;方陈勇&quot;</span>);</span><br><span class="line">        <span class="comment">//输出判断</span></span><br><span class="line">        System.out.println(person.show());</span><br><span class="line">        System.out.println(person1.show());</span><br><span class="line">   </span><br><span class="line">        <span class="comment">//修改复制的对象</span></span><br><span class="line">        System.out.println(<span class="string">&quot;*****************修改person1中的age和name*************&quot;</span>);</span><br><span class="line">        Address address = person1.getAddress();</span><br><span class="line">     address.setLocation(<span class="string">&quot;杭州滨江&quot;</span>);</span><br><span class="line">        <span class="comment">//输出判断</span></span><br><span class="line">        System.out.println(person.show());</span><br><span class="line">        System.out.println(person1.show());</span><br><span class="line">    &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">/*输出结果：</span></span><br><span class="line"><span class="comment">   com.joey.object.Person@1b6d3586</span></span><br><span class="line"><span class="comment">   com.joey.object.Person@4554617c</span></span><br><span class="line"><span class="comment">**********************复制后************************</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey,地址：Address&#123;location=&#x27;杭州西湖&#x27;&#125;</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey,地址：Address&#123;location=&#x27;杭州西湖&#x27;&#125;</span></span><br><span class="line"><span class="comment">*****************修改person1中的age和name*************</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey,地址：Address&#123;location=&#x27;杭州西湖&#x27;&#125;</span></span><br><span class="line"><span class="comment">年龄：24,姓名：方陈勇,地址：Address&#123;location=&#x27;杭州西湖&#x27;&#125;</span></span><br><span class="line"><span class="comment">*****************修改person1中的age和name*************</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey,地址：Address&#123;location=&#x27;杭州滨江&#x27;&#125;</span></span><br><span class="line"><span class="comment">年龄：24,姓名：方陈勇,地址：Address&#123;location=&#x27;杭州滨江&#x27;&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>结论二：person1只修改age和name时发现不会影响person的值，但是修改address对象的值时就会有影响。是因为Address类没有重写Clone()方法，person和person1指向的都是同一个Address对象</strong></p>
+<p>情况三：那么如何实现深拷贝。修改Address类实现Cloneable接口，重写clone()方法，在Person类中重写Clone()方法的时候调用Address重写后的clone()方法，即同时克隆Person类和Address类。</p>
+<p>修改Address类</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">  &gt;<span class="keyword">package</span> com.joey.object;</span><br><span class="line"></span><br><span class="line">  &gt;<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Address</span> <span class="keyword">implements</span> <span class="title">Cloneable</span></span>&#123;</span><br><span class="line">String location;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">super</span>.clone();</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">Address</span><span class="params">(String location)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">this</span>.location = location;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> String <span class="title">getLocation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> location;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLocation</span><span class="params">(String location)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">this</span>.location = location;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="string">&quot;Address&#123;&quot;</span> +</span><br><span class="line">            <span class="string">&quot;location=&#x27;&quot;</span> + location + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">               <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>   修改Person类中重写的Clone()方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">   &gt;<span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line"><span class="comment">//深拷贝</span></span><br><span class="line"> Person person = (Person)<span class="keyword">super</span>.clone();</span><br><span class="line"> person.address = (Address) <span class="keyword">this</span>.address.clone();</span><br><span class="line"> <span class="keyword">return</span> person;</span><br><span class="line">    <span class="comment">//return super.clone();</span></span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="comment">/*输出结果：</span></span><br><span class="line"><span class="comment">   com.joey.object.Person@1b6d3586</span></span><br><span class="line"><span class="comment">com.joey.object.Person@4554617c</span></span><br><span class="line"><span class="comment">**********************复制后************************</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey,地址：Address&#123;location=&#x27;杭州西湖&#x27;&#125;</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey,地址：Address&#123;location=&#x27;杭州西湖&#x27;&#125;</span></span><br><span class="line"><span class="comment">*****************修改person1中的age和name*************</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey,地址：Address&#123;location=&#x27;杭州西湖&#x27;&#125;</span></span><br><span class="line"><span class="comment">年龄：24,姓名：方陈勇,地址：Address&#123;location=&#x27;杭州西湖&#x27;&#125;</span></span><br><span class="line"><span class="comment">*****************修改person1中的age和name*************</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey,地址：Address&#123;location=&#x27;杭州西湖&#x27;&#125;</span></span><br><span class="line"><span class="comment">年龄：24,姓名：方陈勇,地址：Address&#123;location=&#x27;杭州滨江&#x27;&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>结论三：可以看到最后person的address内容也没有改变。也就是说，当一个类里有很多引用类型时，如果想实现深拷贝那就得将每个引用类型都实现Cloneable接口重写一下clone()方法，比较麻烦的。可能好奇为什么String为什么没有影响，因为String是不可变的，相当于重新new了一个String。</strong></p>
+<p><strong>所以，对于很多引用类型，可以使用序列化对象的方式进行深拷贝。</strong></p>
+</blockquote>
+</li>
+<li><p>equals(Object obj)</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//直接判断的是引用，若想判断内容是否相同，需要重写此方法。</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span></span></span><br></pre></td></tr></table></figure>
+
+<p> 常见问题：equals()和==的比较</p>
+<ul>
+<li>equals()用于引用类型的比较，如果引用类型没有重写equals()方法，调用的就是Object类中的equals()，比较的是地址值。</li>
+<li>==用于在基本数据类型和引用数据类型的比较。如果是基本数据类型，比较的是内容，如果是引用数据类型，那比较的就是地址值。</li>
+</ul>
+<p> 哪些类重写了equals()方法</p>
+<ul>
+<li>String</li>
+<li>Date</li>
+<li>File</li>
+<li>包装类</li>
+<li>…</li>
+</ul>
+<p> 如何重写equals方法</p>
+<blockquote>
+<p>equals()方法里面提到了四个原则：</p>
+<ol>
+<li>自反性reflexive，a.equals(a) == true</li>
+<li>对称性symmetric，a.equals(b) == b.equals(a)</li>
+<li>传递性transitive，当a.equals(b) == true且b.equals(c) == true时，a.equals(c) == true</li>
+<li>一致性consistent，当equals实现不变时，a.equals(b)返回值永远不变</li>
+</ol>
+<p>例如String中的equals()，重写判断的是内容相等，hashCode()方法也重写了</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object anObject)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span> == anObject) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (anObject <span class="keyword">instanceof</span> String) &#123;</span><br><span class="line">        String anotherString = (String)anObject;</span><br><span class="line">        <span class="keyword">int</span> n = value.length;</span><br><span class="line">        <span class="keyword">if</span> (n == anotherString.value.length) &#123;</span><br><span class="line">            <span class="keyword">char</span> v1[] = value;</span><br><span class="line">            <span class="keyword">char</span> v2[] = anotherString.value;</span><br><span class="line">            <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span> (n-- != <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (v1[i] != v2[i])</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p> <strong>注意：重写equals()方法，需要重写hashCode()</strong></p>
+</li>
+<li><p>finalize()</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//该方法用于释放资源。因为无法确定该方法什么时候被调用，很少使用。</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>finalize的原理</p>
+<p>（1）对象在初始化的过程中会判断是否重写了finalize，方法是判断两个字段标志has_finalizer_flag和RegisterFinalizersAtInit。</p>
+<p>（2）如果重写了finalize，那就把当前对象注册到FinalizerThread的ReferenceQueue队列中。注册之后的对象就叫做Finalizer。方法是调用register_finalizer函数。此时java虚拟机一看当前有这个对象的引用，于是就不进行垃圾回收了。</p>
+<p>（3）对象开始被调用，FinalizerThread线程负责从ReferenceQueue队列中获取Finalizer对象。开始执行finalize方法，在执行之前，这个对象一直在堆中。</p>
+<p>（4）对象执行完毕之后，将这个Finalizer对象从队列中移除，java虚拟机一看对象没有引用了，就进行垃圾回收了。</p>
+<p>这就是整个过程。不过在这里我们主要看的是finalize方法对垃圾回收的影响，其实就是在第三步，也就是这个对象含有finalize，进入了队列但一直没有被调用的这段时间，会一直占用内存。</p>
+</blockquote>
+<p> <strong>注意：应该避免使用finalize()方法，可能会导致内存溢出。</strong></p>
+</li>
+<li><p>getClass()</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//返回此Object运行时类类型，final修饰不可重写，一般和getName()联合使用，如getName().getClass().</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">native</span> Class&lt;?&gt; getClass();</span><br></pre></td></tr></table></figure>
+
+<p> getClass()返回调用对象的包名+类名，jvm可以根据这个唯一定位一个类</p>
+</li>
+<li><p>hashCode()</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//返回对象的哈希码值。</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">native</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p> 这里存在一种情况，重写了equals()方法没有重写，两个对象的内容确实相等了。但是，地址值还是不一样。</p>
+<p> 比如String类中，String a = “a”;String b = new String(“a”); a在字符串常量池中，b在堆中，地址值不一样。比如在使用集合Set或者其他一些需要唯一性判断的地方，内容相等其实就是相等，但是有两个地址值，可能会造成重复。</p>
+<p> 所以说重写equals()方法同时也要注意重写hashCode()方法</p>
+</li>
+<li><p>toString()</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//返回了Object对象的全限定类名+@+16进制表示的物理地址，它建议所有的子类都重写该方法，以致于可以打印出关键信息</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>notify()</p>
+</li>
+<li><p>notifyAll()</p>
+</li>
+<li><p>wait()</p>
+</li>
+<li><p>wait(long timeout)</p>
+</li>
+<li><p>wait(long timeout, int nanos)</p>
+</li>
+</ol>
+<p>到线程再看这几个……</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">fangchenyong</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fangchenyong.top/2019/08/23/Java-%E6%BA%90%E7%A0%81-JDK8-Object/">http://fangchenyong.top/2019/08/23/Java-%E6%BA%90%E7%A0%81-JDK8-Object/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://fangchenyong.top" target="_blank">Joey</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Java/">Java</a><a class="post-meta__tags" href="/tags/%E6%BA%90%E7%A0%81/">源码</a><a class="post-meta__tags" href="/tags/Object/">Object</a></div><div class="post_share"><div class="social-share" data-image="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2019/08/23/%E9%A1%B9%E7%9B%AE-%E5%9F%BA%E4%BA%8ENetty+WebSocket%E7%AE%80%E6%98%93%E7%89%88%E5%BE%AE%E4%BF%A1/"><img class="prev-cover" src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">基于Netty+WebSocket简易版微信</div></div></a></div><div class="next-post pull-right"><a href="/2019/08/14/Linux-install_FastDFS+Nginx/"><img class="next-cover" src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">CentOS7 安装FastDFS+nginx</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2019/09/06/Java-源码-JDK8-String/" title="JDK8 String源码"><img class="cover" src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-09-06</div><div class="title">JDK8 String源码</div></div></a></div><div><a href="/2019/08/23/项目-基于Netty+WebSocket简易版微信/" title="基于Netty+WebSocket简易版微信"><img class="cover" src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-08-23</div><div class="title">基于Netty+WebSocket简易版微信</div></div></a></div><div><a href="/2019/07/29/项目-理财产品系统/" title="理财产品系统（慕课网）"><img class="cover" src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-07-29</div><div class="title">理财产品系统（慕课网）</div></div></a></div><div><a href="/2019/07/20/Java-Java基础笔记/" title="Java基础笔记"><img class="cover" src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-07-20</div><div class="title">Java基础笔记</div></div></a></div><div><a href="/2019/07/18/Java-Java笔记/" title="Java笔记"><img class="cover" src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-07-18</div><div class="title">Java笔记</div></div></a></div><div><a href="/2019/06/29/项目-FangXingMallNote/" title="方兴商城笔记"><img class="cover" src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-06-29</div><div class="title">方兴商城笔记</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/3FD9B055-6361-49B7-B8CE-5BA9144BD27F.JPG" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">fangchenyong</div><div class="author-info__description">深山的鹿，不知归处，万般皆苦，唯有自渡</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">38</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">45</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/fangchenyong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1013659102@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/1013659102" target="_blank" title="QQ"><i class="fa fa-qq"></i></a><a class="social-icon" href="/1013659102" target="_blank" title="WeChat"><i class="fa fa-weixin"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JDK8-Object"><span class="toc-number">1.</span> <span class="toc-text">JDK8 Object</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%AE%80%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">1.简述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%96%B9%E6%B3%95%E6%B1%87%E6%80%BB"><span class="toc-number">1.2.</span> <span class="toc-text">2.方法汇总</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%96%B9%E6%B3%95%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF"><span class="toc-number">1.3.</span> <span class="toc-text">3.方法详细信息</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/03/20/%E9%9D%A2%E8%AF%95-%E9%9B%86%E5%90%88/" title="面试题-集合框架"><img src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="面试题-集合框架"/></a><div class="content"><a class="title" href="/2021/03/20/%E9%9D%A2%E8%AF%95-%E9%9B%86%E5%90%88/" title="面试题-集合框架">面试题-集合框架</a><time datetime="2021-03-19T16:00:00.000Z" title="发表于 2021-03-20 00:00:00">2021-03-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/13/The%20Road%20To%20Bald%20Man!/" title="The Road To Bald Man!"><img src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="The Road To Bald Man!"/></a><div class="content"><a class="title" href="/2021/03/13/The%20Road%20To%20Bald%20Man!/" title="The Road To Bald Man!">The Road To Bald Man!</a><time datetime="2021-03-12T16:00:00.000Z" title="发表于 2021-03-13 00:00:00">2021-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/07/21/%E6%A1%86%E6%9E%B6-Maven-%E9%85%8D%E7%BD%AE%E6%A0%87%E7%AD%BE%E8%AF%A6%E8%A7%A3/" title="Maven配置标签详解"><img src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Maven配置标签详解"/></a><div class="content"><a class="title" href="/2020/07/21/%E6%A1%86%E6%9E%B6-Maven-%E9%85%8D%E7%BD%AE%E6%A0%87%E7%AD%BE%E8%AF%A6%E8%A7%A3/" title="Maven配置标签详解">Maven配置标签详解</a><time datetime="2020-07-20T16:00:00.000Z" title="发表于 2020-07-21 00:00:00">2020-07-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/07/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%B8%83%E5%A4%A7%E5%8E%9F%E5%88%99/" title="设计模式-七大设计原则"><img src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="设计模式-七大设计原则"/></a><div class="content"><a class="title" href="/2020/07/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%B8%83%E5%A4%A7%E5%8E%9F%E5%88%99/" title="设计模式-七大设计原则">设计模式-七大设计原则</a><time datetime="2020-07-12T16:00:00.000Z" title="发表于 2020-07-13 00:00:00">2020-07-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/07/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" title="设计模式-创建型模式-单例模式"><img src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="设计模式-创建型模式-单例模式"/></a><div class="content"><a class="title" href="/2020/07/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" title="设计模式-创建型模式-单例模式">设计模式-创建型模式-单例模式</a><time datetime="2020-07-12T16:00:00.000Z" title="发表于 2020-07-13 00:00:00">2020-07-13</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/BEF238F4E59CF4D91A694FE9C5DBC030.JPG')"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2021 By fangchenyong</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">人生没有退路！</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
