@@ -213,11 +213,10 @@
 
 <p> 如何实现拷贝，到底是浅拷贝？还是深拷贝？</p>
 <ol>
-<li><p>要想重写clone方法，需要实现Cloneable接口</p>
-</li>
-<li><p>通过super.clone()获取Objec.clone()方法返回的拷贝对象</p>
-</li>
-<li><p>如果你想要实现深拷贝，你需要在对象返回前进行修改</p>
+<li>要想重写clone方法，需要实现Cloneable接口</li>
+<li>通过super.clone()获取Objec.clone()方法返回的拷贝对象</li>
+<li>如果你想要实现深拷贝，你需要在对象返回前进行修改</li>
+</ol>
 <blockquote>
 <p>情况一：创建一个Person类，实现Cloneable接口，重写clone方法</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.joey.object;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> <span class="keyword">implements</span> <span class="title">Cloneable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line">    String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Person</span><span class="params">(<span class="keyword">int</span> age, String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.clone();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//不重写toString()方法，为了看哈希值是否一致</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;年龄：&quot;</span> + <span class="keyword">this</span>.age + <span class="string">&quot;,姓名：&quot;</span> + <span class="keyword">this</span>.name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ObjectTest</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">        Person person = <span class="keyword">new</span> Person(<span class="number">18</span>,<span class="string">&quot;joey&quot;</span>);</span><br><span class="line">        <span class="comment">//深拷贝一个对象</span></span><br><span class="line">        Person person1 = (Person)person.clone();</span><br><span class="line">        <span class="comment">//输出对象的哈希地址值</span></span><br><span class="line">        System.out.println(person);</span><br><span class="line">        System.out.println(person1);</span><br><span class="line">        <span class="comment">//输出对象的内容</span></span><br><span class="line">        System.out.println(person.show());</span><br><span class="line">        System.out.println(person1.show());</span><br><span class="line">        <span class="comment">//修改复制的对象</span></span><br><span class="line">        person1.setAge(<span class="number">24</span>);</span><br><span class="line">        person1.setName(<span class="string">&quot;方陈勇&quot;</span>);</span><br><span class="line">        <span class="comment">//输出判断是否会修改person的值，其实地址值不一样就已经很清楚了</span></span><br><span class="line">        System.out.println(person.show());</span><br><span class="line">        System.out.println(person1.show());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*输出结果：</span></span><br><span class="line"><span class="comment">com.joey.object.Person@1b6d3586</span></span><br><span class="line"><span class="comment">com.joey.object.Person@4554617c</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey</span></span><br><span class="line"><span class="comment">年龄：24,姓名：方陈勇</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
@@ -233,7 +232,6 @@
 <p>情况三：那么如何实现深拷贝。修改Address类实现Cloneable接口，重写clone()方法，在Person类中重写Clone()方法的时候调用Address重写后的clone()方法，即同时克隆Person类和Address类。</p>
 <p>修改Address类</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">  &gt;<span class="keyword">package</span> com.joey.object;</span><br><span class="line"></span><br><span class="line">  &gt;<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Address</span> <span class="keyword">implements</span> <span class="title">Cloneable</span></span>&#123;</span><br><span class="line">String location;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">super</span>.clone();</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">Address</span><span class="params">(String location)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">this</span>.location = location;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> String <span class="title">getLocation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> location;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLocation</span><span class="params">(String location)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">this</span>.location = location;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="string">&quot;Address&#123;&quot;</span> +</span><br><span class="line">            <span class="string">&quot;location=&#x27;&quot;</span> + location + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">               <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-
 <p>   修改Person类中重写的Clone()方法</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">   &gt;<span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line"><span class="comment">//深拷贝</span></span><br><span class="line"> Person person = (Person)<span class="keyword">super</span>.clone();</span><br><span class="line"> person.address = (Address) <span class="keyword">this</span>.address.clone();</span><br><span class="line"> <span class="keyword">return</span> person;</span><br><span class="line">    <span class="comment">//return super.clone();</span></span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="comment">/*输出结果：</span></span><br><span class="line"><span class="comment">   com.joey.object.Person@1b6d3586</span></span><br><span class="line"><span class="comment">com.joey.object.Person@4554617c</span></span><br><span class="line"><span class="comment">**********************复制后************************</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey,地址：Address&#123;location=&#x27;杭州西湖&#x27;&#125;</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey,地址：Address&#123;location=&#x27;杭州西湖&#x27;&#125;</span></span><br><span class="line"><span class="comment">*****************修改person1中的age和name*************</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey,地址：Address&#123;location=&#x27;杭州西湖&#x27;&#125;</span></span><br><span class="line"><span class="comment">年龄：24,姓名：方陈勇,地址：Address&#123;location=&#x27;杭州西湖&#x27;&#125;</span></span><br><span class="line"><span class="comment">*****************修改person1中的age和name*************</span></span><br><span class="line"><span class="comment">年龄：18,姓名：joey,地址：Address&#123;location=&#x27;杭州西湖&#x27;&#125;</span></span><br><span class="line"><span class="comment">年龄：24,姓名：方陈勇,地址：Address&#123;location=&#x27;杭州滨江&#x27;&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
@@ -241,28 +239,23 @@
 <p><strong>所以，对于很多引用类型，可以使用序列化对象的方式进行深拷贝。</strong></p>
 </blockquote>
 </li>
-</ol>
-</li>
 <li><p>equals(Object obj)</p>
  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//直接判断的是引用，若想判断内容是否相同，需要重写此方法。</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span></span></span><br></pre></td></tr></table></figure>
 
 <p> 常见问题：equals()和==的比较</p>
 <ul>
-<li><p>equals()用于引用类型的比较，如果引用类型没有重写equals()方法，调用的就是Object类中的equals()，比较的是地址值。</p>
-</li>
-<li><p>==用于在基本数据类型和引用数据类型的比较。如果是基本数据类型，比较的是内容，如果是引用数据类型，那比较的就是地址值。</p>
-<p>哪些类重写了equals()方法</p>
-</li>
-<li><p>String</p>
-</li>
-<li><p>Date</p>
-</li>
-<li><p>File</p>
-</li>
-<li><p>包装类</p>
-</li>
-<li><p>…</p>
-<p>如何重写equals方法</p>
+<li>equals()用于引用类型的比较，如果引用类型没有重写equals()方法，调用的就是Object类中的equals()，比较的是地址值。</li>
+<li>==用于在基本数据类型和引用数据类型的比较。如果是基本数据类型，比较的是内容，如果是引用数据类型，那比较的就是地址值。</li>
+</ul>
+<p> 哪些类重写了equals()方法</p>
+<ul>
+<li>String</li>
+<li>Date</li>
+<li>File</li>
+<li>包装类</li>
+<li>…</li>
+</ul>
+<p> 如何重写equals方法</p>
 <blockquote>
 <p>equals()方法里面提到了四个原则：</p>
 <ol>
@@ -274,8 +267,6 @@
 <p>例如String中的equals()，重写判断的是内容相等，hashCode()方法也重写了</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object anObject)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span> == anObject) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (anObject <span class="keyword">instanceof</span> String) &#123;</span><br><span class="line">        String anotherString = (String)anObject;</span><br><span class="line">        <span class="keyword">int</span> n = value.length;</span><br><span class="line">        <span class="keyword">if</span> (n == anotherString.value.length) &#123;</span><br><span class="line">            <span class="keyword">char</span> v1[] = value;</span><br><span class="line">            <span class="keyword">char</span> v2[] = anotherString.value;</span><br><span class="line">            <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span> (n-- != <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (v1[i] != v2[i])</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </blockquote>
-</li>
-</ul>
 <p> <strong>注意：重写equals()方法，需要重写hashCode()</strong></p>
 </li>
 <li><p>finalize()</p>
@@ -304,8 +295,7 @@
 <p> 所以说重写equals()方法同时也要注意重写hashCode()方法</p>
 </li>
 <li><p>toString()</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//返回了Object对象的全限定类名+@+16进制表示的物理地址，它建议所有的子类都重写该方法，以致于可以打印出关键信息</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure>
-</li>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//返回了Object对象的全限定类名+@+16进制表示的物理地址，它建议所有的子类都重写该方法，以致于可以打印出关键信息</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure></li>
 <li><p>notify()</p>
 </li>
 <li><p>notifyAll()</p>
