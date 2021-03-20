@@ -1,0 +1,340 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MySQL高级 | Joey</title><meta name="keywords" content="数据库,MySQL"><meta name="author" content="fangchenyong"><meta name="copyright" content="fangchenyong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="MySQL高级笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL高级">
+<meta property="og:url" content="http://fangchenyong.top/2020/04/19/%E6%95%B0%E6%8D%AE%E5%BA%93-MySQL-MySQL%E9%AB%98%E7%BA%A7/index.html">
+<meta property="og:site_name" content="Joey">
+<meta property="og:description" content="MySQL高级笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-04-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-10-12T08:27:08.356Z">
+<meta property="article:author" content="fangchenyong">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://fangchenyong.top/2020/04/19/%E6%95%B0%E6%8D%AE%E5%BA%93-MySQL-MySQL%E9%AB%98%E7%BA%A7/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-10-12 16:27:08'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">38</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">45</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Joey</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">MySQL高级</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-04-18T16:00:00.000Z" title="发表于 2020-04-19 00:00:00">2020-04-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-10-12T08:27:08.356Z" title="更新于 2020-10-12 16:27:08">2020-10-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/">MySQL</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="MySQL高级"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="1-MySQL的结构介绍"><a href="#1-MySQL的结构介绍" class="headerlink" title="1.MySQL的结构介绍"></a>1.MySQL的结构介绍</h1><h2 id="1-1MySQL简介"><a href="#1-1MySQL简介" class="headerlink" title="1.1MySQL简介"></a>1.1MySQL简介</h2><h3 id="1-1-1-概述"><a href="#1-1-1-概述" class="headerlink" title="1.1.1 概述"></a>1.1.1 概述</h3><h3 id="1-1-2-高级MYSQL"><a href="#1-1-2-高级MYSQL" class="headerlink" title="1.1.2 高级MYSQL"></a>1.1.2 高级MYSQL</h3><ul>
+<li>mysql内核</li>
+<li>sql优化工程师</li>
+<li>mysql服务器的优化</li>
+<li>查询语句优化</li>
+<li>主重复制</li>
+<li>软硬件升级</li>
+<li>容灾备份</li>
+<li>sql编程</li>
+</ul>
+<h2 id="1-2MySQL-Linux版安装"><a href="#1-2MySQL-Linux版安装" class="headerlink" title="1.2MySQL-Linux版安装"></a>1.2MySQL-Linux版安装</h2><p><a href="https://fangchenyong.top/2019/07/23/install_MySql5.7/">CentOS 7.2 安装MySql 5.7</a></p>
+<h2 id="1-3MySQL主要配置文件"><a href="#1-3MySQL主要配置文件" class="headerlink" title="1.3MySQL主要配置文件"></a>1.3MySQL主要配置文件</h2><h3 id="1-3-1-二进制日志log-bin"><a href="#1-3-1-二进制日志log-bin" class="headerlink" title="1.3.1 二进制日志log-bin"></a>1.3.1 二进制日志log-bin</h3><ul>
+<li>主从复制</li>
+</ul>
+<h3 id="1-3-2-错误日志log-error"><a href="#1-3-2-错误日志log-error" class="headerlink" title="1.3.2 错误日志log-error"></a>1.3.2 错误日志log-error</h3><ul>
+<li>默认是关闭的,记录严重的警告和错误信息,每次启动和关闭的详细信息等.</li>
+</ul>
+<h3 id="1-3-3-查询日志log"><a href="#1-3-3-查询日志log" class="headerlink" title="1.3.3 查询日志log"></a>1.3.3 查询日志log</h3><ul>
+<li>默认关闭,记录查询的sql语句，如果开启会减低mysql的整体性能，因为记录日志也是需要消耗系统资源的</li>
+</ul>
+<h3 id="1-3-4-数据文件"><a href="#1-3-4-数据文件" class="headerlink" title="1.3.4  数据文件"></a>1.3.4  数据文件</h3><ul>
+<li>两个系统<ul>
+<li>windows<ul>
+<li>D:\ProgramFiles\MySQL\MySQLServer5.5\data目录下可以挑选很多库</li>
+</ul>
+</li>
+<li>linux<ul>
+<li>看看当前系统中的全部库后再进去</li>
+<li>默认路径：/var/lib/mysql</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>frm文件<ul>
+<li>存放表结构</li>
+</ul>
+</li>
+<li>myd文件<ul>
+<li>存放表数据</li>
+</ul>
+</li>
+<li>myi文件<ul>
+<li>存放表索引</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-3-5-如何配置"><a href="#1-3-5-如何配置" class="headerlink" title="1.3.5 如何配置"></a>1.3.5 如何配置</h3><ul>
+<li>windows<ul>
+<li>my.ini文件</li>
+</ul>
+</li>
+<li>Linux<ul>
+<li>/etc/my.cnf文件</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-4Mysql逻辑架构介绍"><a href="#1-4Mysql逻辑架构介绍" class="headerlink" title="1.4Mysql逻辑架构介绍"></a>1.4Mysql逻辑架构介绍</h2><ul>
+<li><p>总体概览</p>
+<blockquote>
+<p>1.Connectors<br>指的是不同语言中与SQL的交互<br>2 Management Serveices &amp; Utilities： <br>系统管理和控制工具<br>3 Connection Pool: 连接池<br>管理缓冲用户连接，线程处理等需要缓存的需求。<br>负责监听对 MySQL Server 的各种请求，接收连接请求，转发所有连接请求到线程管理模块。每一个连接上 MySQL Server 的客户端请求都会被分配（或创建）一个连接线程为其单独服务。而连接线程的主要工作就是负责 MySQL Server 与客户端的通信，<br>接受客户端的命令请求，传递 Server 端的结果信息等。线程管理模块则负责管理维护这些连接线程。包括线程的创建，线程的 cache 等。<br>4 SQL Interface: SQL接口。…</p>
+</blockquote>
+</li>
+<li><p>查询说明</p>
+</li>
+</ul>
+<h2 id="1-5Mysql存储引擎"><a href="#1-5Mysql存储引擎" class="headerlink" title="1.5Mysql存储引擎"></a>1.5Mysql存储引擎</h2><ul>
+<li>查看命令</li>
+<li>MyISAM和InnoDB</li>
+<li>阿里巴巴，淘宝用哪个</li>
+</ul>
+<h1 id="2-索引优化分析"><a href="#2-索引优化分析" class="headerlink" title="2.索引优化分析"></a>2.索引优化分析</h1><h2 id="2-1-性能下降SQL慢-执行时间长-等待时间长"><a href="#2-1-性能下降SQL慢-执行时间长-等待时间长" class="headerlink" title="2.1 性能下降SQL慢 执行时间长 等待时间长"></a>2.1 性能下降SQL慢 执行时间长 等待时间长</h2><h3 id="2-1-1查询语句写的烂"><a href="#2-1-1查询语句写的烂" class="headerlink" title="2.1.1查询语句写的烂"></a>2.1.1查询语句写的烂</h3><h3 id="2-1-2索引失效"><a href="#2-1-2索引失效" class="headerlink" title="2.1.2索引失效"></a>2.1.2索引失效</h3><ul>
+<li>单值</li>
+<li>复合</li>
+</ul>
+<h3 id="2-1-3关联查询太多join-设计缺陷或不得已的需求"><a href="#2-1-3关联查询太多join-设计缺陷或不得已的需求" class="headerlink" title="2.1.3关联查询太多join(设计缺陷或不得已的需求)"></a>2.1.3关联查询太多join(设计缺陷或不得已的需求)</h3><h3 id="2-1-4服务器调优及各个参数设置-缓冲-线程数等"><a href="#2-1-4服务器调优及各个参数设置-缓冲-线程数等" class="headerlink" title="2.1.4服务器调优及各个参数设置(缓冲\线程数等)"></a>2.1.4服务器调优及各个参数设置(缓冲\线程数等)</h3><h2 id="2-2-常见通用的join查询"><a href="#2-2-常见通用的join查询" class="headerlink" title="2.2 常见通用的join查询"></a>2.2 常见通用的join查询</h2><h3 id="2-2-1-SQL执行顺序"><a href="#2-2-1-SQL执行顺序" class="headerlink" title="2.2.1 SQL执行顺序"></a>2.2.1 SQL执行顺序</h3><ul>
+<li>手写</li>
+<li>机读</li>
+<li>总结</li>
+</ul>
+<h3 id="2-2-2-Join图"><a href="#2-2-2-Join图" class="headerlink" title="2.2.2 Join图"></a>2.2.2 Join图</h3><h3 id="2-2-3-建表SQL"><a href="#2-2-3-建表SQL" class="headerlink" title="2.2.3 建表SQL"></a>2.2.3 建表SQL</h3><h3 id="2-2-4-7种Join"><a href="#2-2-4-7种Join" class="headerlink" title="2.2.4 7种Join"></a>2.2.4 7种Join</h3><h2 id="2-3-索引简介"><a href="#2-3-索引简介" class="headerlink" title="2.3 索引简介"></a>2.3 索引简介</h2><p>2.3.1 是什么</p>
+<ul>
+<li>MySQL官方对索引的定义为：索引(Index)是帮助MySQL高校获取数据的数据结构。<br>  可以得到索引的本质：索引是数据结构</li>
+<li>你可以简单理解为”排好序的快速查找数据结构”。</li>
+<li>一般来说索引本身也很大，不可能全部存储在内存中，因此索引往往以文件形式存储在硬盘上</li>
+<li>我们平时所说的索引，如果没有特别指明，都是指B树(多路搜索树，并不一定是二叉树)结构组织的索引。其中聚集索引，次要索引，覆盖索引，<br>  复合索引，前缀索引，唯一索引默认都是使用B+树索引，统称索引。当然,除了B+树这种类型的索引之外，还有哈希索引(hash index)等。</li>
+</ul>
+<p>2.3.2 优势</p>
+<ul>
+<li>类似大学图书馆建书目索引，提高数据检索效率，降低数据库的IO成本</li>
+<li>通过索引列对数据进行排序，降低数据排序成本，降低了CPU的消耗</li>
+</ul>
+<p>2.3.3 劣势</p>
+<ul>
+<li>实际上索引也是一张表，该表保存了主键和索引字段，并指向实体表的记录,所以索引列也是要占用空间的</li>
+<li>虽然索引大大提高了查询速度，同时却会降低更新表的速度,如果对表INSERT,UPDATE和DELETE。<br>  因为更新表时，MySQL不仅要不存数据，还要保存一下索引文件每次更新添加了索引列的字段，<br>  都会调整因为更新所带来的键值变化后的索引信息</li>
+<li>索引只是提高效率的一个因素，如果你的MySQL有大数据量的表，就需要花时间研究建立优秀的索引，或优化查询语句</li>
+</ul>
+<p>2.3.4 mysql索引分类</p>
+<ul>
+<li><p>单值索引</p>
+<ul>
+<li><p>即一个索引只包含单个列，一个表可以有多个单列索引</p>
+<blockquote>
+<p>建议一张表索引不要超过5个<br>优先考虑复合索引</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>唯一索引</p>
+<ul>
+<li>索引列的值必须唯一，但允许有空值</li>
+</ul>
+</li>
+<li><p>复合索引</p>
+<ul>
+<li>即一个索引包含多个列</li>
+</ul>
+</li>
+<li><p>基本语法</p>
+<ul>
+<li>创建<ul>
+<li>CREATE [UNIQUE] INDEX indexName ON mytable(columnname(length));</li>
+<li>ALTER mytable ADD [UNIQUE] INDEX [indexName] ON(columnname(length));</li>
+</ul>
+</li>
+<li>删除<ul>
+<li>DROP INDEX [indexName] ON mytable;</li>
+</ul>
+</li>
+<li>查看<ul>
+<li>SHOW INDEX FROM table_name\G</li>
+</ul>
+</li>
+<li>使用ALTER命令</li>
+</ul>
+</li>
+</ul>
+<p>2.3.5 mysql索引结构</p>
+<ul>
+<li><p>BTree索引</p>
+<blockquote>
+<p>Btree索引(或Balanced Tree)，是一种很普遍的数据库索引结构，oracle默认的索引类型（本文也主要依据oracle来讲）。其特点是定位高效、利用率高、自我平衡，特别适用于高基数字段，定位单条或小范围数据非常高效。理论上，使用Btree在亿条数据与100条数据中定位记录的花销相同。<br> <br>数据结构利用率高、定位高效<br>Btree索引的数据结构如下：<br><br>结构看起来Btree索引与Binary Tree相似，但在细节上有所不同，上图中用不同颜色的标示出了Btree索引的几个主要特点：<br> <br>树形结构：由根节(root)、分支(branches)、叶(leaves)三级节点组成，其中分支节点可以有多层。…</p>
+</blockquote>
+</li>
+<li><p>Hash索引</p>
+<blockquote>
+<p>了解</p>
+</blockquote>
+</li>
+<li><p>full-text全文索引</p>
+<blockquote>
+<p>了解</p>
+</blockquote>
+</li>
+<li><p>R-Tree索引</p>
+<blockquote>
+<p>了解</p>
+</blockquote>
+</li>
+</ul>
+<p>2.3.6 哪些情况需要创建索引</p>
+<ul>
+<li><p>1.主键自动建立唯一索引</p>
+</li>
+<li><p>2.频繁作为查询的条件的字段应该创建索引</p>
+</li>
+<li><p>3.查询中与其他表关联的字段，外键关系建立索引</p>
+</li>
+<li><p>4.频繁更新的字段不适合创建索引</p>
+<blockquote>
+<p>因为每次更新不单单是更新了记录还会更新索引，加重IO负担</p>
+</blockquote>
+</li>
+<li><p>5.Where条件里用不到的字段不创建索引</p>
+</li>
+<li><p>6.单间/组合索引的选择问题，who？（在高并发下倾向创建组合索引）</p>
+</li>
+<li><p>7.查询中排序的字段，排序字段若通过索引去访问将大大提高排序的速度</p>
+</li>
+<li><p>8.查询中统计或者分组字段</p>
+</li>
+</ul>
+<p>2.3.7 哪些情况不要创建索引</p>
+<ul>
+<li>1.表记录太少</li>
+<li>2.经常增删改的表</li>
+<li>3.数据重复且分布平均的表字段，因此应该只为经常查询和经常排序的数据列建立索引。<br>  注意，如果某个数据列包含许多重复的内容，为它建立索引就没有太大的实际效果。</li>
+</ul>
+<h2 id="2-4-性能分析"><a href="#2-4-性能分析" class="headerlink" title="2.4 性能分析"></a>2.4 性能分析</h2><h2 id="2-5-索引优化"><a href="#2-5-索引优化" class="headerlink" title="2.5 索引优化"></a>2.5 索引优化</h2><h1 id="3-查询截取分析"><a href="#3-查询截取分析" class="headerlink" title="3.查询截取分析"></a>3.查询截取分析</h1><h1 id="4-MySQL锁机制"><a href="#4-MySQL锁机制" class="headerlink" title="4.MySQL锁机制"></a>4.MySQL锁机制</h1><h1 id="5-主从复制"><a href="#5-主从复制" class="headerlink" title="5.主从复制"></a>5.主从复制</h1>
+
+	<div class="row">
+    <embed src="https://fangchenyong.oss-cn-hangzhou.aliyuncs.com/pdf/%E5%B0%9A%E7%A1%85%E8%B0%B7MySQL%E9%AB%98%E7%BA%A7_JAVA%E7%89%88.pdf" width="100%" height="550" type="application/pdf">
+	</div>
+
+
+ 
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">fangchenyong</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fangchenyong.top/2020/04/19/%E6%95%B0%E6%8D%AE%E5%BA%93-MySQL-MySQL%E9%AB%98%E7%BA%A7/">http://fangchenyong.top/2020/04/19/%E6%95%B0%E6%8D%AE%E5%BA%93-MySQL-MySQL%E9%AB%98%E7%BA%A7/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://fangchenyong.top" target="_blank">Joey</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><a class="post-meta__tags" href="/tags/MySQL/">MySQL</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/07/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">设计模式-创建型模式-单例模式</div></div></a></div><div class="next-post pull-right"><a href="/2020/04/01/%E4%B8%AD%E9%97%B4%E4%BB%B6-Redis/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Redis命令</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/02/10/数据库-MySQL-MySQL基础/" title="MySQL基础"><img class="cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-10</div><div class="title">MySQL基础</div></div></a></div><div><a href="/2019/07/23/数据库-Sql Server-sqlserver存储过程/" title="SqlServer存储过程使用游标循环"><img class="cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-07-23</div><div class="title">SqlServer存储过程使用游标循环</div></div></a></div><div><a href="/2019/07/23/数据库-Oracle-Oracle常用操作/" title="Oracle常用操作"><img class="cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-07-23</div><div class="title">Oracle常用操作</div></div></a></div><div><a href="/2019/07/23/数据库-Sql Server-sqlserver数据库备份还原/" title="SqlServer 备份还原"><img class="cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-07-23</div><div class="title">SqlServer 备份还原</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">fangchenyong</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">38</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">45</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-MySQL%E7%9A%84%E7%BB%93%E6%9E%84%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">1.MySQL的结构介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1MySQL%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">1.1MySQL简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-1-%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1.1 概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-2-%E9%AB%98%E7%BA%A7MYSQL"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.1.2 高级MYSQL</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2MySQL-Linux%E7%89%88%E5%AE%89%E8%A3%85"><span class="toc-number">1.2.</span> <span class="toc-text">1.2MySQL-Linux版安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3MySQL%E4%B8%BB%E8%A6%81%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.</span> <span class="toc-text">1.3MySQL主要配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-1-%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%97%A5%E5%BF%97log-bin"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.3.1 二进制日志log-bin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-2-%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97log-error"><span class="toc-number">1.3.2.</span> <span class="toc-text">1.3.2 错误日志log-error</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-3-%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97log"><span class="toc-number">1.3.3.</span> <span class="toc-text">1.3.3 查询日志log</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-4-%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.4.</span> <span class="toc-text">1.3.4  数据文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-5-%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE"><span class="toc-number">1.3.5.</span> <span class="toc-text">1.3.5 如何配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4Mysql%E9%80%BB%E8%BE%91%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.4.</span> <span class="toc-text">1.4Mysql逻辑架构介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5Mysql%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="toc-number">1.5.</span> <span class="toc-text">1.5Mysql存储引擎</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%B4%A2%E5%BC%95%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">2.索引优化分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E6%80%A7%E8%83%BD%E4%B8%8B%E9%99%8DSQL%E6%85%A2-%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4%E9%95%BF-%E7%AD%89%E5%BE%85%E6%97%B6%E9%97%B4%E9%95%BF"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 性能下降SQL慢 执行时间长 等待时间长</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5%E5%86%99%E7%9A%84%E7%83%82"><span class="toc-number">2.1.1.</span> <span class="toc-text">2.1.1查询语句写的烂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2%E7%B4%A2%E5%BC%95%E5%A4%B1%E6%95%88"><span class="toc-number">2.1.2.</span> <span class="toc-text">2.1.2索引失效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3%E5%85%B3%E8%81%94%E6%9F%A5%E8%AF%A2%E5%A4%AA%E5%A4%9Ajoin-%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E6%88%96%E4%B8%8D%E5%BE%97%E5%B7%B2%E7%9A%84%E9%9C%80%E6%B1%82"><span class="toc-number">2.1.3.</span> <span class="toc-text">2.1.3关联查询太多join(设计缺陷或不得已的需求)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-4%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%B0%83%E4%BC%98%E5%8F%8A%E5%90%84%E4%B8%AA%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE-%E7%BC%93%E5%86%B2-%E7%BA%BF%E7%A8%8B%E6%95%B0%E7%AD%89"><span class="toc-number">2.1.4.</span> <span class="toc-text">2.1.4服务器调优及各个参数设置(缓冲\线程数等)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E5%B8%B8%E8%A7%81%E9%80%9A%E7%94%A8%E7%9A%84join%E6%9F%A5%E8%AF%A2"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 常见通用的join查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-SQL%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F"><span class="toc-number">2.2.1.</span> <span class="toc-text">2.2.1 SQL执行顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-Join%E5%9B%BE"><span class="toc-number">2.2.2.</span> <span class="toc-text">2.2.2 Join图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-3-%E5%BB%BA%E8%A1%A8SQL"><span class="toc-number">2.2.3.</span> <span class="toc-text">2.2.3 建表SQL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-4-7%E7%A7%8DJoin"><span class="toc-number">2.2.4.</span> <span class="toc-text">2.2.4 7种Join</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E7%B4%A2%E5%BC%95%E7%AE%80%E4%BB%8B"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 索引简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 性能分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-%E7%B4%A2%E5%BC%95%E4%BC%98%E5%8C%96"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 索引优化</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%9F%A5%E8%AF%A2%E6%88%AA%E5%8F%96%E5%88%86%E6%9E%90"><span class="toc-number">3.</span> <span class="toc-text">3.查询截取分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-MySQL%E9%94%81%E6%9C%BA%E5%88%B6"><span class="toc-number">4.</span> <span class="toc-text">4.MySQL锁机制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="toc-number">5.</span> <span class="toc-text">5.主从复制</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/03/20/%E9%9D%A2%E8%AF%95-%E9%9B%86%E5%90%88/" title="面试题-集合框架"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="面试题-集合框架"/></a><div class="content"><a class="title" href="/2021/03/20/%E9%9D%A2%E8%AF%95-%E9%9B%86%E5%90%88/" title="面试题-集合框架">面试题-集合框架</a><time datetime="2021-03-19T16:00:00.000Z" title="发表于 2021-03-20 00:00:00">2021-03-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/13/The%20Road%20To%20Bald%20Man!/" title="The Road To Bald Man!"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="The Road To Bald Man!"/></a><div class="content"><a class="title" href="/2021/03/13/The%20Road%20To%20Bald%20Man!/" title="The Road To Bald Man!">The Road To Bald Man!</a><time datetime="2021-03-12T16:00:00.000Z" title="发表于 2021-03-13 00:00:00">2021-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/07/21/%E6%A1%86%E6%9E%B6-Maven-%E9%85%8D%E7%BD%AE%E6%A0%87%E7%AD%BE%E8%AF%A6%E8%A7%A3/" title="Maven配置标签详解"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Maven配置标签详解"/></a><div class="content"><a class="title" href="/2020/07/21/%E6%A1%86%E6%9E%B6-Maven-%E9%85%8D%E7%BD%AE%E6%A0%87%E7%AD%BE%E8%AF%A6%E8%A7%A3/" title="Maven配置标签详解">Maven配置标签详解</a><time datetime="2020-07-20T16:00:00.000Z" title="发表于 2020-07-21 00:00:00">2020-07-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/07/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%B8%83%E5%A4%A7%E5%8E%9F%E5%88%99/" title="设计模式-七大设计原则"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="设计模式-七大设计原则"/></a><div class="content"><a class="title" href="/2020/07/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%B8%83%E5%A4%A7%E5%8E%9F%E5%88%99/" title="设计模式-七大设计原则">设计模式-七大设计原则</a><time datetime="2020-07-12T16:00:00.000Z" title="发表于 2020-07-13 00:00:00">2020-07-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/07/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" title="设计模式-创建型模式-单例模式"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="设计模式-创建型模式-单例模式"/></a><div class="content"><a class="title" href="/2020/07/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" title="设计模式-创建型模式-单例模式">设计模式-创建型模式-单例模式</a><time datetime="2020-07-12T16:00:00.000Z" title="发表于 2020-07-13 00:00:00">2020-07-13</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By fangchenyong</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
