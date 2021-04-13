@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>深入理解Java虚拟机</title>
+      <link href="/2021/04/12/Java-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+      <url>/2021/04/12/Java-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA/</url>
+      
+        <content type="html"><![CDATA[<h2 id="深入理解Java虚拟机"><a href="#深入理解Java虚拟机" class="headerlink" title="深入理解Java虚拟机"></a>深入理解Java虚拟机</h2> <iframe   height=1000 width=90%  src="https://www.processon.com/embed/606f199bf346fb575c7130c1"   frameborder=0   allowfullscreen> </iframe>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java </category>
+          
+          <category> JVM </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> JVM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>面试题-并发编程</title>
       <link href="/2021/03/21/%E9%9D%A2%E8%AF%95-%E5%B9%B6%E5%8F%91%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
       <url>/2021/03/21/%E9%9D%A2%E8%AF%95-%E5%B9%B6%E5%8F%91%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
